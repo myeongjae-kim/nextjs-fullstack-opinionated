@@ -9,9 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@omer-x/next-openapi-json-generator": "^2.0.3",
+    "@omer-x/next-openapi-route-handler": "^2.0.1",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

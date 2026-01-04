@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@omer-x/next-openapi-json-generator':
+        specifier: ^2.0.3
+        version: 2.0.3(@omer-x/next-openapi-route-handler@2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5))(@omer-x/openapi-types@1.3.0)(typescript@5.9.3)(zod@4.3.5)
+      '@omer-x/next-openapi-route-handler':
+        specifier: ^2.0.1
+        version: 2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5)
       next:
         specifier: 16.1.1
         version: 16.1.1(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -17,6 +23,9 @@ importers:
       react-dom:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
+      zod:
+        specifier: ^4.3.5
+        version: 4.3.5
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
@@ -316,6 +325,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@isaacs/balanced-match@4.0.1':
+    resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
+    engines: {node: 20 || >=22}
+
+  '@isaacs/brace-expansion@5.0.0':
+    resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
+    engines: {node: 20 || >=22}
+
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
 
@@ -404,6 +421,33 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
+
+  '@omer-x/json-schema-types@1.3.0':
+    resolution: {integrity: sha512-NGWJm6jMbwZWI8UMxr4S4nYHW9xhu4mVNptI7zYULUT6hlaljIXw4X3EI2ha/AB9RS8NDTKzf1oOa+pO7iA3/A==}
+    peerDependencies:
+      '@omer-x/openapi-types': ^1
+
+  '@omer-x/next-openapi-json-generator@2.0.3':
+    resolution: {integrity: sha512-Xt3r9s5FoLbMmhZPL5+F1ZMKJxE9U6UK7wi1ghrFC7ASCF6tiiUc2pJEefrDYn51Q9an6Gt9PrHhfuH7uODAAg==}
+    peerDependencies:
+      '@omer-x/next-openapi-route-handler': ^2
+      '@omer-x/openapi-types': ^1
+      typescript: ^5
+      zod: ^4
+
+  '@omer-x/next-openapi-route-handler@2.0.1':
+    resolution: {integrity: sha512-fc6Ou56tbcx++/zocZJprWnFHYnUNkr6OvhVSciPCMM1ctZulHqDErX05eVmL3I2eD+2UbWPJI0sm13+sw71ew==}
+    peerDependencies:
+      '@omer-x/openapi-types': ^1
+      zod: ^4
+
+  '@omer-x/openapi-types@1.3.0':
+    resolution: {integrity: sha512-Bawh6voqTtzXQFRDClO17uMyl+c861oUoCghMjlCbz4lOCrXt6iS3N2FfxxaD7NWbydwmOGbVBBt+KD+GwsJ4g==}
+    peerDependencies:
+      '@omer-x/json-schema-types': ^1
+
+  '@omer-x/package-metadata@1.0.2':
+    resolution: {integrity: sha512-Apbdz5/j2JnpX8gIqA+fQ4i+JBOVTT7Hy1OAqv0l0HEQCdfwntXBrXaJYsLVb4kLmWpHXcOzPcnDZ71Y1Zj3ig==}
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
@@ -1465,6 +1509,10 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
+  minimatch@10.1.1:
+    resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
+    engines: {node: 20 || >=22}
+
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
 
@@ -2178,6 +2226,12 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
+  '@isaacs/balanced-match@4.0.1': {}
+
+  '@isaacs/brace-expansion@5.0.0':
+    dependencies:
+      '@isaacs/balanced-match': 4.0.1
+
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -2247,6 +2301,30 @@ snapshots:
       fastq: 1.20.1
 
   '@nolyfill/is-core-module@1.0.39': {}
+
+  '@omer-x/json-schema-types@1.3.0(@omer-x/openapi-types@1.3.0)':
+    dependencies:
+      '@omer-x/openapi-types': 1.3.0(@omer-x/json-schema-types@1.3.0)
+
+  '@omer-x/next-openapi-json-generator@2.0.3(@omer-x/next-openapi-route-handler@2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5))(@omer-x/openapi-types@1.3.0)(typescript@5.9.3)(zod@4.3.5)':
+    dependencies:
+      '@omer-x/next-openapi-route-handler': 2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5)
+      '@omer-x/openapi-types': 1.3.0(@omer-x/json-schema-types@1.3.0)
+      '@omer-x/package-metadata': 1.0.2
+      minimatch: 10.1.1
+      typescript: 5.9.3
+      zod: 4.3.5
+
+  '@omer-x/next-openapi-route-handler@2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5)':
+    dependencies:
+      '@omer-x/openapi-types': 1.3.0(@omer-x/json-schema-types@1.3.0)
+      zod: 4.3.5
+
+  '@omer-x/openapi-types@1.3.0(@omer-x/json-schema-types@1.3.0)':
+    dependencies:
+      '@omer-x/json-schema-types': 1.3.0(@omer-x/openapi-types@1.3.0)
+
+  '@omer-x/package-metadata@1.0.2': {}
 
   '@rtsao/scc@1.1.0': {}
 
@@ -3439,6 +3517,10 @@ snapshots:
     dependencies:
       braces: 3.0.3
       picomatch: 2.3.1
+
+  minimatch@10.1.1:
+    dependencies:
+      '@isaacs/brace-expansion': 5.0.0
 
   minimatch@3.1.2:
     dependencies:
