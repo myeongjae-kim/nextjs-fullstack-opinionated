@@ -1,4 +1,5 @@
 import { testEnv } from "@/test/testEnv";
+import { spec } from "pactum";
 import { describe, expect, it } from "vitest";
 
 describe("GET /api/articles/[id]", () => {
@@ -27,17 +28,15 @@ describe("GET /api/articles/[id]", () => {
 
 describe("PUT /api/articles/[id]", () => {
   it("should return 200", async () => {
-    const response = await fetch(`${testEnv.TEST_HOST}/api/articles/1`, {
-      method: "PUT",
-      headers: {
-        Authorization: "Bearer default-token-value-for-docs",
-      },
-      body: JSON.stringify({
+    await spec()
+      .put("/api/articles/1")
+      .withBearerToken(testEnv.TEST_BEARER_TOKEN)
+      .withBody({
         title: "Article 1",
         content: "Content of article 1",
-      }),
-    });
-    expect(response.status).toBe(200);
+      })
+      .expectBody("")
+      .expectStatus(200)
   });
 
   it("should return 401 when invalid token", async () => {
