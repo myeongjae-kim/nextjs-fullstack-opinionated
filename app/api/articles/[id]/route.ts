@@ -1,7 +1,8 @@
-import { apiErrorSchema } from "@/app/domain/ApiError";
-import { articleSchema, articleUpdateSchema } from "@/app/domain/Article";
-import { DomainNotFoundError } from "@/app/domain/DomainNotFoundError";
 import defineRoute from "@/app/util/@omer-x/next-openapi-route-handler";
+import { articleSchema, articleUpdateSchema } from "@/core/article/domain/Article";
+import { apiErrorSchema } from "@/core/common/domain/ApiError";
+import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
+import { applicationContext } from "@/core/config/applicationContext";
 import z from "zod";
 
 export const { GET } = defineRoute({
@@ -24,28 +25,14 @@ export const { GET } = defineRoute({
       throw new DomainNotFoundError(pathParams.id, "Article")
     }
 
-    const body = articleSchema.parse({
-      id,
-      title: `Article ${id}`,
-      content: `Content of article ${id}`,
-    })
+    const body = await applicationContext().get("GetArticleByIdUseCase").get(id);
+
     return Response.json(body);
   },
   responses: {
     200: { description: "Article Fetched", content: articleSchema },
     404: { description: "Article Not Found", content: apiErrorSchema },
   },
-  handleErrors: (errorType, issues) => {
-    console.log(issues);
-    switch (errorType) {
-      case "PARSE_PATH_PARAMS":
-        return Response.json({
-          message: issues?.[0]?.message,
-        }, { status: 404 });
-      default:
-        return new Response(null, { status: 500 });
-    }
-  }
 });
 
 export const { PUT } = defineRoute({
@@ -58,7 +45,16 @@ export const { PUT } = defineRoute({
   pathParams: z.object({
     id: z.string().describe("ID of the article"),
   }),
-  action: async () => {
+  requestBody: articleUpdateSchema,
+  action: async ({ pathParams, body }) => {
+    const id = Number(pathParams.id);
+
+    if (isNaN(id)) {
+      throw new DomainNotFoundError(pathParams.id, "Article")
+    }
+
+    await applicationContext().get("UpdateArticleUseCase").update(id, body);
+
     return new Response(null, { status: 200 });
   },
   responses: {
@@ -77,7 +73,15 @@ export const { DELETE } = defineRoute({
   pathParams: z.object({
     id: z.string().describe("ID of the article"),
   }),
-  action: async () => {
+  action: async ({ pathParams }) => {
+    const id = Number(pathParams.id);
+
+    if (isNaN(id)) {
+      throw new DomainNotFoundError(pathParams.id, "Article")
+    }
+
+    await applicationContext().get("DeleteArticleUseCase").delete(id);
+
     return new Response(null, { status: 200 });
   },
   responses: {

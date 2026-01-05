@@ -1,6 +1,8 @@
-import { apiErrorSchema } from "@/app/domain/ApiError";
-import { articleCreationSchema, articleListSchema } from "@/app/domain/Article";
 import defineRoute from "@/app/util/@omer-x/next-openapi-route-handler";
+import { articleCreationSchema, articleListSchema } from "@/core/article/domain/Article";
+import { apiErrorSchema } from "@/core/common/domain/ApiError";
+import { creationResponseSchema } from "@/core/common/domain/CreationResponse";
+import { applicationContext } from "@/core/config/applicationContext";
 
 export const { GET } = defineRoute({
   operationId: "findArticles",
@@ -9,25 +11,14 @@ export const { GET } = defineRoute({
   description: "Find Articles",
   tags: ["Articles"],
   action: async () => {
-    const response = articleListSchema.parse({
-      content: [1, 2, 3].map((id) => {
-        return {
-          id,
-          title: `Article ${id}`,
-          content: `Content of article ${id}`,
-        }
-      })
-    })
-    return Response.json(response);
+    const articles = await applicationContext().get("FindAllArticlesUseCase").findAll();
+
+    return Response.json(articleListSchema.parse({
+      content: articles
+    }));
   },
   responses: {
     200: { description: "Article Fetched", content: articleListSchema }
-  },
-  handleErrors(errorType, issues) {
-    return Response.json({
-      errorType,
-      issues
-    }, { status: 500 })
   },
 });
 
@@ -38,13 +29,14 @@ export const { POST } = defineRoute({
   description: "Create an Article",
   tags: ["Articles"],
   security: [{ bearerAuth: [] }], // required bearer auth
-  action: async () => {
-    return Response.json({
-      id: 1
-    })
+  requestBody: articleCreationSchema,
+  action: async ({ body }) => {
+    const article = await applicationContext().get("CreateArticleUseCase").create(body);
+
+    return Response.json(creationResponseSchema.parse(article));
   },
   responses: {
-    200: { description: "Article Created", content: articleCreationSchema },
+    200: { description: "Article Created", content: creationResponseSchema },
     401: { description: "Unauthorized", content: apiErrorSchema },
   },
 })

@@ -1,6 +1,6 @@
+import { ApiError } from "@/core/common/domain/ApiError";
+import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import z from "zod";
-import { ApiError } from "../domain/ApiError";
-import { DomainNotFoundError } from "../domain/DomainNotFoundError";
 import { Action, ActionMiddleware } from "./@omer-x/next-openapi-route-handler/returnDefineRoute";
 
 const globalErrorHandler = <T>(action: Action<T>): ReturnType<ActionMiddleware<T>> => {

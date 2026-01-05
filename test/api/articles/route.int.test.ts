@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 describe("GET /api/articles", () => {
   it("should return 200", async () => {
     const response = await fetch(`${testEnv.TEST_HOST}/api/articles`);
-    expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       content: [
         {
@@ -24,6 +23,7 @@ describe("GET /api/articles", () => {
         },
       ],
     });
+    expect(response.status).toBe(200);
   });
 });
 
@@ -34,11 +34,15 @@ describe("POST /api/articles", () => {
       headers: {
         Authorization: "Bearer default-token-value-for-docs",
       },
+      body: JSON.stringify({
+        title: "Article 1",
+        content: "Content of article 1",
+      }),
     });
-    expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       id: 1,
     });
+    expect(response.status).toBe(200);
   });
 
   it("should return 401 when invalid token", async () => {

@@ -4,17 +4,16 @@ import { describe, expect, it } from "vitest";
 describe("GET /api/articles/[id]", () => {
   it("should return 200", async () => {
     const response = await fetch(`${testEnv.TEST_HOST}/api/articles/1`);
-    expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       id: 1,
       title: "Article 1",
       content: "Content of article 1",
     });
+    expect(response.status).toBe(200);
   });
 
   it("should return 404 when id is 999", async () => {
     const response = await fetch(`${testEnv.TEST_HOST}/api/articles/999`);
-    expect(response.status).toBe(404);
     await expect(response.json()).resolves.toMatchObject({
       "code": "CODE_002",
       "error": "DOMAIN_NOT_FOUND_ERROR",
@@ -22,6 +21,7 @@ describe("GET /api/articles/[id]", () => {
       "status": 404,
       "timestamp": expect.any(String),
     });
+    expect(response.status).toBe(404);
   });
 });
 
@@ -32,6 +32,10 @@ describe("PUT /api/articles/[id]", () => {
       headers: {
         Authorization: "Bearer default-token-value-for-docs",
       },
+      body: JSON.stringify({
+        title: "Article 1",
+        content: "Content of article 1",
+      }),
     });
     expect(response.status).toBe(200);
   });
@@ -42,6 +46,10 @@ describe("PUT /api/articles/[id]", () => {
       headers: {
         Authorization: "Bearer invalid-token-value",
       },
+      body: JSON.stringify({
+        title: "Article 1",
+        content: "Content of article 1",
+      }),
     });
     expect(response.status).toBe(401);
   });

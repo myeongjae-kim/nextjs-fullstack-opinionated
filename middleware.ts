@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { isApiAuthRequired } from './app/api/securityConfig';
-import { ApiError } from './app/domain/ApiError';
+import { ApiError } from './core/common/domain/ApiError';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
