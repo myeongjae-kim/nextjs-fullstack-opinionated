@@ -1,4 +1,6 @@
+import { apiErrorSchema } from "@/app/domain/ApiError";
 import { articleSchema, articleUpdateSchema } from "@/app/domain/Article";
+import { DomainNotFoundError } from "@/app/domain/DomainNotFoundError";
 import defineRoute from "@/app/util/@omer-x/next-openapi-route-handler";
 import z from "zod";
 
@@ -15,11 +17,11 @@ export const { GET } = defineRoute({
     const id = Number(pathParams.id);
 
     if (isNaN(id)) {
-      throw new Error(`Article #${pathParams.id} not found`)
+      throw new DomainNotFoundError(pathParams.id, "Article")
     }
 
     if (id === 999) {
-      throw new Error(`Article #${id} not found`)
+      throw new DomainNotFoundError(pathParams.id, "Article")
     }
 
     const body = articleSchema.parse({
@@ -30,7 +32,8 @@ export const { GET } = defineRoute({
     return Response.json(body);
   },
   responses: {
-    200: { description: "Article Fetched", content: articleSchema }
+    200: { description: "Article Fetched", content: articleSchema },
+    404: { description: "Article Not Found", content: apiErrorSchema },
   },
   handleErrors: (errorType, issues) => {
     console.log(issues);
@@ -51,7 +54,7 @@ export const { PUT } = defineRoute({
   summary: "Update an Article by ID",
   description: "Update an Article by ID",
   tags: ["Articles"],
-  security: [{ bearerAuth: [] }], // requied bearer auth
+  security: [{ bearerAuth: [] }], // required bearer auth
   pathParams: z.object({
     id: z.string().describe("ID of the article"),
   }),
@@ -59,7 +62,7 @@ export const { PUT } = defineRoute({
     return new Response(null, { status: 200 });
   },
   responses: {
-    200: { description: "Article Updated", content: articleUpdateSchema }
+    200: { description: "Article Updated", content: articleUpdateSchema },
   },
 })
 
@@ -69,7 +72,7 @@ export const { DELETE } = defineRoute({
   summary: "Delete an Article by ID",
   description: "Delete an Article by ID",
   tags: ["Articles"],
-  security: [{ bearerAuth: [] }], // requied bearer auth
+  security: [{ bearerAuth: [] }], // required bearer auth
   pathParams: z.object({
     id: z.string().describe("ID of the article"),
   }),

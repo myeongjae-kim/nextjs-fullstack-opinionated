@@ -15,7 +15,14 @@
 <script>
     Scalar.createApiReference('#app', {
         url: "/api/swagger",
-        defaultOpenAllTags: true
+        defaultOpenAllTags: true,
+        authentication: {
+            securitySchemes: {
+                bearerAuth: {
+                    token: 'default-token-value-for-docs',
+                }
+            }
+        }
     })
 </script>
 </body>

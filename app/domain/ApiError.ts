@@ -1,10 +1,14 @@
-export type ApiErrorType = {
-  status: number;
-  error: string;
-  code: string;
-  message: string;
-  timestamp: string;
-};
+import z from "zod";
+
+export const apiErrorSchema = z.object({
+  status: z.number(),
+  error: z.string(),
+  code: z.string(),
+  message: z.string(),
+  timestamp: z.string(),
+})
+
+export type ApiErrorType = z.infer<typeof apiErrorSchema>;
 
 export class ApiError extends Error implements ApiErrorType {
   public status: number;
