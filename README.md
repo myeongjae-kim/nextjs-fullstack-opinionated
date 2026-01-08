@@ -21,13 +21,15 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 - 제품 초기(월 $1,500 미만): Vercel(with Observability Plus for logging) + PlanetScale
   - Vercel: 다른 Serverless Edge Hosting 서비들과 비교했을 때 비용이 많이 비싼편은 아님. AWS Amplify와는 거의 비슷한 비용이 나온다.
-  - PlanetScale: 초기 비용이 저렴한 (=AWS, GCP 제외) MySQL, Postgres 호환 Serverless RDBMS Platform 중에서 유일하게 Seoul 리전이 있음
+  - PlanetScale: 초기 비용이 저렴한(=AWS, GCP 제외) MySQL, Postgres 호환 Serverless RDBMS Platform 중에서 유일하게 Seoul 리전이 있음
 - 제품 성숙기(월 $1,500 이상): AWS ECS Fargate, CloudWatch(혹은 Grafana 및 OpenTelemetry 스펙 구현된 제품을 Self Hosting), Amazon Aurora
   - AWS ECS Fargate: EC2를 직접 사용하거나 ECS on EC2보다 설정 및 관리비용이 적게 듦. 
   - Amazon Aurora: 든든. 애플리케이션과의 통신을 VPC내에서 해결하면 데이터 전송 비용 절감 가능. Workload에 따라 Aurora Serverless 고려.
 
 ※ 제품 초기, Vercel보다 Cloudflare Pages가 비용은 훨씬 저렴하지만 한국의 망 사용료 문제때문에 Enterprise Plan이 아니면 Los Angeles에서 실행된다. DB가 서울에 있을 때 웹 페이지 로딩 1초씩 걸림
+
 ※ 제품 성숙기, AWS ECS보다 AWS App Runner가 사용하기 훨씬 더 간단하지만 Seoul 리전에서는 제공 안 함. Tokyo 리전이 가장 가까움. Seoul 리전에서 서비스 제공하기 시작하면 고려해볼만 하다.
+
 ※ 제품 성숙기, PlanetScale에서 Amazon Aurora로 데이터 이전시 AWS Database Migration Service 활용 가능
 
 ## Why?
