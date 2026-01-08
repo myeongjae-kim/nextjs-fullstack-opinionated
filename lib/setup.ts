@@ -1,0 +1,33 @@
+import crypto from 'node:crypto';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+
+function generateAuthSecret(): string {
+  console.log('Step 1: Generating AUTH_SECRET...');
+  return crypto.randomBytes(32).toString('hex');
+}
+
+async function writeEnvFile(envVars: Record<string, string>) {
+  console.log('Step 2: Writing environment variables to .env');
+  const envContent = Object.entries(envVars)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('\n');
+
+  await fs.writeFile(path.join(process.cwd(), '.env'), envContent);
+  console.log('.env file created with the necessary variables.');
+}
+
+async function main() {
+  const AUTH_SECRET = generateAuthSecret();
+
+  await writeEnvFile({
+    NEXT_PUBLIC_PROFILE: 'local',
+    POSTGRES_URL: "TBD",
+    POSTGRES_URL_LOCAL: "postgresql://postgres:postgres@localhost:5432/postgres",
+    AUTH_SECRET,
+  });
+
+  console.log('🎉 Setup completed successfully!');
+}
+
+main().catch(console.error);

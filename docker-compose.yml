@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: nextjs-opinionated-local-postgres
+    restart: unless-stopped
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: public
+
+    volumes:
+      # 데이터 영속화
+      - postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
