@@ -53,6 +53,6 @@ TBD
 - 인프라 유지관리 비용을 최소화 할 수 있음. AWS EC2를 쓰는 대신 Vercel과 PlanetScale로 프로젝트를 시작하면 순식간에 인프라 설정 완료.
   - 현재 재직중인 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을 받지 않는 성격의 서비스들을 구현할 때도 많음. Next.js, Vercel, PlanetScale 수준에서 고객사의 문제를 해결할 수 있는 경우가 많다. Next.js를 쓰면서도 Spring Boot의 Developer Experience를 최대한 유지하는 것이 이 예시 프로젝트의 역할
     - Inversify를 사용해서 IoC Container로 백엔드 로직을 관리하므로 기존 Spring Boot의 아키텍처와 유사하게 관리 가능.
-    - Next.js의 Route Handler까지는 Functional Paradigm, Route Handler에서 비즈니스 로직을 호출할 때부터는 Object-Oriented Paradigm이다.
+    - Next.js의 Routing까지는 Functional Paradigm, Route Handler에서 비즈니스 로직을 호출할 때부터는 Object-Oriented Paradigm이다.
 - Next.js만으로 Rest API를 제공할 수 있지만, Next.js가 벤치마크상 성능이 좋지 않다(https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 언제든제 백엔드 부분만 따로 떼어낼 수 있도록 Next.js 안에서 Hono가 API Routing을 담당하는 형태로 구현함.
   - fyi) Next.js를 백엔드 API 제공용으로 사용하는건 어떻냐고 하니 쏟아진 수많은 악플들: https://www.reddit.com/r/nextjs/comments/1ooxe77/anyone_using_nextjs_on_vercel_purely_as_an_api/
