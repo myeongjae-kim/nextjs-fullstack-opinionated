@@ -7,6 +7,7 @@ import UpdateArticleController from './articles/UpdateArticleController';
 import { serverApp } from './serverApp';
 
 // Controller가 자신의 full-path를 관리한다. 여기서는 일괄적으로 "/"에 등록한다.
+// 한 개의 메소드만 갖는 계층형 컨트롤러/서비스 패키지 스타일: https://johngrib.github.io/wiki/article/hierarchical-controller-package-structure/
 [
   CreateArticleController,
   DeleteArticleController,

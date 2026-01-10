@@ -9,7 +9,7 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 |                             | Spring Boot                           | Next.js Fullstack Opinionated |
 |-----------------------------|---------------------------------------|-------------------------------|
 | 웹 계층                     | spring-webmvc                         | Next.js, Hono                 |
-| 코드 기반 OpenAPI Spec 생성 | springdoc-openapi-starter-webmvc-ui   | Hono Docs Generator           |
+| 코드 기반 OpenAPI Spec 생성 | springdoc-openapi-starter-webmvc-ui   | @hono/zod-openapi             |
 | Request Validtaion          | spring-webmvc, spring-boot-validation | Hono, zod                     |
 | Exception Handling          | spring-mvc(`@ControllerAdvice`)       | Hono의 `onError()`            |
 | IoC Container               | spring-core                           | inversify, inversify-typesafe |
@@ -56,3 +56,18 @@ TBD
     - Next.js의 Routing까지는 Functional Paradigm, Route Handler에서 비즈니스 로직을 호출할 때부터는 Object-Oriented Paradigm이다.
 - Next.js만으로 Rest API를 제공할 수 있지만, Next.js가 벤치마크상 성능이 좋지 않다(https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 언제든제 백엔드 부분만 따로 떼어낼 수 있도록 Next.js 안에서 Hono가 API Routing을 담당하는 형태로 구현함.
   - fyi) Next.js를 백엔드 API 제공용으로 사용하는건 어떻냐고 하니 쏟아진 수많은 악플들: https://www.reddit.com/r/nextjs/comments/1ooxe77/anyone_using_nextjs_on_vercel_purely_as_an_api/
+  - 언제든지 Next.js를 떼어내고 백엔드 API만 서빙하는 애플리케이션을 만들 수 있도록 Next.js 내부에서 Hono를 사용하는 구조를 만들었다.
+  - 웹페이지와 백엔드 API를 한꺼번에 서빙하는 monolithic 구조가 유리한 프로젝트는 이대로 사용하고, 백엔드 API만 제공하는 프로젝트는 Next.js 없이 Hono만으로 구현.
+  - 백엔드 API만 제공하는 프로젝트는 Vercel이 아니라 프로젝트 시작부터 AWS Lambda에 배포하는 것도 나쁘지않다: https://hono.dev/docs/getting-started/aws-lambda
+    - AWS Lambda가 Vercel보다 호출횟수당 비용이 1/10 수준 (Vercel: $2 per 1M, AWS Lambda: $0.2 per 1M)
+
+
+## TODO
+
+- [ ] 로컬에서 MySQL 띄우고 실제로 동작하는 API 구현
+  - [ ] InMemory Adapater와 Persistence Adapter로 분리해서 Profile에 따라 사용하기. remote에서는 InMemory로.
+  - [ ] OpenAPI Spec 받아서 Postman으로 테스트
+- [ ] backend-only 브랜치 만들어서 Next.js 제거하고 Hono만 사용하는 애플리케이션 구성
+  - main 브랜치 커밋 생길 때마다 rebase하기
+- [ ] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드 인증 구현
+- [ ] 게시판 목록 조회, 상세 조회, 글 작성, 글 수정, 글 삭제, 로그인, 로그아웃 기능 구현
