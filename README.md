@@ -6,29 +6,31 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 ## Tech Stack Comparison
 
-|                             | Spring Boot                           | Next.js Fullstack Opinionated                   |
-|-----------------------------|---------------------------------------|-------------------------------------------------|
-| 웹 계층                     | spring-webmvc                         | Next.js                                         |
-| 코드 기반 OpenAPI Spec 생성 | springdoc-openapi-starter-webmvc-ui   | next-openapi-route-handler                      |
-| Request Validtaion          | spring-webmvc, spring-boot-validation | next-openapi-route-handler, zod                 |
-| Exception Handling          | spring-mvc(`@ControllerAdvice`)       | next-openapi-route-handler를 활용해서 직접 구현 |
-| IoC Container               | spring-core                           | inversify, inversify-typesafe                   |
-| ORM                         | spring-data-jpa                       | drizzle                                         |
-| Query Read Write Split      | spring-data-jpa                       | drizzle                                         |
-| DDL Migration               | flyway                                | drizzle                                         |
-| Security                    | spring-security                       | Next.js의 middleware로 직접 구현                |
-| Unit Test                   | jUnit                                 | Vitest                                          |
-| Integration Test            | jUnit, `@SpringBootTest`              | jUnit, start-server-and-test                    |
-| Web Test Client             | MockMvc, RestTestClient               | pactum                                          |
+|                             | Spring Boot                           | Next.js Fullstack Opinionated |
+|-----------------------------|---------------------------------------|-------------------------------|
+| 웹 계층                     | spring-webmvc                         | Next.js, Hono                 |
+| 코드 기반 OpenAPI Spec 생성 | springdoc-openapi-starter-webmvc-ui   | Hono Docs Generator           |
+| Request Validtaion          | spring-webmvc, spring-boot-validation | Hono, zod                     |
+| Exception Handling          | spring-mvc(`@ControllerAdvice`)       | Hono의 `onError()`            |
+| IoC Container               | spring-core                           | inversify, inversify-typesafe |
+| ORM                         | spring-data-jpa                       | drizzle                       |
+| Query Read Write Split      | spring-data-jpa                       | drizzle                       |
+| DDL Migration               | flyway                                | drizzle                       |
+| Auth                        | spring-security                       | hono/bearer-auth              |
+| Unit Test                   | jUnit                                 | Vitest                        |
+| Integration Test            | jUnit, `@SpringBootTest`              | jUnit, start-server-and-test  |
+| Web Test Client             | MockMvc, RestTestClient               | pactum                        |
 
 ## Infrastructure Recommendation
 
 - 제품 초기(월 $1,500 미만): Vercel(with Observability Plus for logging) + PlanetScale
   - Vercel: 다른 Serverless Edge Hosting 서비들과 비교했을 때 비용이 많이 비싼편은 아님. AWS Amplify와는 거의 비슷한 비용이 나온다.
   - PlanetScale: 초기 비용이 저렴한(=AWS, GCP 제외) MySQL, Postgres 호환 Serverless RDBMS Platform 중에서 유일하게 Seoul 리전이 있음
+  - 초기부터 API 트래픽이 많을 것으로 예상한다면 백엔드만 따로 떼서 Hono만으로 서빙하는 것을 추천 ([Hono on AWS Lambda](https://hono.dev/docs/getting-started/aws-lambda))
 - 제품 성숙기(월 $1,500 이상): AWS ECS Fargate, CloudWatch(혹은 Grafana 및 OpenTelemetry 스펙 구현된 제품을 Self Hosting), Amazon Aurora
-  - AWS ECS Fargate: EC2를 직접 사용하거나 ECS on EC2보다 설정 및 관리비용이 적게 듦. 
+  - AWS ECS Fargate: EC2나 ECS on EC2보다 설정 및 관리비용이 적게 듦. 
   - Amazon Aurora: 든든. 애플리케이션과의 통신을 VPC내에서 해결하면 데이터 전송 비용 절감 가능. Workload에 따라 Aurora Serverless 고려.
+  - 웹페이지 호출보다 API호출이 많은 프로젝트라면 마찬가지로 백엔드만 따로 떼서 Hono만으로 서빙하는 것을 추천
 
 ※ 제품 초기, Vercel보다 Cloudflare Pages가 비용은 훨씬 저렴하지만 한국의 망 사용료 문제때문에 Enterprise Plan이 아니면 Los Angeles에서 실행된다. DB가 서울에 있을 때 웹 페이지 로딩 1초씩 걸림
 
@@ -52,3 +54,5 @@ TBD
   - 현재 재직중인 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을 받지 않는 성격의 서비스들을 구현할 때도 많음. Next.js, Vercel, PlanetScale 수준에서 고객사의 문제를 해결할 수 있는 경우가 많다. Next.js를 쓰면서도 Spring Boot의 Developer Experience를 최대한 유지하는 것이 이 예시 프로젝트의 역할
     - Inversify를 사용해서 IoC Container로 백엔드 로직을 관리하므로 기존 Spring Boot의 아키텍처와 유사하게 관리 가능.
     - Next.js의 Route Handler까지는 Functional Paradigm, Route Handler에서 비즈니스 로직을 호출할 때부터는 Object-Oriented Paradigm이다.
+- Next.js만으로 Rest API를 제공할 수 있지만, Next.js가 벤치마크상 성능이 좋지 않다(https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 언제든제 백엔드 부분만 따로 떼어낼 수 있도록 Next.js 안에서 Hono가 API Routing을 담당하는 형태로 구현함.
+  - fyi) Next.js를 백엔드 API 제공용으로 사용하는건 어떻냐고 하니 쏟아진 수많은 악플들: https://www.reddit.com/r/nextjs/comments/1ooxe77/anyone_using_nextjs_on_vercel_purely_as_an_api/
