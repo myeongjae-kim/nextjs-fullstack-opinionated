@@ -22,7 +22,7 @@ export const ArticleController = new Hono().get('/articles', async () => {
     const id = Number(c.req.param("id"));
 
     if (isNaN(id)) {
-      throw new DomainNotFoundError(id, "Article")
+      throw new DomainNotFoundError(c.req.param("id"), "Article")
     }
     const article = await applicationContext().get("GetArticleByIdUseCase").get(id);
 
@@ -34,7 +34,7 @@ export const ArticleController = new Hono().get('/articles', async () => {
       const id = Number(c.req.param("id"));
 
       if (isNaN(id)) {
-        throw new DomainNotFoundError(id, "Article")
+        throw new DomainNotFoundError(c.req.param("id"), "Article")
       }
 
       await applicationContext().get("UpdateArticleUseCase").update(id, c.req.valid("json"));
@@ -44,7 +44,7 @@ export const ArticleController = new Hono().get('/articles', async () => {
     const id = Number(c.req.param("id"));
 
     if (isNaN(id)) {
-      throw new DomainNotFoundError(id, "Article")
+      throw new DomainNotFoundError(c.req.param("id"), "Article")
     }
 
     await applicationContext().get("DeleteArticleUseCase").delete(id);
