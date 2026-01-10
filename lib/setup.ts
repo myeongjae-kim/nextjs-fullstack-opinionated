@@ -22,7 +22,7 @@ async function main() {
 
   await writeEnvFile({
     NEXT_PUBLIC_PROFILE: 'local',
-    POSTGRES_URL: "TBD",
+    POSTGRES_URL: "your-remote-db-url",
     POSTGRES_URL_LOCAL: "postgresql://postgres:postgres@localhost:5432/postgres",
     AUTH_SECRET,
   });
