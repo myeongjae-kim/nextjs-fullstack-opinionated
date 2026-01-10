@@ -6,7 +6,7 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "setup": "npx tsx lib/setup.ts",
-    "build": "next build",
+    "build": "pnpm run docs && next build",
     "start": "next start",
     "_start": "next start -p 3031",
     "lint": "eslint",
@@ -16,7 +16,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:migrate:local": "drizzle-kit migrate --config=drizzle.config.local.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",
@@ -31,6 +32,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@rcmade/hono-docs": "^1.0.31",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.1",
