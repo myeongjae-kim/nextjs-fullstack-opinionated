@@ -16,9 +16,9 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 | ORM                         | spring-data-jpa                       | drizzle                       |
 | Query Read Write Split      | spring-data-jpa                       | drizzle                       |
 | DDL Migration               | flyway                                | drizzle                       |
-| Auth                        | spring-security                       | hono/bearer-auth              |
+| Auth                        | spring-security                       | Hono (Middleware 사용)        |
 | Unit Test                   | jUnit                                 | Vitest                        |
-| Integration Test            | jUnit, `@SpringBootTest`              | jUnit, start-server-and-test  |
+| Integration Test            | jUnit, `@SpringBootTest`              | Vitest, start-server-and-test |
 | Web Test Client             | MockMvc, RestTestClient               | pactum                        |
 
 ## Infrastructure Recommendation
@@ -37,6 +37,12 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 ※ 제품 성숙기, AWS ECS보다 AWS App Runner가 사용하기 훨씬 더 간단하지만 Seoul 리전에서는 제공 안 함. Tokyo 리전이 가장 가까움. Seoul 리전에서 서비스 제공하기 시작하면 고려해볼만 하다.
 
 ※ 제품 성숙기, PlanetScale에서 Amazon Aurora로 데이터 이전시 AWS Database Migration Service 활용 가능
+
+|                                 | 제품 초기(월 $1,500 미만)                                                                              | 제품 성숙기(월 $1,500 이상)                                        |
+|---------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| FullStack                       | Vercel, PlanetScale                                                                                    | AWS ECS Fargate, Amazon Aurora (Workload에 따라 Aurora Serverless) |
+| Backend Only                    | Vercel or AWS Lambda, PlanetScale                                                                      | AWS ECS Fargate, Amazon Aurora (Workload에 따라 Aurora Serverless) |
+| Backend Only (High Performance) | AWS Lambda (Deno로 ColdStart 시간 최소화), Amazon Aurora (Labmda와 VPC 내에서 통신해서 latency 최소화) | AWS ECS Fargate (Deno, ECS로 ColdStart 시간 제거), Amazon Aurora   |
 
 ## Why?
 
@@ -75,3 +81,9 @@ TBD
 - [ ] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드 인증 구현
 - [ ] 게시판 목록 조회, 상세 조회, 글 작성, 글 수정, 글 삭제, 로그인, 로그아웃 기능 구현
 - [ ] Deno 위에서도 잘 작동하는지 테스트
+
+## Branch 관리
+
+1. 애플리케이션 로직 관련 업데이트는 main 브랜치에서 한다.
+2. 파생 브랜치로의 변경사항은 rebase를 한다.
+  1. main -> backend-only -> backend-only-deno 순서로 rebase하고 force push
