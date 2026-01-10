@@ -13,6 +13,7 @@ const paths: HttpPath[] = [
   ['GET', '/api/articles/*', 'PERMIT_ALL'],
   ['PUT', '/api/articles/*', 'AUTHORIZE'],
   ['DELETE', '/api/articles/*', 'AUTHORIZE'],
+  ['GET', '/api/users/me', 'AUTHORIZE'],
   ['ALL', '/api/**', 'AUTHORIZE'],
 ]
 
