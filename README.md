@@ -38,11 +38,32 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 ※ 제품 성숙기, PlanetScale에서 Amazon Aurora로 데이터 이전시 AWS Database Migration Service 활용 가능
 
-|                                 | 제품 초기(월 $1,500 미만)                                                                              | 제품 성숙기(월 $1,500 이상)                                        |
-|---------------------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| FullStack                       | Vercel, PlanetScale                                                                                    | AWS ECS Fargate, Amazon Aurora (Workload에 따라 Aurora Serverless) |
-| Backend Only                    | Vercel or AWS Lambda, PlanetScale                                                                      | AWS ECS Fargate, Amazon Aurora (Workload에 따라 Aurora Serverless) |
-| Backend Only (High Performance) | AWS Lambda (Deno로 ColdStart 시간 최소화), Amazon Aurora (Labmda와 VPC 내에서 통신해서 latency 최소화) | AWS ECS Fargate (Deno, ECS로 ColdStart 시간 제거), Amazon Aurora   |
+<table>
+  <thead>
+    <tr>
+      <td></td>
+      <td><strong>제품 초기(월 $1,500 미만)</strong></td>
+      <td><strong>제품 성숙기(월 $1,500 이상)</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>FullStack</td>
+      <td>Vercel,</br>PlanetScale</td>
+      <td>AWS ECS Fargate,<br/>Amazon Aurora (Workload에 따라 Aurora Serverless)</td>
+    </tr>
+    <tr>
+      <td>Backend Only</td>
+      <td>Vercel or AWS Lambda<br/>(AWS Lambda가 Vercel보다 호출횟수당 비용 1/10),<br/>PlanetScale</td>
+      <td>AWS ECS Fargate,<br/>Amazon Aurora (Workload에 따라 Aurora Serverless)</td>
+    </tr>
+    <tr>
+      <td>Backend Only<br/>(High Performance)</td>
+      <td>AWS Lambda<br/>(Deno로 ColdStart 시간 최소화),<br/>Amazon Aurora<br/>(Labmda와 VPC 내에서 통신해서 latency 최소화)</td>
+      <td>AWS ECS Fargate<br/>(Deno, ECS로 ColdStart 시간 제거),<br/>Amazon Aurora</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Why?
 
@@ -51,6 +72,7 @@ TBD
 - AI시대, AI가 Java, Kotlin 코드보다 타입스크립트 코드를 잘 짬: https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32
 - 타입스크립트 타입 추론 기능을 활용해서 컴파일타임에 오류를 많이 잡아낼수록 AI가 좋은 코드를 생성함. eslint와 타입스크립트 컴파일러를 AI가 실행해서 스스로 문제 해결 가능.
   - inversify-typesafe, inversify-typesafe-spring-like 프로젝트 소개
+  - [Hono is typesafe.](https://hono.dev/docs/concepts/developer-experience)
 - JVM 언어보다 컴파일 및 초기 실행 시간이 짧기 때문에 AI에게 보다 빠른 피드백 루프를 제공할 수 있음.
 - Next.js의 Fullstack Framework로서의 성숙. 프로젝트 초기에 Next.js로 monolithic하게 Vercel 위에서 서비스를 제공해도 꽤 큰 트래픽까지 버틸 수 있어보인다.
   - 트래픽이 커지면 웹페이지용, Rest API 제공용, 어드민용 등으로 쪼개서 서비스를 제공하면 됨.
@@ -63,7 +85,7 @@ TBD
 - Next.js만으로 Rest API를 제공할 수 있지만, Next.js가 벤치마크상 성능이 좋지 않다(https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 언제든제 백엔드 부분만 따로 떼어낼 수 있도록 Next.js 안에서 Hono가 API Routing을 담당하는 형태로 구현함.
   - fyi) Next.js를 백엔드 API 제공용으로 사용하는건 어떻냐고 하니 쏟아진 수많은 악플들: https://www.reddit.com/r/nextjs/comments/1ooxe77/anyone_using_nextjs_on_vercel_purely_as_an_api/
   - 언제든지 Next.js를 떼어내고 백엔드 API만 서빙하는 애플리케이션을 만들 수 있도록 Next.js 내부에서 Hono를 사용하는 구조를 만들었다.
-  - Hono는 처음부터 Serverless Runtime 위에서 실행되는 것을 목표로 제작한 프레임워크. [Type-Safe하게 만들었으므로](https://hono.dev/docs/concepts/developer-experience) 컴파일타임에 실수를 많이 잡아낼 수 있음.
+  - Hono는 처음부터 Serverless Runtime 위에서 실행되는 것을 목표로 제작한 프레임워크. 
   - 웹페이지와 백엔드 API를 한꺼번에 서빙하는 monolithic 구조가 유리한 프로젝트는 이대로 사용하고, 백엔드 API만 제공하는 프로젝트는 Next.js 없이 Hono만으로 구현.
   - 백엔드 API만 제공하는 프로젝트는 Vercel이 아니라 프로젝트 시작부터 AWS Lambda에 배포하는 것도 나쁘지않다: https://hono.dev/docs/getting-started/aws-lambda
     - AWS Lambda가 Vercel보다 호출횟수당 비용이 1/10 수준 (Vercel: $2 per 1M, AWS Lambda: $0.2 per 1M)
