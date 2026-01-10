@@ -5,3 +5,12 @@ import * as schema from './schema';
 
 export const client = postgres(env.POSTGRES_URL);
 export const db = drizzle(client, { schema });
+
+/*
+export class TransactionTemplate {
+  constructor(private readonly dbClient: typeof db) {
+  }
+
+  execute = this.dbClient.transaction.bind(this.dbClient);
+}
+*/
