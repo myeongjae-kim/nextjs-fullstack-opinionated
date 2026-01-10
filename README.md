@@ -14,6 +14,7 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 | Exception Handling          | spring-mvc(`@ControllerAdvice`)       | next-openapi-route-handler를 활용해서 직접 구현 |
 | IoC Container               | spring-core                           | inversify, inversify-typesafe                   |
 | ORM                         | spring-data-jpa                       | drizzle                                         |
+| Query Read Write Split      | spring-data-jpa                       | drizzle                                         |
 | DDL Migration               | flyway                                | drizzle                                         |
 | Security                    | spring-security                       | Next.js의 middleware로 직접 구현                |
 | Unit Test                   | jUnit                                 | Vitest                                          |
