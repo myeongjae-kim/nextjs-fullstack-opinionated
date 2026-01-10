@@ -177,5 +177,14 @@
         ]
       }
     }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Token Description"
+      }
+    }
   }
 }

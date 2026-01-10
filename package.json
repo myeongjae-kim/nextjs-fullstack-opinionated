@@ -17,7 +17,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:migrate:local": "drizzle-kit migrate --config=drizzle.config.local.ts",
     "db:studio": "drizzle-kit studio",
-    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts"
+    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts && node scripts/patch-openapi-json.mjs"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",
