@@ -1,5 +1,12 @@
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function Home() {
-  redirect("/docs/index.html")
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
+
+export default function Home() {
+  useEffect(() => {
+    redirect("/api/docs")
+  }, []);
+
+  return null;
 }

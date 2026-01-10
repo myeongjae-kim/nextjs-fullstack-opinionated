@@ -27,6 +27,6 @@ seed()
     process.exit(1);
   })
   .finally(() => {
-    console.log('Seed process finished. Exiting...');
+    console.info('Seed process finished. Exiting...');
     process.exit(0);
   });

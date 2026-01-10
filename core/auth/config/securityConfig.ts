@@ -7,6 +7,7 @@ type HttpPath = [HttpMethod | 'ALL', Pattern, AuthType]
 
 const paths: HttpPath[] = [
   ['GET', '/api/swagger', 'PERMIT_ALL'],
+  ['GET', '/api/docs', 'PERMIT_ALL'],
   ['GET', '/api/articles', 'PERMIT_ALL'],
   ['POST', '/api/articles', 'AUTHORIZE'],
   ['GET', '/api/articles/*', 'PERMIT_ALL'],

@@ -6,18 +6,17 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
     "setup": "npx tsx lib/setup.ts",
-    "build": "pnpm run docs && next build",
+    "build": "next build",
     "start": "next start",
     "_start": "next start -p 3031",
     "lint": "eslint",
     "test": "vitest --exclude '**/*.int.test.*' --reporter tree",
     "_intTest": "vitest run int.test --reporter tree",
-    "intTest": "npm run build && start-server-and-test _start http://localhost:3031 _intTest",
+    "intTest": "pnpm run build && start-server-and-test _start http://localhost:3031 _intTest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:migrate:local": "drizzle-kit migrate --config=drizzle.config.local.ts",
-    "db:studio": "drizzle-kit studio",
-    "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts && node scripts/patch-openapi-json.mjs"
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.2.0",
@@ -33,7 +32,6 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@rcmade/hono-docs": "^1.0.31",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.1",
@@ -50,6 +48,7 @@
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5",
+    "typescript-eslint": "^8.52.0",
     "vite-tsconfig-paths": "^6.0.3",
     "vitest": "^4.0.16"
   }

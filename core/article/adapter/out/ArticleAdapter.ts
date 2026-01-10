@@ -4,29 +4,29 @@ import { Article, ArticleCreation, ArticleUpdate } from "../../domain/Article";
 
 export class ArticleAdapter implements ArticleCommandPort, ArticleQueryPort {
   async findAll(): Promise<Article[]> {
-    return [1, 2, 3].map((id) => ({
+    return Promise.resolve([1, 2, 3].map((id) => ({
       id,
       title: `Article ${id}`,
       content: `Content of article ${id}`,
-    }))
+    })))
   }
   async getById(id: Article["id"]): Promise<Article> {
-    return {
+    return Promise.resolve({
       id,
       title: `Article ${id}`,
       content: `Content of article ${id}`,
-    }
+    });
   }
-  async createArticle(article: ArticleCreation): Promise<Pick<Article, "id">> {
-    return {
+  async createArticle(_article: ArticleCreation): Promise<Pick<Article, "id">> {
+    return Promise.resolve({
       id: 1,
-    }
+    });
   }
-  async updateArticle(id: Article["id"], article: ArticleUpdate): Promise<void> {
-    return;
+  async updateArticle(_id: Article["id"], _article: ArticleUpdate): Promise<void> {
+    return Promise.resolve();
   }
-  async deleteArticle(id: Article["id"]): Promise<void> {
-    return;
+  async deleteArticle(_id: Article["id"]): Promise<void> {
+    return Promise.resolve();
   }
 
 }

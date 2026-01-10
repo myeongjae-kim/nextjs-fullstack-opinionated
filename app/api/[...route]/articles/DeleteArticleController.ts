@@ -1,15 +1,44 @@
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import { applicationContext } from "@/core/config/applicationContext";
-import { OpenAPIHono } from "@hono/zod-openapi";
+import { createRoute, z } from "@hono/zod-openapi";
+import { Controller } from "../config/Controller";
 
-export default new OpenAPIHono().delete("/articles/:id", async (c) => {
-  const id = Number(c.req.param("id"));
+const route = createRoute({
+  method: 'delete',
+  path: '/articles/{id}',
+  security: [{
+    bearerAuth: [],
+  }],
+  tags: ['articles'],
+  request: {
+    params: z.object({
+      id: z.string().openapi({
+        param: {
+          name: 'id',
+          in: 'path',
+        },
+        description: 'The article id',
+      }),
+    }),
+  },
+  responses: {
+    204: {
+      description: "Article deleted successfully",
+    },
+  },
+})
+
+export default Controller().openapi(route, async (c) => {
+  const id = Number(c.req.valid("param").id);
 
   if (isNaN(id)) {
-    throw new DomainNotFoundError(c.req.param("id"), "Article")
+    throw new DomainNotFoundError(c.req.valid("param").id, "Article")
   }
+
+  // authMiddleware에서 설정한 principal을 아래처럼 접근할 수 있다.
+  const _principal = c.get("principal");
 
   await applicationContext().get("DeleteArticleUseCase").delete(id);
 
-  return new Response(null);
+  return new Response(null, { status: 204 });
 })
