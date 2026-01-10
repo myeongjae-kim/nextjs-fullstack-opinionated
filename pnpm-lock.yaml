@@ -8,15 +8,15 @@ importers:
 
   .:
     dependencies:
-      '@omer-x/next-openapi-json-generator':
-        specifier: ^2.0.3
-        version: 2.0.3(@omer-x/next-openapi-route-handler@2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5))(@omer-x/openapi-types@1.3.0)(typescript@5.9.3)(zod@4.3.5)
-      '@omer-x/next-openapi-route-handler':
-        specifier: ^2.0.1
-        version: 2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5)
+      '@hono/zod-validator':
+        specifier: ^0.7.6
+        version: 0.7.6(hono@4.11.3)(zod@4.3.5)
       drizzle-orm:
         specifier: ^0.45.1
         version: 0.45.1(@types/pg@8.16.0)(pg@8.16.3)(postgres@3.4.8)
+      hono:
+        specifier: ^4.11.3
+        version: 4.11.3
       inversify-typesafe-spring-like:
         specifier: ^0.5.5
         version: 0.5.5
@@ -769,6 +769,12 @@ packages:
   '@hapi/topo@6.0.2':
     resolution: {integrity: sha512-KR3rD5inZbGMrHmgPxsJ9dbi6zEK+C3ZwUwTa+eMwWLz7oijWUTWD2pMSNNYJAU6Qq+65NkxXjqHr/7LM2Xkqg==}
 
+  '@hono/zod-validator@0.7.6':
+    resolution: {integrity: sha512-Io1B6d011Gj1KknV4rXYz4le5+5EubcWEU/speUjuw9XMMIaP3n78yXLhjd2A3PXaXaUwEAluOiAyLqhBEJgsw==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.25.0 || ^4.0.0
+
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
     engines: {node: '>=18.18.0'}
@@ -1040,33 +1046,6 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
-
-  '@omer-x/json-schema-types@1.3.0':
-    resolution: {integrity: sha512-NGWJm6jMbwZWI8UMxr4S4nYHW9xhu4mVNptI7zYULUT6hlaljIXw4X3EI2ha/AB9RS8NDTKzf1oOa+pO7iA3/A==}
-    peerDependencies:
-      '@omer-x/openapi-types': ^1
-
-  '@omer-x/next-openapi-json-generator@2.0.3':
-    resolution: {integrity: sha512-Xt3r9s5FoLbMmhZPL5+F1ZMKJxE9U6UK7wi1ghrFC7ASCF6tiiUc2pJEefrDYn51Q9an6Gt9PrHhfuH7uODAAg==}
-    peerDependencies:
-      '@omer-x/next-openapi-route-handler': ^2
-      '@omer-x/openapi-types': ^1
-      typescript: ^5
-      zod: ^4
-
-  '@omer-x/next-openapi-route-handler@2.0.1':
-    resolution: {integrity: sha512-fc6Ou56tbcx++/zocZJprWnFHYnUNkr6OvhVSciPCMM1ctZulHqDErX05eVmL3I2eD+2UbWPJI0sm13+sw71ew==}
-    peerDependencies:
-      '@omer-x/openapi-types': ^1
-      zod: ^4
-
-  '@omer-x/openapi-types@1.3.0':
-    resolution: {integrity: sha512-Bawh6voqTtzXQFRDClO17uMyl+c861oUoCghMjlCbz4lOCrXt6iS3N2FfxxaD7NWbydwmOGbVBBt+KD+GwsJ4g==}
-    peerDependencies:
-      '@omer-x/json-schema-types': ^1
-
-  '@omer-x/package-metadata@1.0.2':
-    resolution: {integrity: sha512-Apbdz5/j2JnpX8gIqA+fQ4i+JBOVTT7Hy1OAqv0l0HEQCdfwntXBrXaJYsLVb4kLmWpHXcOzPcnDZ71Y1Zj3ig==}
 
   '@polka/url@0.5.0':
     resolution: {integrity: sha512-oZLYFEAzUKyi3SKnXvj32ZCEGH6RDnao7COuCVhDydMS9NrCSVXhM79VaKyP5+Zc33m0QXEd2DN3UkU7OsHcfw==}
@@ -2315,6 +2294,10 @@ packages:
 
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
+
+  hono@4.11.3:
+    resolution: {integrity: sha512-PmQi306+M/ct/m5s66Hrg+adPnkD5jiO6IjA7WhWw0gSBSo1EcRegwuI1deZ+wd5pzCGynCcn2DprnE4/yEV4w==}
+    engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@6.0.0:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
@@ -3967,6 +3950,11 @@ snapshots:
     dependencies:
       '@hapi/hoek': 11.0.7
 
+  '@hono/zod-validator@0.7.6(hono@4.11.3)(zod@4.3.5)':
+    dependencies:
+      hono: 4.11.3
+      zod: 4.3.5
+
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.7':
@@ -4178,30 +4166,6 @@ snapshots:
       fastq: 1.20.1
 
   '@nolyfill/is-core-module@1.0.39': {}
-
-  '@omer-x/json-schema-types@1.3.0(@omer-x/openapi-types@1.3.0)':
-    dependencies:
-      '@omer-x/openapi-types': 1.3.0(@omer-x/json-schema-types@1.3.0)
-
-  '@omer-x/next-openapi-json-generator@2.0.3(@omer-x/next-openapi-route-handler@2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5))(@omer-x/openapi-types@1.3.0)(typescript@5.9.3)(zod@4.3.5)':
-    dependencies:
-      '@omer-x/next-openapi-route-handler': 2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5)
-      '@omer-x/openapi-types': 1.3.0(@omer-x/json-schema-types@1.3.0)
-      '@omer-x/package-metadata': 1.0.2
-      minimatch: 10.1.1
-      typescript: 5.9.3
-      zod: 4.3.5
-
-  '@omer-x/next-openapi-route-handler@2.0.1(@omer-x/openapi-types@1.3.0)(zod@4.3.5)':
-    dependencies:
-      '@omer-x/openapi-types': 1.3.0(@omer-x/json-schema-types@1.3.0)
-      zod: 4.3.5
-
-  '@omer-x/openapi-types@1.3.0(@omer-x/json-schema-types@1.3.0)':
-    dependencies:
-      '@omer-x/json-schema-types': 1.3.0(@omer-x/openapi-types@1.3.0)
-
-  '@omer-x/package-metadata@1.0.2': {}
 
   '@polka/url@0.5.0': {}
 
@@ -5565,6 +5529,8 @@ snapshots:
   hermes-parser@0.25.1:
     dependencies:
       hermes-estree: 0.25.1
+
+  hono@4.11.3: {}
 
   html-encoding-sniffer@6.0.0:
     dependencies:

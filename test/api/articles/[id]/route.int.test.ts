@@ -58,7 +58,8 @@ describe("DELETE /api/articles/[id]", () => {
     await spec()
       .delete("/api/articles/1")
       .withBearerToken(testEnv.TEST_BEARER_TOKEN)
-      .expectStatus(200);
+      .expectStatus(200)
+      .expectBody("");
   });
 
   it("should return 401 when invalid token", async () => {
