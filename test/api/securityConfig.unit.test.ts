@@ -1,4 +1,4 @@
-import { isApiAuthRequired } from "@/app/api/securityConfig";
+import { isApiAuthRequired } from "@/app/api/[...route]/securityConfig";
 import { describe, expect, it } from "vitest";
 
 describe("isApiAuthRequired", () => {
