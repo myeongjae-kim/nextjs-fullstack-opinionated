@@ -20,6 +20,7 @@
     "docs": "npx @rcmade/hono-docs generate --config ./hono-docs.ts && node scripts/patch-openapi-json.mjs"
   },
   "dependencies": {
+    "@hono/zod-openapi": "^1.2.0",
     "@hono/zod-validator": "^0.7.6",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.11.3",

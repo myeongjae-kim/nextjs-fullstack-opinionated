@@ -1,30 +1,34 @@
 import { ApiError } from '@/core/common/domain/ApiError';
 import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
 import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
-import { Hono } from 'hono';
+import { env } from '@/core/config/env';
+import { OpenAPIHono } from '@hono/zod-openapi';
 import z from 'zod';
 import { isApiAuthRequired } from './securityConfig';
 
-export const serverApp = new Hono().basePath('/api')
-  .use("/*", (c, next) => {
-    // Authentication check
-    if (!isApiAuthRequired(c.req.method, c.req.path)) {
-      return next();
-    }
+export const serverApp = new OpenAPIHono().basePath('/api');
 
-    const token = c.req.header("Authorization");
-    const authError = new DomainUnauthorizedError('Invalid or missing authentication token');
-    if (!token || !token.startsWith("Bearer ")) {
-      throw authError;
-    }
-    const bearerToken = token.split(" ")[1];
-
-    if (bearerToken !== 'default-token-value-for-docs') {
-      throw authError;
-    }
-
+// basic settings
+serverApp.use("/*", (c, next) => {
+  // Authentication check
+  if (!isApiAuthRequired(c.req.method, c.req.path)) {
     return next();
-  })
+  }
+
+  const token = c.req.header("Authorization");
+  const authError = new DomainUnauthorizedError('Invalid or missing authentication token');
+
+  if (!token || !token.startsWith("Bearer ")) {
+    throw authError;
+  }
+  const bearerToken = token.split(" ")[1];
+
+  if (bearerToken !== 'default-token-value-for-docs') {
+    throw authError;
+  }
+
+  return next();
+})
   .onError((e) => {
     // global error handler
     const defaultServerErrorStatus = 500;
@@ -63,3 +67,25 @@ export const serverApp = new Hono().basePath('/api')
       message: (e as Error).message,
     }), { status: defaultServerErrorStatus });
   });
+
+// docs
+serverApp.openAPIRegistry.registerComponent('securitySchemes', 'bearerAuth', {
+  type: 'http',
+  scheme: 'bearer',
+})
+
+if (env.NEXT_PUBLIC_PROFILE !== "prod") {
+  serverApp.doc('/swagger', (c) => ({
+    openapi: '3.0.0',
+    info: {
+      version: '1.0.0',
+      title: 'My API',
+    },
+    servers: [
+      {
+        url: new URL(c.req.url).origin,
+        description: 'Current environment',
+      },
+    ],
+  }))
+}
