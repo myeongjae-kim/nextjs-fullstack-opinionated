@@ -1,6 +1,7 @@
 import { DbClientSelector, selectDbClient } from "@/lib/db/drizzle"
 import { BeanConfig } from "inversify-typesafe-spring-like"
 import { ArticleInMemoryAdapter } from "../article/adapter/out/ArticleInMemoryAdapter"
+import { ArticlePersistenceAdapter } from "../article/adapter/out/ArticlePersistenceAdapter"
 import { ArticleCommandService } from "../article/application/ArticleCommandService"
 import { ArticleQueryService } from "../article/application/ArticleQueryService"
 import { CreateArticleUseCase } from "../article/application/port/in/CreateArticleUseCase"
@@ -10,6 +11,7 @@ import { GetArticleByIdUseCase } from "../article/application/port/in/GetArticle
 import { UpdateArticleUseCase } from "../article/application/port/in/UpdateArticleUseCase"
 import { ArticleCommandPort } from "../article/application/port/out/ArticleCommandPort"
 import { ArticleQueryPort } from "../article/application/port/out/ArticleQueryPort"
+import { env } from "./env"
 
 export type Beans = {
   DbClientSelector: DbClientSelector,
@@ -28,7 +30,11 @@ export type Beans = {
 export const beanConfig: BeanConfig<Beans> = {
   DbClientSelector: (bind) => bind().toConstantValue(selectDbClient),
 
-  ArticleCommandPort: (bind) => bind().to(ArticleInMemoryAdapter),
+  ArticleCommandPort: (bind) => {
+    const adapter = env.USE_PERSISTENCE_ADAPTER ? ArticlePersistenceAdapter : ArticleInMemoryAdapter;
+
+    return bind().to(adapter)
+  },
   ArticleQueryPort: (bind) => bind().toResolvedValue(it => it as ArticleQueryPort, ["ArticleCommandPort"]),
 
   CreateArticleUseCase: (bind) => bind().to(ArticleCommandService),
