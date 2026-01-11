@@ -8,6 +8,13 @@
       "when": 1768111779358,
       "tag": "0000_zippy_lord_tyger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1768114677005,
+      "tag": "0001_condemned_stingray",
+      "breakpoints": true
     }
   ]
 }
