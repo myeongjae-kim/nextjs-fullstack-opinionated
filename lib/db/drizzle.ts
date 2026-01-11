@@ -1,3 +1,4 @@
+import { QueryOptions } from '@/core/common/domain/QueryOptions';
 import { env } from '@/core/config/env';
 import { drizzle } from 'drizzle-orm/mysql2';
 import * as schema from './schema';
@@ -10,7 +11,7 @@ const _ = ({} as typeof dbReplica) satisfies typeof dbPrimary
 
 export type DatabaseClient = typeof dbPrimary;
 
-export const selectDbClient = (args: { useReplica: boolean }): DatabaseClient => args.useReplica ? dbReplica : dbPrimary;
+export const selectDbClient = (args?: QueryOptions): DatabaseClient => args?.useReplica ? dbReplica : dbPrimary;
 export type DbClientSelector = typeof selectDbClient;
 
 /*

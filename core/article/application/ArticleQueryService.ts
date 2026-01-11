@@ -12,7 +12,7 @@ export class ArticleQueryService implements GetArticleByIdUseCase, FindAllArticl
   ) { }
 
   findAll(): Promise<Article[]> {
-    return this.articleQueryPort.findAll();
+    return this.articleQueryPort.findAll({ useReplica: true });
   }
 
   get(id: Article["id"]): Promise<Article> {
@@ -20,6 +20,6 @@ export class ArticleQueryService implements GetArticleByIdUseCase, FindAllArticl
       throw new DomainNotFoundError(id, "Article")
     }
 
-    return this.articleQueryPort.getById(id);
+    return this.articleQueryPort.getById(id, { useReplica: true });
   }
 }

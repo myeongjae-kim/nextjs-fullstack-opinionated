@@ -1,9 +1,10 @@
 import { ArticleCommandPort } from "../../application/port/out/ArticleCommandPort";
 import { ArticleQueryPort } from "../../application/port/out/ArticleQueryPort";
+import { QueryOptions } from "../../../common/domain/QueryOptions";
 import { Article, ArticleCreation, ArticleUpdate } from "../../domain/Article";
 
 export class ArticleInMemoryAdapter implements ArticleCommandPort, ArticleQueryPort {
-  async findAll(): Promise<Article[]> {
+  async findAll(_queryOptions: QueryOptions): Promise<Article[]> {
     return Promise.resolve([1, 2, 3].map((id) => ({
       id,
       title: `Article ${id}`,
@@ -12,7 +13,7 @@ export class ArticleInMemoryAdapter implements ArticleCommandPort, ArticleQueryP
       updatedAt: new Date(),
     })))
   }
-  async getById(id: Article["id"]): Promise<Article> {
+  async getById(id: Article["id"], _queryOptions: QueryOptions): Promise<Article> {
     return Promise.resolve({
       id,
       title: `Article ${id}`,
