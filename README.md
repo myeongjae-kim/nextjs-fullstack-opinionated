@@ -100,7 +100,7 @@ TBD
   - [ ] OpenAPI Spec 받아서 Postman으로 테스트
   - [ ] Read Write Split은 명시적으로 처리해야 함: https://chatgpt.com/share/696299a9-6558-8004-89d4-da4e8448a31a
     - replica가 가능한 비즈니스 로직은 parameter로 `boolean useReplica` 같은 옵션 받기
-  - [ ] Transaction 예시 작성. TransactionTemplate, ReadOnlyTransactionTemplate bean 만들기?
+  - [ ] Transaction 예시 작성. TransactionTemplate, ReadOnlyTransactionTemplate bean 만들기. 트랜잭션도 도메인에 포함된다.
   - [ ] 통합테스트 진행할 때 docker-compose로 띄운 MySQL 대상으로 진행해보기
 - [ ] backend-only 브랜치 만들어서 Next.js 제거하고 Hono만 사용하는 애플리케이션 구성
   - main 브랜치 커밋 생길 때마다 rebase하기
