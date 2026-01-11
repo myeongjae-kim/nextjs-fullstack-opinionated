@@ -19,7 +19,7 @@ const getUserDetails = (token: string | undefined) => {
 
   const bearerToken = token.split(" ")[1];
 
-  if (env.USE_PERSISTENCE_ADAPTER === false) {
+  if (env.USE_MOCK_ADAPTER === true) {
     if (bearerToken !== 'default-token-value-for-docs') {
       // token이 올바르지 않으면 public api라도 인증 오류를 발생시킨다.
       throw authError;

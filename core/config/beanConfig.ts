@@ -1,6 +1,6 @@
 import { DbClientSelector, selectDbClient } from "@/lib/db/drizzle"
 import { BeanConfig } from "inversify-typesafe-spring-like"
-import { ArticleInMemoryAdapter } from "../article/adapter/out/ArticleInMemoryAdapter"
+import { ArticleMockAdapter } from "../article/adapter/out/ArticleMockAdapter"
 import { ArticlePersistenceAdapter } from "../article/adapter/out/ArticlePersistenceAdapter"
 import { ArticleCommandService } from "../article/application/ArticleCommandService"
 import { ArticleQueryService } from "../article/application/ArticleQueryService"
@@ -13,7 +13,7 @@ import { ArticleCommandPort } from "../article/application/port/out/ArticleComma
 import { ArticleQueryPort } from "../article/application/port/out/ArticleQueryPort"
 import { TokenService } from "../auth/application/TokenService"
 import { GenerateTokenUseCase } from "../auth/application/port/in/GenerateTokenUseCase"
-import { UserInMemoryAdapter } from "../user/adapter/out/UserInMemoryAdapter"
+import { UserMockAdapter } from "../user/adapter/out/UserMockAdapter"
 import { UserPersistenceAdapter } from "../user/adapter/out/UserPersistenceAdapter"
 import { UserCommandService } from "../user/application/UserCommandService"
 import { UserQueryService } from "../user/application/UserQueryService"
@@ -51,7 +51,7 @@ export const beanConfig: BeanConfig<Beans> = {
   DbClientSelector: (bind) => bind().toConstantValue(selectDbClient),
 
   ArticleCommandPort: (bind) => {
-    const adapter = env.USE_PERSISTENCE_ADAPTER ? ArticlePersistenceAdapter : ArticleInMemoryAdapter;
+    const adapter = env.USE_MOCK_ADAPTER ? ArticleMockAdapter : ArticlePersistenceAdapter;
 
     return bind().to(adapter)
   },
@@ -65,7 +65,7 @@ export const beanConfig: BeanConfig<Beans> = {
   FindAllArticlesUseCase: (bind) => bind().toResolvedValue(it => it as ArticleQueryService, ["GetArticleByIdUseCase"]),
 
   UserCommandPort: (bind) => {
-    const adapter = env.USE_PERSISTENCE_ADAPTER ? UserPersistenceAdapter : UserInMemoryAdapter;
+    const adapter = env.USE_MOCK_ADAPTER ? UserMockAdapter : UserPersistenceAdapter;
 
     return bind().to(adapter)
   },

@@ -3,7 +3,7 @@ import { UserCommandPort } from "../../application/port/out/UserCommandPort";
 import { UserQueryPort, UserWithPasswordHash } from "../../application/port/out/UserQueryPort";
 import { User, UserSignUp } from "../../domain/User";
 
-export class UserInMemoryAdapter implements UserCommandPort, UserQueryPort {
+export class UserMockAdapter implements UserCommandPort, UserQueryPort {
   private users: UserWithPasswordHash[] = [
     {
       id: 1,

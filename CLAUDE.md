@@ -288,7 +288,7 @@ describe("POST /api/articles", () => {
 
 ### 네이밍
 - `DB_PRIMARY_URL`, `DB_REPLICA_URL`: 데이터베이스 연결
-- `USE_PERSISTENCE_ADAPTER`: Adapter 선택
+- `USE_MOCK_ADAPTER`: Mock Adapter 사용 여부 (기본값: false)
 
 ### 타입 안전성
 - `zod`로 스키마 정의

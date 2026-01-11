@@ -3,7 +3,7 @@ import { ArticleQueryPort } from "../../application/port/out/ArticleQueryPort";
 import { QueryOptions } from "../../../common/domain/QueryOptions";
 import { Article, ArticleCreation, ArticleUpdate } from "../../domain/Article";
 
-export class ArticleInMemoryAdapter implements ArticleCommandPort, ArticleQueryPort {
+export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort {
   async findAll(_queryOptions: QueryOptions): Promise<Article[]> {
     return Promise.resolve([1, 2, 3].map((id) => ({
       id,
