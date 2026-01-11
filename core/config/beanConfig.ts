@@ -11,6 +11,7 @@ import { GetArticleByIdUseCase } from "../article/application/port/in/GetArticle
 import { UpdateArticleUseCase } from "../article/application/port/in/UpdateArticleUseCase"
 import { ArticleCommandPort } from "../article/application/port/out/ArticleCommandPort"
 import { ArticleQueryPort } from "../article/application/port/out/ArticleQueryPort"
+import { UserInMemoryAdapter } from "../user/adapter/out/UserInMemoryAdapter"
 import { UserPersistenceAdapter } from "../user/adapter/out/UserPersistenceAdapter"
 import { UserCommandService } from "../user/application/UserCommandService"
 import { UserQueryService } from "../user/application/UserQueryService"
@@ -59,7 +60,11 @@ export const beanConfig: BeanConfig<Beans> = {
   GetArticleByIdUseCase: (bind) => bind().to(ArticleQueryService),
   FindAllArticlesUseCase: (bind) => bind().toResolvedValue(it => it as ArticleQueryService, ["GetArticleByIdUseCase"]),
 
-  UserCommandPort: (bind) => bind().to(UserPersistenceAdapter),
+  UserCommandPort: (bind) => {
+    const adapter = env.USE_PERSISTENCE_ADAPTER ? UserPersistenceAdapter : UserInMemoryAdapter;
+
+    return bind().to(adapter)
+  },
   UserQueryPort: (bind) => bind().toResolvedValue(it => it as UserQueryPort, ["UserCommandPort"]),
 
   SignUpUseCase: (bind) => bind().to(UserCommandService),
