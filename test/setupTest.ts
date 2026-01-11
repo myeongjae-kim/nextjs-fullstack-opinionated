@@ -1,6 +1,9 @@
 import { cleanup } from '@testing-library/react';
+import dotenv from 'dotenv';
 import { request } from 'pactum';
 import { afterEach, beforeEach, vi } from 'vitest';
+
+dotenv.config();
 
 const TEST_HOST = 'http://localhost:3031';
 

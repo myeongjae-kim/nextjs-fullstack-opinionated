@@ -1,9 +1,13 @@
 import { AuthResponse } from "@/core/common/domain/AuthResponse";
+import { dbPrimary } from "@/lib/db/drizzle";
+import { user } from "@/lib/db/schema";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 
 describe("POST /api/users/refresh", () => {
   it("should return 200 with new access_token and refresh_token", async () => {
+    await dbPrimary.delete(user);
+
     // First sign up to get tokens
 
     const signUpResponse: AuthResponse = await spec()
@@ -13,7 +17,7 @@ describe("POST /api/users/refresh", () => {
         password: "password123",
       })
       .expectStatus(200)
-      .returns("req.body");
+      .returns("res.body");
 
     const refreshToken = signUpResponse.refresh_token;
 

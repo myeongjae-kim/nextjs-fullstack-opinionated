@@ -1,12 +1,15 @@
-import { testEnv } from "@/test/testEnv";
+import { dbPrimary } from "@/lib/db/drizzle";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
+import { ArticleControllerTestDataInitializer } from "./ArticleControllerTestDataInitializer";
 
 describe("PUT /api/articles/[id]", () => {
   it("should return 204", async () => {
+    const authResponse = await new ArticleControllerTestDataInitializer(dbPrimary).initialize();
+
     await spec()
       .put("/api/articles/1")
-      .withBearerToken(testEnv.TEST_BEARER_TOKEN)
+      .withBearerToken(authResponse.access_token)
       .withBody({
         title: "Article 1",
         content: "Content of article 1",

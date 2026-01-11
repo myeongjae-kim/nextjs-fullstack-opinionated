@@ -1,8 +1,8 @@
+import type { GenerateTokenUseCase } from "@/core/auth/application/port/in/GenerateTokenUseCase";
+import { UserDetails } from "@/core/auth/domain/UserDetails";
 import { AuthResponse } from "@/core/common/domain/AuthResponse";
 import { Autowired } from "@/core/config/Autowired";
-import { env } from "@/core/config/env";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { ulid } from "ulid";
 import { UserSignUp } from "../domain/User";
 import { SignUpUseCase } from "./port/in/SignUpUseCase";
@@ -14,7 +14,9 @@ export class UserCommandService implements SignUpUseCase {
     @Autowired("UserCommandPort")
     private readonly userCommandPort: UserCommandPort,
     @Autowired("UserQueryPort")
-    private readonly userQueryPort: UserQueryPort
+    private readonly userQueryPort: UserQueryPort,
+    @Autowired("GenerateTokenUseCase")
+    private readonly generateTokenUseCase: GenerateTokenUseCase
   ) { }
 
   async signUp(userData: UserSignUp): Promise<AuthResponse> {
@@ -32,21 +34,7 @@ export class UserCommandService implements SignUpUseCase {
       throw new Error("User not found after creation");
     }
 
-    const accessToken = jwt.sign(
-      { ulid: user.ulid, role: user.role },
-      env.AUTH_SECRET,
-      { expiresIn: '15m' }
-    );
-
-    const refreshToken = jwt.sign(
-      { ulid: user.ulid },
-      env.AUTH_SECRET,
-      { expiresIn: '180d' }
-    );
-
-    return {
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    };
+    const userDetails = new UserDetails(user.ulid, user.role);
+    return this.generateTokenUseCase.generateToken(userDetails);
   }
 }

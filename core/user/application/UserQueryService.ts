@@ -1,19 +1,23 @@
+import type { GenerateTokenUseCase } from "@/core/auth/application/port/in/GenerateTokenUseCase";
+import { UserDetails } from "@/core/auth/domain/UserDetails";
 import { AuthResponse } from "@/core/common/domain/AuthResponse";
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
 import { Autowired } from "@/core/config/Autowired";
 import { env } from "@/core/config/env";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { RefreshToken, UserLogin } from "../domain/User";
 import { LoginUseCase } from "./port/in/LoginUseCase";
 import { RefreshTokenUseCase } from "./port/in/RefreshTokenUseCase";
 import type { UserQueryPort } from "./port/out/UserQueryPort";
-import { RefreshToken, UserLogin } from "../domain/User";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
   constructor(
     @Autowired("UserQueryPort")
-    private readonly userQueryPort: UserQueryPort
+    private readonly userQueryPort: UserQueryPort,
+    @Autowired("GenerateTokenUseCase")
+    private readonly generateTokenUseCase: GenerateTokenUseCase
   ) { }
 
   async login(userData: UserLogin): Promise<AuthResponse> {
@@ -28,22 +32,8 @@ export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
       throw new DomainUnauthorizedError('Invalid login credentials');
     }
 
-    const accessToken = jwt.sign(
-      { ulid: user.ulid, role: user.role },
-      env.AUTH_SECRET,
-      { expiresIn: '15m' }
-    );
-
-    const refreshToken = jwt.sign(
-      { ulid: user.ulid },
-      env.AUTH_SECRET,
-      { expiresIn: '180d' }
-    );
-
-    return {
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    };
+    const userDetails = new UserDetails(user.ulid, user.role);
+    return this.generateTokenUseCase.generateToken(userDetails);
   }
 
   async refreshToken(refreshTokenData: RefreshToken): Promise<AuthResponse> {
@@ -60,21 +50,7 @@ export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
       throw new DomainNotFoundError(decoded.ulid, "User");
     }
 
-    const accessToken = jwt.sign(
-      { ulid: user.ulid, role: user.role },
-      env.AUTH_SECRET,
-      { expiresIn: '15m' }
-    );
-
-    const newRefreshToken = jwt.sign(
-      { ulid: user.ulid },
-      env.AUTH_SECRET,
-      { expiresIn: '180d' }
-    );
-
-    return {
-      access_token: accessToken,
-      refresh_token: newRefreshToken,
-    };
+    const userDetails = new UserDetails(user.ulid, user.role);
+    return this.generateTokenUseCase.generateToken(userDetails);
   }
 }

@@ -1,18 +1,12 @@
+import { dbPrimary } from "@/lib/db/drizzle";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
+import { LoginControllerTestDataInitializer } from "./LoginControllerTestDataInitializer";
 
 describe("POST /api/users/login", () => {
   it("should return 200 with access_token and refresh_token", async () => {
-    // First sign up
-    await spec()
-      .post("/api/users/signup")
-      .withBody({
-        loginId: "loginuser",
-        password: "password123",
-      })
-      .expectStatus(200);
+    await new LoginControllerTestDataInitializer(dbPrimary).initialize();
 
-    // Then login
     await spec()
       .post("/api/users/login")
       .withBody({
@@ -43,20 +37,13 @@ describe("POST /api/users/login", () => {
   });
 
   it("should return 401 when password is invalid", async () => {
-    // First sign up
-    await spec()
-      .post("/api/users/signup")
-      .withBody({
-        loginId: "loginuser2",
-        password: "password123",
-      })
-      .expectStatus(200);
+    await new LoginControllerTestDataInitializer(dbPrimary).initialize();
 
     // Then try to login with wrong password
     await spec()
       .post("/api/users/login")
       .withBody({
-        loginId: "loginuser2",
+        loginId: "loginuser",
         password: "wrongpassword",
       })
       .expectStatus(401)

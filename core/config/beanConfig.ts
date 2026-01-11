@@ -11,6 +11,8 @@ import { GetArticleByIdUseCase } from "../article/application/port/in/GetArticle
 import { UpdateArticleUseCase } from "../article/application/port/in/UpdateArticleUseCase"
 import { ArticleCommandPort } from "../article/application/port/out/ArticleCommandPort"
 import { ArticleQueryPort } from "../article/application/port/out/ArticleQueryPort"
+import { TokenService } from "../auth/application/TokenService"
+import { GenerateTokenUseCase } from "../auth/application/port/in/GenerateTokenUseCase"
 import { UserInMemoryAdapter } from "../user/adapter/out/UserInMemoryAdapter"
 import { UserPersistenceAdapter } from "../user/adapter/out/UserPersistenceAdapter"
 import { UserCommandService } from "../user/application/UserCommandService"
@@ -41,6 +43,8 @@ export type Beans = {
   SignUpUseCase: SignUpUseCase,
   LoginUseCase: LoginUseCase,
   RefreshTokenUseCase: RefreshTokenUseCase,
+
+  GenerateTokenUseCase: GenerateTokenUseCase,
 }
 
 export const beanConfig: BeanConfig<Beans> = {
@@ -70,4 +74,6 @@ export const beanConfig: BeanConfig<Beans> = {
   SignUpUseCase: (bind) => bind().to(UserCommandService),
   LoginUseCase: (bind) => bind().to(UserQueryService),
   RefreshTokenUseCase: (bind) => bind().toResolvedValue(it => it as RefreshTokenUseCase, ["LoginUseCase"]),
+
+  GenerateTokenUseCase: (bind) => bind().to(TokenService),
 }
