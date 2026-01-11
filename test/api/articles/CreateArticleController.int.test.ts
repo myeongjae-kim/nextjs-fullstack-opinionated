@@ -1,11 +1,11 @@
-import { dbPrimary } from "@/lib/db/drizzle";
+import { dbLocal } from "@/test/dbLocal";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 import { ArticleControllerTestDataInitializer } from "./ArticleControllerTestDataInitializer";
 
 describe("POST /api/articles", () => {
   it("should return 200", async () => {
-    const authResponse = await new ArticleControllerTestDataInitializer(dbPrimary).initialize();
+    const authResponse = await new ArticleControllerTestDataInitializer(dbLocal).initialize();
 
     await spec()
       .post("/api/articles")

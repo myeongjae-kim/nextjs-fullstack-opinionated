@@ -1,11 +1,11 @@
-import { dbPrimary } from "@/lib/db/drizzle";
+import { dbLocal } from "@/test/dbLocal";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 import { LoginControllerTestDataInitializer } from "./LoginControllerTestDataInitializer";
 
 describe("POST /api/users/login", () => {
   it("should return 200 with access_token and refresh_token", async () => {
-    await new LoginControllerTestDataInitializer(dbPrimary).initialize();
+    await new LoginControllerTestDataInitializer(dbLocal).initialize();
 
     await spec()
       .post("/api/users/login")
@@ -37,7 +37,7 @@ describe("POST /api/users/login", () => {
   });
 
   it("should return 401 when password is invalid", async () => {
-    await new LoginControllerTestDataInitializer(dbPrimary).initialize();
+    await new LoginControllerTestDataInitializer(dbLocal).initialize();
 
     // Then try to login with wrong password
     await spec()

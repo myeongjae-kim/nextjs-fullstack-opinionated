@@ -8,7 +8,7 @@
     "setup": "npx tsx lib/setup.ts",
     "build": "next build",
     "start": "next start",
-    "_start": "next start -p 3031",
+    "_start": "USE_TEST_ENV=true next start -p 3031",
     "lint": "tsc --noEmit && eslint",
     "vitest": "vitest --fileParallelism=false",
     "test": "vitest --exclude '**/*.int.test.*' --reporter tree",

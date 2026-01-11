@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { request } from 'pactum';
 import { afterEach, beforeEach, vi } from 'vitest';
 
-dotenv.config();
+dotenv.config({ path: '.env' });
 
 const TEST_HOST = 'http://localhost:3031';
 

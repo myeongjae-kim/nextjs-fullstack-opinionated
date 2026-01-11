@@ -1,12 +1,12 @@
 import { AuthResponse } from "@/core/common/domain/AuthResponse";
-import { dbPrimary } from "@/lib/db/drizzle";
 import { user } from "@/lib/db/schema";
+import { dbLocal } from "@/test/dbLocal";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 
 describe("GET /api/users/me", () => {
   it("should return 200 with user details", async () => {
-    await dbPrimary.delete(user);
+    await dbLocal.delete(user);
 
     // First sign up to get a token
     const signUpResponse: AuthResponse = await spec()

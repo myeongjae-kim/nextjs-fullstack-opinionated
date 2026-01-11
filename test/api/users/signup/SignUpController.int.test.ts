@@ -1,11 +1,11 @@
-import { dbPrimary } from "@/lib/db/drizzle";
 import { user } from "@/lib/db/schema";
+import { dbLocal } from "@/test/dbLocal";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 
 describe("POST /api/users/signup", () => {
   it("should return 200 with access_token and refresh_token", async () => {
-    await dbPrimary.delete(user);
+    await dbLocal.delete(user);
 
     await spec()
       .post("/api/users/signup")
@@ -22,7 +22,7 @@ describe("POST /api/users/signup", () => {
   });
 
   it("should return 200 without name", async () => {
-    await dbPrimary.delete(user);
+    await dbLocal.delete(user);
 
     await spec()
       .post("/api/users/signup")
