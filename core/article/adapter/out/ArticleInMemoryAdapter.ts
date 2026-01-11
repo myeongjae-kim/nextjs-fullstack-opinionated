@@ -2,7 +2,7 @@ import { ArticleCommandPort } from "../../application/port/out/ArticleCommandPor
 import { ArticleQueryPort } from "../../application/port/out/ArticleQueryPort";
 import { Article, ArticleCreation, ArticleUpdate } from "../../domain/Article";
 
-export class ArticleAdapter implements ArticleCommandPort, ArticleQueryPort {
+export class ArticleInMemoryAdapter implements ArticleCommandPort, ArticleQueryPort {
   async findAll(): Promise<Article[]> {
     return Promise.resolve([1, 2, 3].map((id) => ({
       id,

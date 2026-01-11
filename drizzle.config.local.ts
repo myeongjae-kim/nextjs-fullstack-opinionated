@@ -5,6 +5,6 @@ export default {
   out: './lib/db/migrations',
   dialect: 'mysql',
   dbCredentials: {
-    url: process.env.DB_URL_LOCAL!,
+    url: process.env.DB_PRIMARY_URL_LOCAL!,
   },
 } satisfies Config;
