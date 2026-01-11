@@ -8,6 +8,8 @@ export class ArticleAdapter implements ArticleCommandPort, ArticleQueryPort {
       id,
       title: `Article ${id}`,
       content: `Content of article ${id}`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })))
   }
   async getById(id: Article["id"]): Promise<Article> {
@@ -15,6 +17,8 @@ export class ArticleAdapter implements ArticleCommandPort, ArticleQueryPort {
       id,
       title: `Article ${id}`,
       content: `Content of article ${id}`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   }
   async createArticle(_article: ArticleCreation): Promise<Pick<Article, "id">> {

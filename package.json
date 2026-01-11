@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "_start": "next start -p 3031",
-    "lint": "eslint",
+    "lint": "tsc --noEmit && eslint",
     "test": "vitest --exclude '**/*.int.test.*' --reporter tree",
     "_intTest": "vitest run int.test --reporter tree",
     "intTest": "pnpm run build && start-server-and-test _start http://localhost:3031 _intTest",
@@ -26,7 +26,7 @@
     "inversify-typesafe-spring-like": "^0.5.5",
     "minimatch": "^10.1.1",
     "next": "16.1.1",
-    "postgres": "^3.4.8",
+    "mysql2": "^3.11.5",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "zod": "^4.3.5"

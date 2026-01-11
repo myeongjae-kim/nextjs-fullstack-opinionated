@@ -1,10 +1,8 @@
 import { env } from '@/core/config/env';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/mysql2';
 import * as schema from './schema';
 
-export const client = postgres(env.POSTGRES_URL);
-export const db = drizzle(client, { schema });
+export const db = drizzle(env.DB_URL, { schema, mode: 'default' });
 
 /*
 export class TransactionTemplate {

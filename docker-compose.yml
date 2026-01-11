@@ -1,26 +1,27 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: nextjs-opinionated-local-postgres
+  mysql:
+    image: mysql:8.0
+    container_name: nextjs-opinionated-local-mysql
     restart: unless-stopped
 
     ports:
-      - "5432:5432"
+      - "3306:3306"
 
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: public
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: public
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
 
     volumes:
       # 데이터 영속화
-      - postgres-data:/var/lib/postgresql/data
+      - mysql-data:/var/lib/mysql
 
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot" ]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres-data:
+  mysql-data:

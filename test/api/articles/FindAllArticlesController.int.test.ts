@@ -6,22 +6,28 @@ describe("GET /api/articles", () => {
     await spec()
       .get("/api/articles")
       .expectStatus(200)
-      .expectJson({
+      .expectJsonLike({
         content: [
           {
             id: 1,
             title: "Article 1",
             content: "Content of article 1",
+            createdAt: /.*/,
+            updatedAt: /.*/,
           },
           {
             id: 2,
             title: "Article 2",
             content: "Content of article 2",
+            createdAt: /.*/,
+            updatedAt: /.*/,
           },
           {
             id: 3,
             title: "Article 3",
             content: "Content of article 3",
+            createdAt: /.*/,
+            updatedAt: /.*/,
           },
         ],
       });
