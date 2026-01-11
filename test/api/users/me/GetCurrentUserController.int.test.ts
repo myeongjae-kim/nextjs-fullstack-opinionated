@@ -1,15 +1,29 @@
-import { testEnv } from "@/test/testEnv";
+import { AuthResponse } from "@/core/common/domain/AuthResponse";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 
 describe("GET /api/users/me", () => {
   it("should return 200 with user details", async () => {
+    // First sign up to get a token
+
+    const signUpResponse: AuthResponse = await spec()
+      .post("/api/users/signup")
+      .withBody({
+        loginId: "meuser",
+        password: "password123",
+      })
+      .expectStatus(200)
+      .returns("req.body");
+
+    const accessToken = signUpResponse.access_token;
+
     await spec()
       .get("/api/users/me")
-      .withBearerToken(testEnv.TEST_BEARER_TOKEN)
+      .withBearerToken(accessToken)
       .expectStatus(200)
-      .expectJson({
-        username: "uuid",
+      .expectJsonLike({
+        ulid: /.*/,
+        role: "member",
       });
   });
 

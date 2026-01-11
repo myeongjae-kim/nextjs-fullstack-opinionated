@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "41863996-a246-4e58-8174-b39c3c5e64de",
+  "id": "4dacbbe3-d1c1-44bc-8211-fdd577a12cd7",
   "prevId": "2d8e108d-679e-423f-a948-4a858c11d5a7",
   "tables": {
     "article": {
@@ -68,6 +68,13 @@
           "notNull": true,
           "autoincrement": true
         },
+        "ulid": {
+          "name": "ulid",
+          "type": "varchar(26)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "name": {
           "name": "name",
           "type": "varchar(100)",
@@ -121,7 +128,22 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "ux_user_ulid": {
+          "name": "ux_user_ulid",
+          "columns": [
+            "ulid"
+          ],
+          "isUnique": true
+        },
+        "ux_user_login_id": {
+          "name": "ux_user_login_id",
+          "columns": [
+            "login_id"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "user_id": {

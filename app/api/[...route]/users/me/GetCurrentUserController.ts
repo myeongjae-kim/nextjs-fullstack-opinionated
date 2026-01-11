@@ -1,7 +1,7 @@
 import { userDetailsSchema } from "@/core/auth/domain/UserDetails";
 import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
 import { createRoute } from "@hono/zod-openapi";
-import { Controller } from "../config/Controller";
+import { Controller } from "../../config/Controller";
 
 const route = createRoute({
   method: 'get',

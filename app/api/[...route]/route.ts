@@ -4,7 +4,10 @@ import DeleteArticleController from './articles/DeleteArticleController';
 import FindAllArticlesController from './articles/FindAllArticlesController';
 import GetArticleByIdController from './articles/GetArticleByIdController';
 import UpdateArticleController from './articles/UpdateArticleController';
-import GetCurrentUserController from './users/GetCurrentUserController';
+import LoginController from './users/login/LoginController';
+import RefreshTokenController from './users/refresh/RefreshTokenController';
+import SignUpController from './users/signup/SignUpController';
+import GetCurrentUserController from './users/me/GetCurrentUserController';
 import { serverApp } from './serverApp';
 
 // Controller가 자신의 full-path를 관리한다. 여기서는 일괄적으로 "/"에 등록한다.
@@ -15,6 +18,9 @@ import { serverApp } from './serverApp';
   FindAllArticlesController,
   GetArticleByIdController,
   UpdateArticleController,
+  SignUpController,
+  LoginController,
+  RefreshTokenController,
   GetCurrentUserController,
 ].forEach(controller => serverApp.route("/", controller))
 

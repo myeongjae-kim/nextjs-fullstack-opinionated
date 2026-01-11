@@ -192,6 +192,13 @@ export default Controller().openapi(route, async (c) => {
 - `security`에 `bearerAuth` 포함 (인증 필요한 경우)
 - `applicationContext().get("UseCaseName")`으로 Use Case 호출
 
+### 디렉토리 구조
+- 컨트롤러는 API 경로에 맞게 디렉토리 구조를 가집니다
+- 예: `POST /api/users/signup` → `app/api/[...route]/users/signup/SignUpController.ts`
+- 예: `GET /api/users/me` → `app/api/[...route]/users/me/GetCurrentUserController.ts`
+- 테스트 파일도 동일한 디렉토리 구조를 따릅니다
+- 예: `test/api/users/signup/SignUpController.int.test.ts`
+
 ## 의존성 주입
 
 ### Autowired 데코레이터
@@ -287,3 +294,16 @@ describe("POST /api/articles", () => {
 ### 타입 안전성
 - `zod`로 스키마 정의
 - `env.ts`에서 파싱 및 검증
+
+## 문서화
+
+### 기능 문서화
+- 코드 변경사항이 있을 때 `docs/features/` 디렉토리 하위에 변경사항을 문서화합니다
+- 기획문서 수준으로 작성하며, 너무 자세한 구현 디테일은 포함하지 않습니다
+- 주요 내용:
+  - 기능 개요
+  - API 엔드포인트 및 사용법
+  - 주요 동작 방식
+  - 보안 고려사항
+  - 에러 처리
+- 파일명: `docs/features/{feature-name}.md` (예: `docs/features/auth.md`)

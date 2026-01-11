@@ -11,6 +11,14 @@ import { GetArticleByIdUseCase } from "../article/application/port/in/GetArticle
 import { UpdateArticleUseCase } from "../article/application/port/in/UpdateArticleUseCase"
 import { ArticleCommandPort } from "../article/application/port/out/ArticleCommandPort"
 import { ArticleQueryPort } from "../article/application/port/out/ArticleQueryPort"
+import { UserPersistenceAdapter } from "../user/adapter/out/UserPersistenceAdapter"
+import { UserCommandService } from "../user/application/UserCommandService"
+import { UserQueryService } from "../user/application/UserQueryService"
+import { LoginUseCase } from "../user/application/port/in/LoginUseCase"
+import { RefreshTokenUseCase } from "../user/application/port/in/RefreshTokenUseCase"
+import { SignUpUseCase } from "../user/application/port/in/SignUpUseCase"
+import { UserCommandPort } from "../user/application/port/out/UserCommandPort"
+import { UserQueryPort } from "../user/application/port/out/UserQueryPort"
 import { env } from "./env"
 
 export type Beans = {
@@ -25,6 +33,13 @@ export type Beans = {
 
   GetArticleByIdUseCase: GetArticleByIdUseCase,
   FindAllArticlesUseCase: FindAllArticlesUseCase,
+
+  UserCommandPort: UserCommandPort,
+  UserQueryPort: UserQueryPort,
+
+  SignUpUseCase: SignUpUseCase,
+  LoginUseCase: LoginUseCase,
+  RefreshTokenUseCase: RefreshTokenUseCase,
 }
 
 export const beanConfig: BeanConfig<Beans> = {
@@ -43,4 +58,11 @@ export const beanConfig: BeanConfig<Beans> = {
 
   GetArticleByIdUseCase: (bind) => bind().to(ArticleQueryService),
   FindAllArticlesUseCase: (bind) => bind().toResolvedValue(it => it as ArticleQueryService, ["GetArticleByIdUseCase"]),
+
+  UserCommandPort: (bind) => bind().to(UserPersistenceAdapter),
+  UserQueryPort: (bind) => bind().toResolvedValue(it => it as UserQueryPort, ["UserCommandPort"]),
+
+  SignUpUseCase: (bind) => bind().to(UserCommandService),
+  LoginUseCase: (bind) => bind().to(UserQueryService),
+  RefreshTokenUseCase: (bind) => bind().toResolvedValue(it => it as RefreshTokenUseCase, ["LoginUseCase"]),
 }
