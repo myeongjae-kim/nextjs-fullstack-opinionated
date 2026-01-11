@@ -113,3 +113,20 @@ TBD
 1. 애플리케이션 로직 관련 업데이트는 main 브랜치에서 한다.
 2. 파생 브랜치로의 변경사항은 rebase를 한다.
   1. main -> backend-only -> backend-only-deno 순서로 rebase하고 force push
+
+## Commands
+
+### 특정 단위테스트만 실행하는 경우
+
+```bash
+pnpm test UnitTestFileName
+```
+
+### 특정 통합테스트만 실행하는 경우
+
+```bash
+docker-compose up -d
+pnpm build
+pnpm _start
+pnpm vitest YourIntTestFileName
+```
