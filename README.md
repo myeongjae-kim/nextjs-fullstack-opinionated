@@ -105,8 +105,9 @@ TBD
 - [ ] backend-only 브랜치 만들어서 Next.js 제거하고 Hono만 사용하는 애플리케이션 구성
   - main 브랜치 커밋 생길 때마다 rebase하기
 - [ ] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드 인증 구현
-- [ ] Server Action으로 게시판 목록 조회, 상세 조회, 글 작성, 글 수정, 글 삭제, 로그인, 로그아웃 기능 구현
-- [ ] API 호출로 게시판 목록 조회, 상세 조회, 글 작성, 글 수정, 글 삭제, 로그인, 로그아웃 기능 구현
+- [ ] Server Action으로 회원가입, 로그인, 로그아웃 기능 구현
+- [ ] API 호출로 회원가입, 로그인, 로그아웃 기능 구현
+- [ ] 회원가입 할 때 id 중복 체크를 transaction으로 감싸기
 - [ ] Deno 위에서도 잘 작동하는지 테스트
 
 ## Branch 관리
