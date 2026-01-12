@@ -74,7 +74,7 @@
 
 프론트엔드에서는 Cookie를 사용하여 인증 상태를 관리합니다.
 
-- **쿠키 이름**: `session`
+- **쿠키 이름**: `@nextjs-fullstack-opinionated/session`
 - **쿠키 데이터 타입**: `AuthResponse` (`core/common/domain/AuthResponse.ts`)
   - `{ access_token: string, refresh_token: string }` 형태
 - **쿠키 저장**: Access Token과 Refresh Token을 HTTP-only 쿠키에 JSON 형태로 저장
@@ -91,7 +91,7 @@
 - **로그인 페이지 (`/server-actions/login`)**: 로그인하지 않은 상태에서만 접근 가능, 로그인 상태 시 `/server-actions`로 리다이렉트
 - **회원가입 페이지 (`/server-actions/signup`)**: 로그인하지 않은 상태에서만 접근 가능, 로그인 상태 시 `/server-actions`로 리다이렉트
 - **Proxy**: Next.js 16의 Proxy (`proxy.ts`)를 사용하여 접근 제어
-  - 쿠키에서 `session` 쿠키를 읽어 JWT 토큰 검증
+  - 쿠키에서 `@nextjs-fullstack-opinionated/session` 쿠키를 읽어 JWT 토큰 검증
   - 토큰이 유효하면 로그인 상태로 판단
   - `/server-actions/*` 경로에 대해 접근 제어 적용
 
@@ -102,7 +102,7 @@
 - **로그아웃**: `app/server-actions/login/actions.ts` - 쿠키 삭제
 - **UseCase 직접 호출**: Server Action에서 `applicationContext`를 통해 UseCase 직접 호출
 - **회원가입 후 자동 로그인**: 회원가입 성공 시 자동으로 로그인 상태로 전환 (쿠키에 토큰 저장)
-- **쿠키 설정**: Server Action에서 `cookies().set()`을 사용하여 `session` 쿠키에 토큰 저장
+- **쿠키 설정**: Server Action에서 `cookies().set()`을 사용하여 `@nextjs-fullstack-opinionated/session` 쿠키에 토큰 저장
 - **쿠키 데이터**: `AuthResponse` 타입을 JSON.stringify하여 저장
 
 ### 로그아웃

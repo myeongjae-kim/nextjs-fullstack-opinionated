@@ -2,7 +2,7 @@ import { AuthResponse } from "@/core/common/domain/AuthResponse";
 import { cookies } from "next/headers";
 import { parseAuthResponse } from "./token";
 
-const SESSION_COOKIE_NAME = "session";
+const SESSION_COOKIE_NAME = "@nextjs-fullstack-opinionated/session";
 // Refresh Token 만료 시간: 6개월 (180일)
 const MAX_AGE = 60 * 60 * 24 * 180; // 180 days in seconds
 

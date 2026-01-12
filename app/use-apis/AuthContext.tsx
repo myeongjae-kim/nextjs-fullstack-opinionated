@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // 초기 로드 시 localStorage에서 토큰 확인
   useEffect(() => {
-    const authData = localStorage.getItem("authToken");
+    const authData = localStorage.getItem("@nextjs-fullstack-opinionated/authToken");
     if (authData) {
       try {
         const parsed = JSON.parse(authData) as AuthToken;
@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAccessToken(parsed.access_token || null);
       } catch (e) {
         console.error("Failed to parse authToken from localStorage", e);
-        localStorage.removeItem("authToken");
+        localStorage.removeItem("@nextjs-fullstack-opinionated/authToken");
       }
     }
 
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data) {
         // 서버에서 받은 data 객체 전체를 stringify해서 저장
-        localStorage.setItem("authToken", JSON.stringify(data));
+        localStorage.setItem("@nextjs-fullstack-opinionated/authToken", JSON.stringify(data));
         setAccessToken(data.access_token);
         await refetch();
         return { success: true };
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data) {
         // 서버에서 받은 data 객체 전체를 stringify해서 저장
-        localStorage.setItem("authToken", JSON.stringify(data));
+        localStorage.setItem("@nextjs-fullstack-opinionated/authToken", JSON.stringify(data));
         setAccessToken(data.access_token);
         await refetch();
         return { success: true };
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [signupMutation, refetch]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("@nextjs-fullstack-opinionated/authToken");
     setAccessToken(null);
     queryClient.clear();
     router.push("/use-apis/login");

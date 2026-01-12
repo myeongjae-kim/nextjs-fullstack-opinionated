@@ -16,7 +16,7 @@ interface AuthToken {
 // Request Interceptor: Authorization 헤더 추가
 fetchClient.use({
   onRequest({ request }) {
-    const authData = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+    const authData = typeof window !== "undefined" ? localStorage.getItem("@nextjs-fullstack-opinionated/authToken") : null;
     if (authData) {
       try {
         const { access_token } = JSON.parse(authData) as AuthToken;
@@ -35,7 +35,7 @@ fetchClient.use({
 fetchClient.use({
   async onResponse({ response, request }) {
     if (response.status === 401 && !request.url.includes("/api/users/refresh")) {
-      const authData = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+      const authData = typeof window !== "undefined" ? localStorage.getItem("@nextjs-fullstack-opinionated/authToken") : null;
       if (authData) {
         try {
           const { refresh_token } = JSON.parse(authData) as AuthToken;
@@ -47,7 +47,7 @@ fetchClient.use({
 
             if (data && !error) {
               // 새 토큰 데이터 전체를 stringify해서 저장
-              localStorage.setItem("authToken", JSON.stringify(data));
+              localStorage.setItem("@nextjs-fullstack-opinionated/authToken", JSON.stringify(data));
 
               // 원래 요청 재시도
               const newRequest = new Request(request.url, request.clone());

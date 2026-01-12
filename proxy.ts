@@ -15,7 +15,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   }
 
   // 쿠키에서 세션 읽기
-  const sessionCookie = request.cookies.get("session")?.value;
+  const sessionCookie = request.cookies.get("@nextjs-fullstack-opinionated/session")?.value;
   const authResponse = parseAuthResponse(sessionCookie);
 
   // 로그인 상태 확인
@@ -32,7 +32,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
       const response = NextResponse.next();
 
       // 쿠키 설정 (Next.js의 cookies() API는 middleware에서 사용할 수 없으므로 직접 설정)
-      response.cookies.set("session", JSON.stringify(refreshed), {
+      response.cookies.set("@nextjs-fullstack-opinionated/session", JSON.stringify(refreshed), {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
