@@ -1,12 +1,12 @@
 "use server";
 
+import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
+import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
 import { applicationContext } from "@/core/config/applicationContext";
 import { userSignUpSchema } from "@/core/user/domain/User";
 import { setSessionCookie } from "@/lib/auth/cookies";
-import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 
-export type SignUpActionResult = 
+export type SignUpActionResult =
   | { success: true }
   | { success: false; error: string };
 

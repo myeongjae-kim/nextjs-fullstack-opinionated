@@ -31,10 +31,12 @@ export default function Home() {
               </Button>
             </Link>
 
-            <Button variant="outline" className="h-32 w-full flex-col gap-2 cursor-not-allowed opacity-50" disabled>
-              <Cpu className="h-8 w-8 text-gray-500" />
-              <span className="font-semibold">API 기반 인증<br />(준비 중)</span>
-            </Button>
+            <Link href="/use-apis" className="w-full">
+              <Button variant="outline" className="h-32 w-full flex-col gap-2">
+                <Cpu className="h-8 w-8 text-purple-500" />
+                <span className="font-semibold text-center">API 기반 인증<br />(localStorage)</span>
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

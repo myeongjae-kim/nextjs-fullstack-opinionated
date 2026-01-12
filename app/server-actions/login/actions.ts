@@ -1,13 +1,13 @@
 "use server";
 
+import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
+import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
 import { applicationContext } from "@/core/config/applicationContext";
 import { userLoginSchema } from "@/core/user/domain/User";
-import { setSessionCookie, deleteSessionCookie } from "@/lib/auth/cookies";
+import { deleteSessionCookie, setSessionCookie } from "@/lib/auth/cookies";
 import { redirect } from "next/navigation";
-import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 
-export type LoginActionResult = 
+export type LoginActionResult =
   | { success: true }
   | { success: false; error: string };
 
