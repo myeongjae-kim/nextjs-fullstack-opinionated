@@ -21,7 +21,7 @@ export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
   ) { }
 
   async login(userData: UserLogin): Promise<AuthResponse> {
-    const user = await this.userQueryPort.findByLoginId(userData.loginId, { useReplica: false });
+    const user = await this.userQueryPort.findByLoginId(userData.loginId, { useReplica: true });
 
     if (!user) {
       throw new DomainUnauthorizedError('Invalid login credentials');
@@ -44,7 +44,7 @@ export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
       throw new DomainUnauthorizedError('Invalid or expired refresh token');
     }
 
-    const user = await this.userQueryPort.findByUlid(decoded.ulid, { useReplica: false });
+    const user = await this.userQueryPort.findByUlid(decoded.ulid, { useReplica: true });
 
     if (!user) {
       throw new DomainNotFoundError(decoded.ulid, "User");

@@ -1,21 +1,22 @@
 import { ApiError } from "@/core/common/domain/ApiError";
+import { DomainBadRequestError } from "@/core/common/domain/DomainBadRequestError";
 import { DomainInternalServerError } from "@/core/common/domain/DomainInternalServerError";
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
 import { isDatabaseError } from "@/core/common/util/withDatabaseErrorHandling";
 import { ErrorHandler } from "hono";
 
+// 서버 책임의 에러의 경우 console.error로 로깅하고 500 에러 반환
+// 클라이언트 책임의 에러의 경우 해당 에러 클래스에 맞는 에러 코드와 메시지를 반환
+// 클라이언트가 특정 에러를 구분해야 한다면 ApiError의 code를 사용하면 된다.
 export const globalErrorHandler: ErrorHandler = ((e) => {
-  // global error handler
-  const defaultServerErrorStatus = 500;
-
-  if (e instanceof DomainNotFoundError) {
+  if (e instanceof DomainBadRequestError) {
     return Response.json(new ApiError({
-      status: 404,
-      error: "DOMAIN_NOT_FOUND_ERROR",
+      status: 400,
+      error: "DOMAIN_BAD_REQUEST_ERROR",
       code: "",
       message: e.message,
-    }), { status: 404 });
+    }), { status: 400 });
   }
 
   if (e instanceof DomainUnauthorizedError) {
@@ -25,6 +26,15 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
       code: "",
       message: e.message,
     }), { status: 401 });
+  }
+
+  if (e instanceof DomainNotFoundError) {
+    return Response.json(new ApiError({
+      status: 404,
+      error: "DOMAIN_NOT_FOUND_ERROR",
+      code: "",
+      message: e.message,
+    }), { status: 404 });
   }
 
   if (e instanceof DomainInternalServerError) {
@@ -49,9 +59,9 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
 
   console.error(e);
   return Response.json(new ApiError({
-    status: defaultServerErrorStatus,
+    status: 500,
     error: "INTERNAL_SERVER_ERROR",
     code: "",
     message: (e as Error).message,
-  }), { status: defaultServerErrorStatus });
+  }), { status: 500 });
 })
