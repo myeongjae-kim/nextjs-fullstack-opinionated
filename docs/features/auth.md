@@ -68,6 +68,48 @@
 - **인증 필요 API**: `Authorization: Bearer {access_token}` 헤더 필수
 - **인증 불필요 API**: 회원가입, 로그인, 토큰 갱신 등
 
+## 프론트엔드 인증
+
+### Cookie 기반 세션
+
+프론트엔드에서는 Cookie를 사용하여 인증 상태를 관리합니다.
+
+- **쿠키 이름**: `session`
+- **쿠키 데이터 타입**: `AuthResponse` (`core/common/domain/AuthResponse.ts`)
+  - `{ access_token: string, refresh_token: string }` 형태
+- **쿠키 저장**: Access Token과 Refresh Token을 HTTP-only 쿠키에 JSON 형태로 저장
+- **쿠키 만료 시간**: Refresh Token 만료 시간과 동일 (6개월)
+- **쿠키 속성**: 
+  - `httpOnly`: true (JavaScript 접근 불가)
+  - `secure`: true (HTTPS에서만 전송, 개발 환경에서는 false 가능)
+  - `sameSite`: 'lax' 또는 'strict'
+- **자동 갱신**: Access Token 만료 시 Refresh Token을 사용하여 자동 갱신
+
+### 페이지 접근 제어
+
+- **홈 화면 (`/server-actions`)**: 로그인 상태일 때만 접근 가능, 미로그인 시 `/server-actions/login`으로 리다이렉트
+- **로그인 페이지 (`/server-actions/login`)**: 로그인하지 않은 상태에서만 접근 가능, 로그인 상태 시 `/server-actions`로 리다이렉트
+- **회원가입 페이지 (`/server-actions/signup`)**: 로그인하지 않은 상태에서만 접근 가능, 로그인 상태 시 `/server-actions`로 리다이렉트
+- **Proxy**: Next.js 16의 Proxy (`proxy.ts`)를 사용하여 접근 제어
+  - 쿠키에서 `session` 쿠키를 읽어 JWT 토큰 검증
+  - 토큰이 유효하면 로그인 상태로 판단
+  - `/server-actions/*` 경로에 대해 접근 제어 적용
+
+### Server Action
+
+- **회원가입**: `app/server-actions/signup/actions.ts` - SignUpUseCase 직접 호출
+- **로그인**: `app/server-actions/login/actions.ts` - LoginUseCase 직접 호출
+- **로그아웃**: `app/server-actions/login/actions.ts` - 쿠키 삭제
+- **UseCase 직접 호출**: Server Action에서 `applicationContext`를 통해 UseCase 직접 호출
+- **회원가입 후 자동 로그인**: 회원가입 성공 시 자동으로 로그인 상태로 전환 (쿠키에 토큰 저장)
+- **쿠키 설정**: Server Action에서 `cookies().set()`을 사용하여 `session` 쿠키에 토큰 저장
+- **쿠키 데이터**: `AuthResponse` 타입을 JSON.stringify하여 저장
+
+### 로그아웃
+
+- 로그아웃 기능 제공
+- 로그아웃 시 쿠키 삭제 및 로그인 페이지로 이동
+
 ## 보안 고려사항
 
 ### 비밀번호 보안
