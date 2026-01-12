@@ -14,12 +14,24 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 | Exception Handling          | spring-mvc(`@ControllerAdvice`)       | Hono의 `onError()`            |
 | IoC Container               | spring-core                           | inversify, inversify-typesafe |
 | ORM                         | spring-data-jpa                       | drizzle                       |
-| Query Read Write Split      | spring-data-jpa                       | drizzle                       |
+| Read-Write Splitting        | spring-data-jpa                       | drizzle                       |
 | DDL Migration               | flyway                                | drizzle                       |
 | Auth                        | spring-security                       | Hono (Middleware 사용)        |
 | Unit Test                   | jUnit                                 | Vitest                        |
 | Integration Test            | jUnit, `@SpringBootTest`              | Vitest, start-server-and-test |
 | Web Test Client             | MockMvc, RestTestClient               | pactum                        |
+
+## Motivation
+
+1. AI는 Java나 Kotlin보다 TypeScript와 더 친숙하다(https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32). AI가 더 잘 할 수 있게 백엔드 기술 스택을 TypeScript로 변경하는 것도 좋은 선택이지 않을까?
+    1. TypeScript의 강력한 타입 시스템도 AI가 코드를 더 잘 작성할 수 있게 해준다. TypeScript 컴파일러와 eslint는 AI에게 훌륭한 피드백을 제공함. TypeScript의 강력한 타입 연산 및 추론 기능과 Literal String 등 고급 타입 기능과, 빡빡하게 설정한 eslint는 컴파일타임에 에러를 더 많이 잡아내 AI에게 빠른 피드백 루프를 제공한다.
+2. 중소형 프로젝트나 어드민 성격의 제품은 Next.js 하나로 백엔드에서 DB접근이나 API까지 구현해도 무리가 없음. Vercel과 PlanetScale 클릭 몇 번으로 인프라를 구축할 수 있어서 매우 빠르게 초기 셋팅을 끝낼 수 있다.
+3. 대형 프로젝트도 Next.js로 제공할 수 있을까?
+    1. [API Layer로서 Next.js는 성능이 좋지 않다](https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 어느정도 트래픽이 되면 API만 제공하는 웹서버를 분리해야 함.
+    2. Next.js에서 백엔드 API만 똑 떼어낼 수 있을까? -> Hono ([Motivation](https://hono.dev/docs/concepts/motivation), [Hono on Next.js](https://hono.dev/docs/getting-started/nextjs))
+    3. 백엔드 로직을 객체지향적으로 관리해 익숙한 방식으로 복잡도를 통제하고 싶다 -> [inversify](https://github.com/inversify), [inversify-typesafe](https://github.com/myeongjae-kim/inversify-typesafe), [inversify-typesafe-spring-like](https://github.com/myeongjae-kim/inversify-typesafe/tree/main/packages/inversify-typesafe-spring-like)
+4. 응답속도와 처리량이 중요한 프로젝트에도 사용할 수 있을까? -> [Hono on Node.js](https://hono.dev/docs/concepts/benchmarks#on-node-js), [Hono on Deno](https://hono.dev/docs/concepts/benchmarks#deno)
+    1. 이 정도면 웹서버 성능이 병목이 될 일은 없어보인다.
 
 ## Infrastructure Recommendation
 
@@ -34,7 +46,7 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 ※ 제품 초기, Vercel보다 Cloudflare Pages가 비용은 훨씬 저렴하지만 한국의 망 사용료 문제때문에 Enterprise Plan이 아니면 Los Angeles에서 실행된다. DB가 서울에 있을 때 웹 페이지 로딩 1초씩 걸림
 
-※ 제품 성숙기, AWS ECS보다 AWS App Runner가 사용하기 훨씬 더 간단하지만 Seoul 리전에서는 제공 안 함. Tokyo 리전이 가장 가까움. Seoul 리전에서 서비스 제공하기 시작하면 고려해볼만 하다.
+※ 제품 성숙기, AWS ECS보다 AWS App Runner가 사용하기 훨씬 더 간단하지만 Seoul 리전에서는 제공 안 함. Tokyo 리전이 가장 가까움. Seoul 리전에서 서비스 제공하기 시작하면 AWS App Runner를 고려해볼만 하다.
 
 ※ 제품 성숙기, PlanetScale에서 Amazon Aurora로 데이터 이전시 AWS Database Migration Service 활용 가능
 
@@ -92,6 +104,7 @@ TBD
   - ColdStart를 극단적으로 줄이려면 Deno사용 가능: https://deno.com/blog/aws-lambda-coldstart-benchmarks
     - https://deno.com/blog/build-database-app-drizzle
 
+## Code Examples
 
 ## TODO
 
