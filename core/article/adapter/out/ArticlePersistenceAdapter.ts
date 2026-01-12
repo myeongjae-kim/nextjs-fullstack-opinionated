@@ -37,11 +37,11 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
     const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
     const results = await db.select().from(article).where(eq(article.id, id)).limit(1);
 
-    if (results.length === 0) {
+    const row = results[0];
+    if (!row) {
       throw new DomainNotFoundError(id, "Article");
     }
 
-    const row = results[0];
     return {
       id: row.id,
       title: row.title,

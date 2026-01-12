@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2017",

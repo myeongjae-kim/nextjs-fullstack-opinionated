@@ -29,7 +29,7 @@ const getUserDetails = (token: string | undefined) => {
   }
 
   try {
-    const decoded = jwt.verify(bearerToken, env.AUTH_SECRET) as { ulid: string; role: string };
+    const decoded = jwt.verify(bearerToken ?? "", env.AUTH_SECRET) as unknown as { ulid: string; role: string };
     return new UserDetails(decoded.ulid, decoded.role);
   } catch {
     // token이 올바르지 않으면 public api라도 인증 오류를 발생시킨다.

@@ -30,9 +30,14 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
     const insertedId = Number(result[0].insertId);
     const insertedUser = await db.select().from(user).where(eq(user.id, insertedId)).limit(1);
 
+    const row = insertedUser[0];
+    if (!row) {
+      throw new Error("User not found after creation");
+    }
+
     return {
-      id: insertedUser[0].id,
-      ulid: insertedUser[0].ulid,
+      id: row.id,
+      ulid: row.ulid,
     };
   }
 
@@ -45,6 +50,10 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
     }
 
     const row = results[0];
+    if (!row) {
+      return null;
+    }
+
     return {
       id: row.id,
       ulid: row.ulid,
@@ -66,6 +75,10 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
     }
 
     const row = results[0];
+    if (!row) {
+      return null;
+    }
+
     return {
       id: row.id,
       ulid: row.ulid,
