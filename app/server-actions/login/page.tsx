@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { loginAction, type LoginActionResult } from "./actions";
+import { ArrowLeft } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -59,6 +60,14 @@ export default function LoginPage() {
 
   return (
     <div className="container mx-auto p-8 max-w-md">
+      <div className="mb-4">
+        <Link href="/">
+          <Button variant="ghost" size="sm" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            메인으로 돌아가기
+          </Button>
+        </Link>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>로그인</CardTitle>
