@@ -1,4 +1,5 @@
 import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { withDatabaseErrorHandling } from "@/core/common/util/withDatabaseErrorHandling";
 import { Autowired } from "@/core/config/Autowired";
 import { UserCommandPort } from "@/core/user/application/port/out/UserCommandPort";
 import { UserQueryPort, UserWithPasswordHash } from "@/core/user/application/port/out/UserQueryPort";
@@ -12,6 +13,8 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
     @Autowired("DbClientSelector")
     private readonly dbClientSelector: DbClientSelector
   ) {
+    // 생성자에서 자기 자신을 Proxy로 래핑하여 반환
+    return withDatabaseErrorHandling(this);
   }
 
   async createUser(userData: UserSignUp & { ulid: string; passwordHash: string }): Promise<Pick<User, "id" | "ulid">> {

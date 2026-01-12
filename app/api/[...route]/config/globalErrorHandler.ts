@@ -1,4 +1,5 @@
 import { ApiError } from "@/core/common/domain/ApiError";
+import { DomainInternalServerError } from "@/core/common/domain/DomainInternalServerError";
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
 import { ErrorHandler } from "hono";
@@ -23,6 +24,15 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
       code: "CODE_001",
       message: e.message,
     }), { status: 401 });
+  }
+
+  if (e instanceof DomainInternalServerError) {
+    return Response.json(new ApiError({
+      status: 500,
+      error: "INTERNAL_SERVER_ERROR",
+      code: "CODE_003",
+      message: e.message,
+    }), { status: 500 });
   }
 
   return Response.json(new ApiError({

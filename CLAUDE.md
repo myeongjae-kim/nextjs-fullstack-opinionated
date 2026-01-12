@@ -234,7 +234,27 @@ async findAll(queryOptions: QueryOptions): Promise<Article[]>;
 ### Domain Error
 - `DomainNotFoundError`: 리소스를 찾을 수 없을 때
 - `DomainUnauthorizedError`: 인증 실패 시
+- `DomainInternalServerError`: 내부 서버 에러 (데이터베이스 에러 등)
 - `ApiError`: API 응답용 에러 포맷
+
+### 데이터베이스 에러 처리
+- Drizzle ORM에 접근하는 Adapter 클래스는 생성자에서 `withDatabaseErrorHandling`을 사용하여 자기 자신을 Proxy로 래핑해야 합니다
+- 이를 통해 데이터베이스 쿼리 에러가 발생하면 자동으로 로그를 남기고 `DomainInternalServerError`를 throw합니다
+- 민감한 정보(쿼리, 파라미터 등)는 서버 로그에만 기록되고, 클라이언트에는 일반적인 에러 메시지만 전달됩니다
+
+```typescript
+export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
+  constructor(
+    @Autowired("DbClientSelector")
+    private readonly dbClientSelector: DbClientSelector
+  ) {
+    // 생성자에서 자기 자신을 Proxy로 래핑하여 반환
+    return withDatabaseErrorHandling(this);
+  }
+  
+  // 메서드들...
+}
+```
 
 ## 테스트
 

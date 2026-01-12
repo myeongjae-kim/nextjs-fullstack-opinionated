@@ -3,6 +3,7 @@ import { ArticleQueryPort } from "@/core/article/application/port/out/ArticleQue
 import { Article, ArticleCreation, ArticleUpdate } from "@/core/article/domain/Article";
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { withDatabaseErrorHandling } from "@/core/common/util/withDatabaseErrorHandling";
 import { Autowired } from "@/core/config/Autowired";
 import type { DbClientSelector } from "@/lib/db/drizzle";
 import { article } from "@/lib/db/schema";
@@ -13,6 +14,8 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
     @Autowired("DbClientSelector")
     private readonly dbClientSelector: DbClientSelector
   ) {
+    // 생성자에서 자기 자신을 Proxy로 래핑하여 반환
+    return withDatabaseErrorHandling(this);
   }
 
   async findAll(queryOptions: QueryOptions): Promise<Article[]> {
