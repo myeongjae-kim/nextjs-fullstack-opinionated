@@ -306,3 +306,9 @@ describe("POST /api/articles", () => {
   - 보안 고려사항
   - 에러 처리
 - 파일명: `docs/features/{feature-name}.md` (예: `docs/features/auth.md`)
+
+## 코드 품질 관리
+
+### Lint 실행
+- 작업이 끝나면 반드시 `pnpm lint`를 실행하여 코드 품질을 확인합니다
+- Lint 에러가 발생하면 수정한 후 다시 실행합니다
