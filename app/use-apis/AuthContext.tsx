@@ -1,14 +1,13 @@
 "use client";
 
+import { paths } from "@/lib/api/schema";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { $api } from "./$api";
 
-interface User {
-  ulid: string;
-  role: string;
-}
+type User = paths["/api/users/me"]["get"]["responses"]["200"]["content"]["application/json"];
+type AuthToken = paths["/api/users/login"]["post"]["responses"]["200"]["content"]["application/json"];
 
 interface AuthContextType {
   principal: User | null;
@@ -29,9 +28,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // 초기 로드 시 localStorage에서 토큰 확인
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setAccessToken(token);
+    const authData = localStorage.getItem("authToken");
+    if (authData) {
+      try {
+        const parsed = JSON.parse(authData) as AuthToken;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setAccessToken(parsed.access_token || null);
+      } catch (e) {
+        console.error("Failed to parse authToken from localStorage", e);
+        localStorage.removeItem("authToken");
+      }
+    }
 
     setIsInitializing(false);
   }, []);
@@ -53,8 +60,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (data) {
-        localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("refresh_token", data.refresh_token);
+        // 서버에서 받은 data 객체 전체를 stringify해서 저장
+        localStorage.setItem("authToken", JSON.stringify(data));
         setAccessToken(data.access_token);
         await refetch();
         return { success: true };
@@ -73,8 +80,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (data) {
-        localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("refresh_token", data.refresh_token);
+        // 서버에서 받은 data 객체 전체를 stringify해서 저장
+        localStorage.setItem("authToken", JSON.stringify(data));
         setAccessToken(data.access_token);
         await refetch();
         return { success: true };
@@ -87,8 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [signupMutation, refetch]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("authToken");
     setAccessToken(null);
     queryClient.clear();
     router.push("/use-apis/login");
