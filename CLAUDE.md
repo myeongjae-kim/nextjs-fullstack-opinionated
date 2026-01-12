@@ -256,6 +256,41 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
 }
 ```
 
+## 프론트엔드 API 클라이언트 (openapi-react-query)
+
+### 클라이언트 생성 (`$api.ts`)
+- `createFetchClient`와 `createClient`를 사용하여 타입 안전한 API 클라이언트를 생성합니다.
+
+```typescript
+const fetchClient = createFetchClient<paths>({
+  baseUrl: "/",
+});
+export const $api = createClient(fetchClient);
+```
+
+### useQuery 사용법
+- `$api.useQuery(method, path, fetchOptions, queryOptions)` 형식을 따릅니다.
+- **중요**: `queryOptions` (enabled, retry, staleTime 등)는 **네 번째 매개변수**입니다.
+
+```typescript
+const { data, isLoading } = $api.useQuery(
+  "get",
+  "/api/users/me",
+  undefined, // fetchOptions (params, body 등)
+  {
+    enabled: !!accessToken, // queryOptions
+    retry: false,
+  }
+);
+```
+
+### useMutation 사용법
+- `$api.useMutation(method, path, queryOptions)` 형식을 따릅니다.
+
+```typescript
+const { mutateAsync } = $api.useMutation("post", "/api/users/login");
+```
+
 ## 테스트
 
 ### 파일명
