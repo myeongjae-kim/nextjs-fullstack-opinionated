@@ -36,12 +36,12 @@ export class UserMockAdapter implements UserCommandPort, UserQueryPort {
     });
   }
 
-  async findByLoginId(loginId: string, _queryOptions: SqlOptions): Promise<UserWithPasswordHash | null> {
+  async findByLoginId(loginId: string, _sqlOptions: SqlOptions): Promise<UserWithPasswordHash | null> {
     const user = this.users.find((u) => u.loginId === loginId);
     return Promise.resolve(user ? { ...user } : null);
   }
 
-  async findByUlid(ulid: string, _queryOptions: SqlOptions): Promise<User | null> {
+  async findByUlid(ulid: string, _sqlOptions: SqlOptions): Promise<User | null> {
     const user = this.users.find((u) => u.ulid === ulid);
     if (!user) {
       return Promise.resolve(null);

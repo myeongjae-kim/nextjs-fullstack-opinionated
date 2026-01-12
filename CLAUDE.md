@@ -215,18 +215,25 @@ constructor(
 ### Bean 등록
 - `beanConfig.ts`에서 모든 Bean 정의
 
-## Query Options
+## 데이터베이스 접근 및 트랜잭션
 
-### QueryOptions 타입
-- Read 쿼리에는 `QueryOptions` 매개변수 사용
-- `useReplica: boolean` 속성 포함
+### SqlOptions
+- drizzle은 Spring Boot와 달리 트랜잭션 읽기전용 여부(replica 사용 여부)를 thread local로 관리하지 않으므로 명시적으로 설정을 전달해야 합니다.
+- `useReplica: boolean` 속성을 포함합니다.
+- **읽기 전용 로직**: 매개변수로 `SqlOptions`를 받아 가장 바깥쪽에서 읽기전용 여부를 선택할 수 있게 합니다.
+- **쓰기 로직**: `SqlOptions`를 매개변수로 받지 않고 항상 Primary DB를 사용하도록 강제합니다.
+
+### TransactionTemplate
+- 모든 데이터베이스 쿼리는 `TransactionTemplate`의 `execute` 메서드 내에서 실행되어야 합니다.
+- 첫 번째 인자로 `SqlOptions`를 전달하여 읽기 전용 여부를 명시합니다.
 
 ```typescript
-export interface QueryOptions {
-  useReplica: boolean;
+async findByUlid(ulid: string, sqlOptions: SqlOptions): Promise<User | null> {
+  return this.transactionTemplate.execute(sqlOptions, async (db) => {
+    const results = await db.select().from(user).where(eq(user.ulid, ulid)).limit(1);
+    return results[0] ?? null;
+  });
 }
-
-async findAll(queryOptions: QueryOptions): Promise<Article[]>;
 ```
 
 ## 에러 처리
@@ -238,15 +245,15 @@ async findAll(queryOptions: QueryOptions): Promise<Article[]>;
 - `ApiError`: API 응답용 에러 포맷
 
 ### 데이터베이스 에러 처리
-- Drizzle ORM에 접근하는 Adapter 클래스는 생성자에서 `withDatabaseErrorHandling`을 사용하여 자기 자신을 Proxy로 래핑해야 합니다
-- 이를 통해 데이터베이스 쿼리 에러가 발생하면 자동으로 로그를 남기고 `DomainInternalServerError`를 throw합니다
-- 민감한 정보(쿼리, 파라미터 등)는 서버 로그에만 기록되고, 클라이언트에는 일반적인 에러 메시지만 전달됩니다
+- Drizzle ORM에 접근하는 Adapter 클래스는 생성자에서 `withDatabaseErrorHandling`을 사용하여 자기 자신을 Proxy로 래핑해야 합니다.
+- 이를 통해 데이터베이스 쿼리 에러가 발생하면 자동으로 로그를 남기고 `DomainInternalServerError`를 throw합니다.
+- 민감한 정보(쿼리, 파라미터 등)는 서버 로그에만 기록되고, 클라이언트에는 일반적인 에러 메시지만 전달됩니다.
 
 ```typescript
 export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
   constructor(
-    @Autowired("DbClientSelector")
-    private readonly dbClientSelector: DbClientSelector
+    @Autowired("TransactionTemplate")
+    private readonly transactionTemplate: TransactionTemplate
   ) {
     // 생성자에서 자기 자신을 Proxy로 래핑하여 반환
     return withDatabaseErrorHandling(this);

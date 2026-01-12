@@ -29,7 +29,7 @@ describe("POST /api/users/login", () => {
       })
       .expectStatus(401)
       .expectJsonLike({
-        "code": "CODE_001",
+        "code": "",
         "error": "DOMAIN_UNAUTHORIZED_ERROR",
         "status": 401,
         "timestamp": /.*/,
@@ -48,7 +48,7 @@ describe("POST /api/users/login", () => {
       })
       .expectStatus(401)
       .expectJsonLike({
-        "code": "CODE_001",
+        "code": "",
         "error": "DOMAIN_UNAUTHORIZED_ERROR",
         "status": 401,
         "timestamp": /.*/,

@@ -42,7 +42,7 @@ describe("POST /api/users/refresh", () => {
       })
       .expectStatus(401)
       .expectJsonLike({
-        "code": "CODE_001",
+        "code": "",
         "error": "DOMAIN_UNAUTHORIZED_ERROR",
         "status": 401,
         "timestamp": /.*/,

@@ -3,79 +3,84 @@ import { ArticleQueryPort } from "@/core/article/application/port/out/ArticleQue
 import { Article, ArticleCreation, ArticleUpdate } from "@/core/article/domain/Article";
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
 import { SqlOptions } from "@/core/common/domain/SqlOptions";
+import { TransactionTemplate } from "@/core/common/domain/TransactionTemplate";
 import { withDatabaseErrorHandling } from "@/core/common/util/withDatabaseErrorHandling";
 import { Autowired } from "@/core/config/Autowired";
-import type { DbClientSelector } from "@/lib/db/drizzle";
 import { article } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQueryPort {
   constructor(
-    @Autowired("DbClientSelector")
-    private readonly dbClientSelector: DbClientSelector
+    @Autowired("TransactionTemplate")
+    private readonly transactionTemplate: TransactionTemplate
   ) {
     // 생성자에서 자기 자신을 Proxy로 래핑하여 반환
     return withDatabaseErrorHandling(this);
   }
 
-  async findAll(queryOptions: SqlOptions): Promise<Article[]> {
-    const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
-    const results = await db.select().from(article);
+  async findAll(sqlOptions: SqlOptions): Promise<Article[]> {
+    return this.transactionTemplate.execute(sqlOptions, async (db) => {
+      const results = await db.select().from(article);
 
-    return results.map(row => {
-      return ({
+      return results.map(row => {
+        return ({
+          id: row.id,
+          title: row.title,
+          content: row.content,
+          createdAt: row.createdAt,
+          updatedAt: row.updatedAt,
+        });
+      });
+    });
+  }
+
+  async getById(id: Article["id"], sqlOptions: SqlOptions): Promise<Article> {
+    return this.transactionTemplate.execute(sqlOptions, async (db) => {
+      const results = await db.select().from(article).where(eq(article.id, id)).limit(1);
+
+      const row = results[0];
+      if (!row) {
+        throw new DomainNotFoundError(id, "Article");
+      }
+
+      return {
         id: row.id,
         title: row.title,
         content: row.content,
         createdAt: row.createdAt,
         updatedAt: row.updatedAt,
-      });
+      };
     });
-  }
-
-  async getById(id: Article["id"], queryOptions: SqlOptions): Promise<Article> {
-    const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
-    const results = await db.select().from(article).where(eq(article.id, id)).limit(1);
-
-    const row = results[0];
-    if (!row) {
-      throw new DomainNotFoundError(id, "Article");
-    }
-
-    return {
-      id: row.id,
-      title: row.title,
-      content: row.content,
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-    };
   }
 
   async createArticle(articleData: ArticleCreation): Promise<Pick<Article, "id">> {
-    const db = this.dbClientSelector();
-    const result = await db.insert(article).values({
-      title: articleData.title,
-      content: articleData.content,
-    });
+    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
+      const result = await db.insert(article).values({
+        title: articleData.title,
+        content: articleData.content,
+      });
 
-    return {
-      id: Number(result[0].insertId),
-    };
+      return {
+        id: Number(result[0].insertId),
+      };
+    });
   }
 
   async updateArticle(id: Article["id"], articleData: ArticleUpdate): Promise<void> {
-    const db = this.dbClientSelector();
-    await db.update(article)
-      .set({
-        ...(articleData.title !== undefined && { title: articleData.title }),
-        ...(articleData.content !== undefined && { content: articleData.content }),
-        updatedAt: new Date(),
-      })
-      .where(eq(article.id, id));
+    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
+      await db.update(article)
+        .set({
+          ...(articleData.title !== undefined && { title: articleData.title }),
+          ...(articleData.content !== undefined && { content: articleData.content }),
+          updatedAt: new Date(),
+        })
+        .where(eq(article.id, id));
+    });
   }
 
   async deleteArticle(id: Article["id"]): Promise<void> {
-    const db = this.dbClientSelector();
-    await db.delete(article).where(eq(article.id, id));
+    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
+      await db.delete(article).where(eq(article.id, id));
+    });
   }
 }

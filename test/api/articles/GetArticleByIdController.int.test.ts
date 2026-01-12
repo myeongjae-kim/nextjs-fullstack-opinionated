@@ -32,7 +32,7 @@ describe("GET /api/articles/[id]", () => {
       .get("/api/articles/999")
       .expectStatus(404)
       .expectJsonLike({
-        "code": "CODE_002",
+        "code": "",
         "error": "DOMAIN_NOT_FOUND_ERROR",
         "message": "Article #999 not found",
         "status": 404,

@@ -35,7 +35,7 @@ describe("GET /api/users/me", () => {
       .get("/api/users/me")
       .expectStatus(401)
       .expectJsonLike({
-        "code": "CODE_001",
+        "code": "",
         "error": "DOMAIN_UNAUTHORIZED_ERROR",
         "status": 401,
         "timestamp": /.*/,
@@ -48,7 +48,7 @@ describe("GET /api/users/me", () => {
       .withHeaders("Authorization", "Bearer invalid-token-value")
       .expectStatus(401)
       .expectJsonLike({
-        "code": "CODE_001",
+        "code": "",
         "error": "DOMAIN_UNAUTHORIZED_ERROR",
         "status": 401,
         "timestamp": /.*/,

@@ -1,9 +1,10 @@
 import { Autowired } from "@/core/config/Autowired";
-import type { DbClientSelector } from "@/lib/db/drizzle";
+import type { DatabaseClient, DbClientSelector } from "@/lib/db/drizzle";
+import { MySqlTransactionConfig } from "drizzle-orm/mysql-core";
 import { SqlOptions } from "./SqlOptions";
 
 /**
- * Transaction도 비즈니스 로직이다. common domain으로 관리한다.
+ * Transaction도 비즈니스 로직이다. common domain으로 안에서 관리한다.
  */
 export class TransactionTemplate {
   constructor(
@@ -11,7 +12,14 @@ export class TransactionTemplate {
     private readonly dbClientSelector: DbClientSelector) {
   }
 
-  public execute = <T>(callback: () => Promise<T>, options: SqlOptions): Promise<T> => {
-    return this.dbClientSelector(options).transaction(callback);
+  // 읽기, 쓰기를 명시적으로 구분하기 위해 SqlOptions를 첫 번째 인자로 받는다
+  public execute = <T>(options: SqlOptions, callback: (db: DatabaseClient) => Promise<T>, config?: Partial<Omit<MySqlTransactionConfig, "accessMode">>): Promise<T> => {
+    const db = this.dbClientSelector(options);
+    const defaultConfig: MySqlTransactionConfig = {
+      accessMode: options.useReplica ? "read only" : "read write",
+      isolationLevel: 'repeatable read'
+    }
+
+    return db.transaction(() => callback(db), { ...defaultConfig, ...config });
   }
 }
