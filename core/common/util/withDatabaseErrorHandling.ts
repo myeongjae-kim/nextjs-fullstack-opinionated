@@ -26,7 +26,6 @@ export function withDatabaseErrorHandling<T extends object>(target: T): T {
       if (typeof value === "function") {
         return async (...args: unknown[]) => {
           try {
-
             return await (value as (...args: unknown[]) => Promise<unknown>).apply(target, args);
           } catch (error) {
             if (isDatabaseError(error)) {
