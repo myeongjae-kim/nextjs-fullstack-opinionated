@@ -95,18 +95,18 @@ TBD
 
 ## TODO
 
-- [ ] 로컬에서 MySQL 띄우고 실제로 동작하는 API 구현
-  - [ ] InMemory Adapater와 Persistence Adapter로 분리해서 Profile에 따라 사용하기. remote에서는 InMemory로.
-  - [ ] OpenAPI Spec 받아서 Postman으로 테스트
-  - [ ] Read Write Split은 명시적으로 처리해야 함: https://chatgpt.com/share/696299a9-6558-8004-89d4-da4e8448a31a
+- [x] 로컬에서 MySQL 띄우고 실제로 동작하는 API 구현
+  - [x] InMemory Adapater와 Persistence Adapter로 분리해서 Profile에 따라 사용하기. remote에서는 InMemory로.
+  - [x] OpenAPI Spec 받아서 Postman으로 테스트
+  - [x] Read Write Split은 명시적으로 처리해야 함: https://chatgpt.com/share/696299a9-6558-8004-89d4-da4e8448a31a
     - replica가 가능한 비즈니스 로직은 parameter로 `boolean useReplica` 같은 옵션 받기
-  - [ ] Transaction 예시 작성. TransactionTemplate, ReadOnlyTransactionTemplate bean 만들기. 트랜잭션도 도메인에 포함된다.
-  - [ ] 통합테스트 진행할 때 docker-compose로 띄운 MySQL 대상으로 진행해보기
+  - [x] Transaction 예시 작성. TransactionTemplate, ReadOnlyTransactionTemplate bean 만들기. 트랜잭션도 도메인에 포함된다.
+  - [x] 통합테스트 진행할 때 docker-compose로 띄운 MySQL 대상으로 진행해보기
 - [ ] backend-only 브랜치 만들어서 Next.js 제거하고 Hono만 사용하는 애플리케이션 구성
   - main 브랜치 커밋 생길 때마다 rebase하기
-- [ ] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드 인증 구현
-- [ ] Server Action으로 회원가입, 로그인, 로그아웃 기능 구현
-- [ ] API 호출로 회원가입, 로그인, 로그아웃 기능 구현
+- [x] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드 인증 구현
+- [x] Server Action으로 회원가입, 로그인, 로그아웃 기능 구현
+- [x] API 호출로 회원가입, 로그인, 로그아웃 기능 구현
 - [ ] 회원가입 할 때 id 중복 체크를 transaction으로 감싸기
 - [ ] Deno 위에서도 잘 작동하는지 테스트
 
