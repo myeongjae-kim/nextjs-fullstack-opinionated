@@ -1,4 +1,4 @@
-import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { SqlOptions } from "@/core/common/domain/SqlOptions";
 import { withDatabaseErrorHandling } from "@/core/common/util/withDatabaseErrorHandling";
 import { Autowired } from "@/core/config/Autowired";
 import { UserCommandPort } from "@/core/user/application/port/out/UserCommandPort";
@@ -41,7 +41,7 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
     };
   }
 
-  async findByLoginId(loginId: string, queryOptions: QueryOptions): Promise<UserWithPasswordHash | null> {
+  async findByLoginId(loginId: string, queryOptions: SqlOptions): Promise<UserWithPasswordHash | null> {
     const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
     const results = await db.select().from(user).where(eq(user.loginId, loginId)).limit(1);
 
@@ -66,7 +66,7 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
     };
   }
 
-  async findByUlid(ulid: string, queryOptions: QueryOptions): Promise<User | null> {
+  async findByUlid(ulid: string, queryOptions: SqlOptions): Promise<User | null> {
     const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
     const results = await db.select().from(user).where(eq(user.ulid, ulid)).limit(1);
 

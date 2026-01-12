@@ -13,6 +13,7 @@ import { ArticleCommandPort } from "../article/application/port/out/ArticleComma
 import { ArticleQueryPort } from "../article/application/port/out/ArticleQueryPort"
 import { TokenService } from "../auth/application/TokenService"
 import { GenerateTokenUseCase } from "../auth/application/port/in/GenerateTokenUseCase"
+import { TransactionTemplate } from "../common/domain/TransactionTemplate"
 import { UserMockAdapter } from "../user/adapter/out/UserMockAdapter"
 import { UserPersistenceAdapter } from "../user/adapter/out/UserPersistenceAdapter"
 import { UserCommandService } from "../user/application/UserCommandService"
@@ -26,6 +27,7 @@ import { env } from "./env"
 
 export type Beans = {
   DbClientSelector: DbClientSelector,
+  TransactionTemplate: TransactionTemplate,
 
   ArticleCommandPort: ArticleCommandPort,
   ArticleQueryPort: ArticleQueryPort,
@@ -49,6 +51,7 @@ export type Beans = {
 
 export const beanConfig: BeanConfig<Beans> = {
   DbClientSelector: (bind) => bind().toConstantValue(selectDbClient),
+  TransactionTemplate: (bind) => bind().to(TransactionTemplate),
 
   ArticleCommandPort: (bind) => {
     const adapter = env.USE_MOCK_ADAPTER ? ArticleMockAdapter : ArticlePersistenceAdapter;

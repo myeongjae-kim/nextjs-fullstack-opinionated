@@ -1,4 +1,4 @@
-import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { SqlOptions } from "@/core/common/domain/SqlOptions";
 import { UserCommandPort } from "../../application/port/out/UserCommandPort";
 import { UserQueryPort, UserWithPasswordHash } from "../../application/port/out/UserQueryPort";
 import { User, UserSignUp } from "../../domain/User";
@@ -36,12 +36,12 @@ export class UserMockAdapter implements UserCommandPort, UserQueryPort {
     });
   }
 
-  async findByLoginId(loginId: string, _queryOptions: QueryOptions): Promise<UserWithPasswordHash | null> {
+  async findByLoginId(loginId: string, _queryOptions: SqlOptions): Promise<UserWithPasswordHash | null> {
     const user = this.users.find((u) => u.loginId === loginId);
     return Promise.resolve(user ? { ...user } : null);
   }
 
-  async findByUlid(ulid: string, _queryOptions: QueryOptions): Promise<User | null> {
+  async findByUlid(ulid: string, _queryOptions: SqlOptions): Promise<User | null> {
     const user = this.users.find((u) => u.ulid === ulid);
     if (!user) {
       return Promise.resolve(null);

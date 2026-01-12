@@ -1,10 +1,10 @@
+import { SqlOptions } from "../../../common/domain/SqlOptions";
 import { ArticleCommandPort } from "../../application/port/out/ArticleCommandPort";
 import { ArticleQueryPort } from "../../application/port/out/ArticleQueryPort";
-import { QueryOptions } from "../../../common/domain/QueryOptions";
 import { Article, ArticleCreation, ArticleUpdate } from "../../domain/Article";
 
 export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort {
-  async findAll(_queryOptions: QueryOptions): Promise<Article[]> {
+  async findAll(_queryOptions: SqlOptions): Promise<Article[]> {
     return Promise.resolve([1, 2, 3].map((id) => ({
       id,
       title: `Article ${id}`,
@@ -13,7 +13,7 @@ export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort 
       updatedAt: new Date(),
     })))
   }
-  async getById(id: Article["id"], _queryOptions: QueryOptions): Promise<Article> {
+  async getById(id: Article["id"], _queryOptions: SqlOptions): Promise<Article> {
     return Promise.resolve({
       id,
       title: `Article ${id}`,

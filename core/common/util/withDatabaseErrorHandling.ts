@@ -5,7 +5,7 @@ import { DrizzleQueryError } from "drizzle-orm";
  * 데이터베이스 에러인지 확인하는 헬퍼 함수
  * DrizzleQueryError 인스턴스인지 확인합니다.
  */
-function isDatabaseError(error: unknown): error is DrizzleQueryError {
+export const isDatabaseError = (error: unknown): error is DrizzleQueryError => {
   return error instanceof DrizzleQueryError;
 }
 
@@ -13,6 +13,8 @@ function isDatabaseError(error: unknown): error is DrizzleQueryError {
  * 객체의 모든 메서드를 자동으로 래핑하여 데이터베이스 에러를 처리하는 고계함수
  * DrizzleQueryError가 발생하면 로그를 남기고 DomainInternalServerError를 throw합니다.
  * (DrizzleQueryError를 그대로 throw하면 message에 쿼리가 들어있기 때문에 쿼리를 숨기기 위함입니다)
+ * 
+ * API만 제공하는 프로젝트의 경우 이 고계함수를 사용하지 않고 globalErrorHandler에서만 DB에러를 처리해도 된다.
  * 
  * @param target 래핑할 객체
  * @returns Proxy로 래핑된 객체 (원본과 동일한 타입)

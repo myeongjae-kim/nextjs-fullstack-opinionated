@@ -1,4 +1,4 @@
-import { QueryOptions } from '@/core/common/domain/QueryOptions';
+import { SqlOptions } from '@/core/common/domain/SqlOptions';
 import { env } from '@/core/config/env';
 import { drizzle } from 'drizzle-orm/mysql2';
 import * as schema from './schema';
@@ -11,14 +11,5 @@ const _ = ({} as typeof dbReplica) satisfies typeof dbPrimary
 
 export type DatabaseClient = typeof dbPrimary;
 
-export const selectDbClient = (args?: QueryOptions): DatabaseClient => args?.useReplica ? dbReplica : dbPrimary;
+export const selectDbClient = (args?: SqlOptions): DatabaseClient => args?.useReplica ? dbReplica : dbPrimary;
 export type DbClientSelector = typeof selectDbClient;
-
-/*
-export class TransactionTemplate {
-  constructor(private readonly dbClient: typeof db) {
-  }
-
-  execute = this.dbClient.transaction.bind(this.dbClient);
-}
-*/

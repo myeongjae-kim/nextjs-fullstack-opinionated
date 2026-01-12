@@ -2,7 +2,7 @@ import { ArticleCommandPort } from "@/core/article/application/port/out/ArticleC
 import { ArticleQueryPort } from "@/core/article/application/port/out/ArticleQueryPort";
 import { Article, ArticleCreation, ArticleUpdate } from "@/core/article/domain/Article";
 import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
-import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { SqlOptions } from "@/core/common/domain/SqlOptions";
 import { withDatabaseErrorHandling } from "@/core/common/util/withDatabaseErrorHandling";
 import { Autowired } from "@/core/config/Autowired";
 import type { DbClientSelector } from "@/lib/db/drizzle";
@@ -18,7 +18,7 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
     return withDatabaseErrorHandling(this);
   }
 
-  async findAll(queryOptions: QueryOptions): Promise<Article[]> {
+  async findAll(queryOptions: SqlOptions): Promise<Article[]> {
     const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
     const results = await db.select().from(article);
 
@@ -33,7 +33,7 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
     });
   }
 
-  async getById(id: Article["id"], queryOptions: QueryOptions): Promise<Article> {
+  async getById(id: Article["id"], queryOptions: SqlOptions): Promise<Article> {
     const db = this.dbClientSelector({ useReplica: queryOptions.useReplica });
     const results = await db.select().from(article).where(eq(article.id, id)).limit(1);
 

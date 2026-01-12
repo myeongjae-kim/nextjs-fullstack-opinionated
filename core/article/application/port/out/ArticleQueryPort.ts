@@ -1,7 +1,7 @@
 import { Article } from "@/core/article/domain/Article";
-import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { SqlOptions } from "@/core/common/domain/SqlOptions";
 
 export interface ArticleQueryPort {
-  findAll(queryOptions: QueryOptions): Promise<Article[]>;
-  getById(id: Article["id"], queryOptions: QueryOptions): Promise<Article>;
+  findAll(queryOptions: SqlOptions): Promise<Article[]>;
+  getById(id: Article["id"], queryOptions: SqlOptions): Promise<Article>;
 }

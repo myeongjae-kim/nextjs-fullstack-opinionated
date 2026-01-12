@@ -1,4 +1,4 @@
-import { QueryOptions } from "@/core/common/domain/QueryOptions";
+import { SqlOptions } from "@/core/common/domain/SqlOptions";
 import { User } from "@/core/user/domain/User";
 
 export interface UserWithPasswordHash extends User {
@@ -6,6 +6,6 @@ export interface UserWithPasswordHash extends User {
 }
 
 export interface UserQueryPort {
-  findByLoginId(loginId: string, queryOptions: QueryOptions): Promise<UserWithPasswordHash | null>;
-  findByUlid(ulid: string, queryOptions: QueryOptions): Promise<User | null>;
+  findByLoginId(loginId: string, queryOptions: SqlOptions): Promise<UserWithPasswordHash | null>;
+  findByUlid(ulid: string, queryOptions: SqlOptions): Promise<User | null>;
 }
