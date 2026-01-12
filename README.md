@@ -79,7 +79,53 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 ## Why?
 
-TBD
+### (단위 시간당 가치) = (가치) / (시간), 시간을 줄여보자
+
+단위 시간당 가치(Value) 창출량을 10배, 100배 높이기 위해서는 가치가 큰 일(=분자)을 수행하는 것 뿐만 아니라 소요되는 시간(=분모)을 줄이는 것도 중요합니다. 이미 우리 회사는 사람보다 AI가 사람보다 훨씬 많은 코드를 작성하고 있기 때문에, 이제는 사람이 좋은 코드를 작성하기 위한 노력보다 AI가 좋은 코드를 작성할 수 있는 환경을 만들어야 단위 시간당 가치를 높이는 일에 더 많이 기여할 수 있어 보입니다.
+
+이 저장소는 중소형 프로젝트를 위해 Next.js로 DB 뿐만 아니라 백엔드 API까지 제공하는 예시 코드를 작성하려는 좋겠다는 생각으로 만들었지만, 자료를 수집하고 생각을 정리할수록 프로젝트의 크기에 상관없이 TypeScript를 사용해 기술 스택을 통일하는 것이 좋겠다는 결론에 이르렀습니다.
+
+### AI는 TypeScript를 좋아해
+
+여러 AI모델은 Java, Kotlin, TypeScript 중에 공통적으로 TypeScript에 가장 자신이 있다고 답변했습니다 (GPT-5.2, Gemini 3 Flash, Grok Code, Sonnet 4.5). TypeScript는 프론트엔드, 백엔드는 물론 여러 분야에 가리지 않고 퍼져있고 인기도 높기 때문에 AI가 학습에 활용할 수 있는 코드의 양이 다른 두 언어보다 '압도적으로(AI가 이렇게 말했음)' 많습니다. 그리고 TypeScript의 강력한 타입 시스템은 AI가 코드를 더 잘 작성할 수 있게 해줍니다. TypeScript의 강력한 타입 연산 및 추론 기능과 Literal String 등 고급 타입 기능과 빡빡하게 설정한 eslint는 컴파일타임에 에러를 더 많이 잡아내 AI에게 빠른 피드백 루프를 제공합니다.
+
+### TypeScript로 Spring 따라하기
+
+우리 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을 받지 않는 성격의 서비스들을 구현할 때도 많습니다. TypeScript, Next.js, Vercel, PlanetScale 만으로 고객사의 문제를 대부분 해결할 수 있어 보이는데, 다만 아쉬운 점은 Spring Boot가 제공했던 여러 가지 기능을 대체할 라이브러리를 찾거나 직접 구현해야 한다는 것입니다. 이 저장소는 TypeScript로 프론트엔드와 백엔드 코드를 작성하면서 기존에 Spring Boot가 제공했던 Developer Experience를 최대한 유사하게 만들어보기 위한 노력의 결과입니다.
+
+inversify, inversify-typesafe, inversify-typesafe-spring-like 관련 내용
+
+### Serverless가 편하긴 해
+
+Vercel, PlanetScale. ColdStart 시간 줄이기. AWS Lambda와 ColdStart
+
+### Next.js로 모든걸 할 수는 없지만, Hono와 함께라면?
+
+Next.js의 아쉬운 성능, API Layer로서 Next.js를 쓰려고 하니 쏟아진 수많은 악플들. 대안을 찾다가 Hono를 발견. Cloudflare Workers에서 동작하는 웹서버를 만드는 것이 이 프로젝트의 시작. 여러 Serverless runtime에서 실행이 가능하고 심지어 Next.js 위에서도 실행이 가능. 초기엔 Next.js + Hono로 시작한 뒤, 제품이 성장하면 Hono 부분만 떼어내서 백엔드 API 서버를 만들면 된다.
+
+이 프로젝트도 main은 Next.js + Hono로 구성한 FullStack이지만, hono 브랜치는 Next.js를 제거하고 Node.js 위에서 바로 Hono를 사용하는 코드, hono-deno 브랜치는 Deno위에서 바로 Hono를 사용하는 코드를 작성했다.
+
+### 타입-안전 (Type-Safety)
+
+hono, drizzle, inversify-typesafe 예시 설명
+
+### Infrastructure 선택 기준에 대하여
+
+위에서 적은 내용 조금 더 풀어서 쓰기 + 비용에 대한 자세한 이야기
+
+### Web Layer는 함수형 패러다임, Business Layer는 객체지향 패러다임
+
+아키텍처 설명. Web Layer에 전혀 영향을 받지 않는 Business Layer -> core 디렉토리.
+
+### 그리운 Spring Boot
+
+예시 코드를 작성해보니 Spring Boot에 비해서 직접 채워넣어야 하는 부분이 많았다. 제가 생각하기에 가장 효과적인 형태로 코드를 작성했고, 더 좋은 아이디어가 있다면 기여해주기 바랍니다.
+
+- 코드 훑어보면서 신경써서 작성한 코드 listing.
+
+(위 list를 아래 Code Examples 항목에 추가하기)
+
+(초고)
 
 - AI시대, AI가 Java, Kotlin 코드보다 타입스크립트 코드를 잘 짬: https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32
 - 타입스크립트 타입 추론 기능을 활용해서 컴파일타임에 오류를 많이 잡아낼수록 AI가 좋은 코드를 생성함. eslint와 타입스크립트 컴파일러를 AI가 실행해서 스스로 문제 해결 가능.
@@ -127,7 +173,7 @@ TBD
 
 1. 애플리케이션 로직 관련 업데이트는 main 브랜치에서 한다.
 2. 파생 브랜치로의 변경사항은 rebase를 한다.
-  1. main -> backend-only -> backend-only-deno 순서로 rebase하고 force push
+  1. main -> hono -> hono-deno 순서로 rebase하고 force push
 
 ## Commands
 
