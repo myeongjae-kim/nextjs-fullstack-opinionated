@@ -226,11 +226,12 @@ constructor(
 ### TransactionTemplate
 - 모든 데이터베이스 쿼리는 `TransactionTemplate`의 `execute` 메서드 내에서 실행되어야 합니다.
 - 첫 번째 인자로 `SqlOptions`를 전달하여 읽기 전용 여부를 명시합니다.
+- 두 번째 인자인 람다 함수의 매개변수는 `tx`를 사용합니다 (transaction의 약자).
 
 ```typescript
 async findByUlid(ulid: string, sqlOptions: SqlOptions): Promise<User | null> {
-  return this.transactionTemplate.execute(sqlOptions, async (db) => {
-    const results = await db.select().from(user).where(eq(user.ulid, ulid)).limit(1);
+  return this.transactionTemplate.execute(sqlOptions, async (tx) => {
+    const results = await tx.select().from(user).where(eq(user.ulid, ulid)).limit(1);
     return results[0] ?? null;
   });
 }
