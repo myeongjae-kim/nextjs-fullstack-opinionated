@@ -19,8 +19,8 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
   }
 
   async findAll(sqlOptions: SqlOptions): Promise<Article[]> {
-    return this.transactionTemplate.execute(sqlOptions, async (db) => {
-      const results = await db.select().from(article);
+    return this.transactionTemplate.execute(sqlOptions, async (tx) => {
+      const results = await tx.select().from(article);
 
       return results.map(row => {
         return ({
@@ -35,8 +35,8 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
   }
 
   async getById(id: Article["id"], sqlOptions: SqlOptions): Promise<Article> {
-    return this.transactionTemplate.execute(sqlOptions, async (db) => {
-      const results = await db.select().from(article).where(eq(article.id, id)).limit(1);
+    return this.transactionTemplate.execute(sqlOptions, async (tx) => {
+      const results = await tx.select().from(article).where(eq(article.id, id)).limit(1);
 
       const row = results[0];
       if (!row) {
@@ -54,8 +54,8 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
   }
 
   async createArticle(articleData: ArticleCreation): Promise<Pick<Article, "id">> {
-    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
-      const result = await db.insert(article).values({
+    return this.transactionTemplate.execute({ useReplica: false }, async (tx) => {
+      const result = await tx.insert(article).values({
         title: articleData.title,
         content: articleData.content,
       });
@@ -67,8 +67,8 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
   }
 
   async updateArticle(id: Article["id"], articleData: ArticleUpdate): Promise<void> {
-    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
-      await db.update(article)
+    return this.transactionTemplate.execute({ useReplica: false }, async (tx) => {
+      await tx.update(article)
         .set({
           ...(articleData.title !== undefined && { title: articleData.title }),
           ...(articleData.content !== undefined && { content: articleData.content }),
@@ -79,8 +79,8 @@ export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQue
   }
 
   async deleteArticle(id: Article["id"]): Promise<void> {
-    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
-      await db.delete(article).where(eq(article.id, id));
+    return this.transactionTemplate.execute({ useReplica: false }, async (tx) => {
+      await tx.delete(article).where(eq(article.id, id));
     });
   }
 }

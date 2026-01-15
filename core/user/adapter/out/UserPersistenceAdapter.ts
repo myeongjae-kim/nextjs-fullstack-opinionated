@@ -18,8 +18,8 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
   }
 
   async createUser(userData: UserSignUp & { ulid: string; passwordHash: string }): Promise<Pick<User, "id" | "ulid">> {
-    return this.transactionTemplate.execute({ useReplica: false }, async (db) => {
-      const result = await db.insert(user).values({
+    return this.transactionTemplate.execute({ useReplica: false }, async (tx) => {
+      const result = await tx.insert(user).values({
         ulid: userData.ulid,
         loginId: userData.loginId,
         passwordHash: userData.passwordHash,
@@ -28,7 +28,7 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
       });
 
       const insertedId = Number(result[0].insertId);
-      const insertedUser = await db.select().from(user).where(eq(user.id, insertedId)).limit(1);
+      const insertedUser = await tx.select().from(user).where(eq(user.id, insertedId)).limit(1);
 
       const row = insertedUser[0];
       if (!row) {
@@ -43,8 +43,8 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
   }
 
   async findByLoginId(loginId: string, sqlOptions: SqlOptions): Promise<UserWithPasswordHash | null> {
-    return this.transactionTemplate.execute(sqlOptions, async (db) => {
-      const results = await db.select().from(user).where(eq(user.loginId, loginId)).limit(1);
+    return this.transactionTemplate.execute(sqlOptions, async (tx) => {
+      const results = await tx.select().from(user).where(eq(user.loginId, loginId)).limit(1);
 
       if (results.length === 0) {
         return null;
@@ -69,8 +69,8 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
   }
 
   async findByUlid(ulid: string, sqlOptions: SqlOptions): Promise<User | null> {
-    return this.transactionTemplate.execute(sqlOptions, async (db) => {
-      const results = await db.select().from(user).where(eq(user.ulid, ulid)).limit(1);
+    return this.transactionTemplate.execute(sqlOptions, async (tx) => {
+      const results = await tx.select().from(user).where(eq(user.ulid, ulid)).limit(1);
 
       if (results.length === 0) {
         return null;
