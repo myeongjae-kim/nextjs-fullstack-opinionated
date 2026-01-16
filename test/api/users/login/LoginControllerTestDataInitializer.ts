@@ -1,5 +1,5 @@
-import { DatabaseClient } from '@/lib/db/drizzle';
-import { user } from '@/lib/db/schema';
+import { DatabaseClient } from '@/lib/db/drizzle.js';
+import { user } from '@/lib/db/schema.js';
 import bcrypt from 'bcrypt';
 import { ulid } from 'ulid';
 

@@ -21,7 +21,7 @@ async function main() {
   const AUTH_SECRET = generateAuthSecret();
 
   await writeEnvFile({
-    NEXT_PUBLIC_PROFILE: 'local',
+    PROFILE: 'local',
     DB_PRIMARY_URL: 'mysql://root:root@localhost:3306/public',
     DB_REPLICA_URL: 'mysql://root:root@localhost:3306/public',
     DB_PRIMARY_URL_LOCAL: 'mysql://root:root@localhost:3306/public',

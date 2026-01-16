@@ -1,11 +1,11 @@
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
-import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate';
-import { withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling';
-import { Autowired } from '@/core/config/Autowired';
-import { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort';
-import { UserQueryPort, UserWithPasswordHash } from '@/core/user/application/port/out/UserQueryPort';
-import { User, UserSignUp } from '@/core/user/domain/User';
-import { user } from '@/lib/db/schema';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.js';
+import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate.js';
+import { withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling.js';
+import { Autowired } from '@/core/config/Autowired.js';
+import { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort.js';
+import { UserQueryPort, UserWithPasswordHash } from '@/core/user/application/port/out/UserQueryPort.js';
+import { User, UserSignUp } from '@/core/user/domain/User.js';
+import { user } from '@/lib/db/schema.js';
 import { eq } from 'drizzle-orm';
 
 export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {

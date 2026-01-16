@@ -14,7 +14,7 @@
   - **In Ports**: Use Case 인터페이스 (`core/{domain}/application/port/in/`)
   - **Out Ports**: Repository/Adapter 인터페이스 (`core/{domain}/application/port/out/`)
 - **Adapters**: 외부 시스템과의 통신 (`core/{domain}/adapter/out/`)
-- **Controllers**: API 엔드포인트 (`app/api/[...route]/{domain}/`)
+- **Controllers**: API 엔드포인트 (`app/api/{domain}/`)
 
 ### 의존성 방향
 
@@ -47,9 +47,12 @@ core/
     adapter/
       out/           # Repository 구현 (Persistence, InMemory 등)
 
-app/api/[...route]/
-  {domain}/
-    {Action}{Domain}Controller.ts  # API 컨트롤러
+app/
+  index.ts           # 서버 시작
+  serverApp.ts       # OpenAPIHono 구성, basePath('/api'), middleware/error/docs, 컨트롤러 등록
+  api/
+    {domain}/
+      .../{Action}{Domain}Controller.ts  # API 컨트롤러 (API 경로에 맞는 디렉토리 구조)
 
 lib/db/
   schema.ts          # 데이터베이스 스키마
@@ -57,7 +60,7 @@ lib/db/
 
 test/api/
   {domain}/
-    {Action}{Domain}Controller.int.test.ts  # 통합 테스트
+    .../{Action}{Domain}Controller.int.test.ts  # 통합 테스트
 ```
 
 ## 네이밍 컨벤션
@@ -84,42 +87,30 @@ test/api/
 
 ## Import 규칙
 
-### Import 경로 (필수)
-- TypeScript/TSX에서는 **상대경로(`./`, `../`) import를 사용하지 않습니다.**
-  - ESLint `no-restricted-imports` 규칙으로 제한됩니다.
-  - 프로젝트 내부 모듈은 `@/` alias를 사용합니다.
-- 외부 라이브러리(npm 패키지)는 기존 import 경로를 그대로 사용합니다.
-
-### Import 순서 (권장)
-- `'use client';`가 필요한 파일은 최상단에 둡니다.
-- side-effect import(예: `import '@/app/globals.css';`)는 import 블록의 최상단에 둡니다.
-- 나머지는 다음과 같이 **그룹을 나누고, 그룹 사이에 빈 줄**을 둡니다.
-  1. 프로젝트 내부 절대 경로 (`@/`)
-  2. 외부 라이브러리
+### Import 순서
+1. 절대 경로 (`@/`) 먼저
+2. 외부 라이브러리
+3. 상대 경로 (최소화)
 
 ### 타입 Import
 - 타입만 import할 때는 `import type` 사용
-- 값과 타입을 함께 import할 때는 `import { value, type TypeName }` 형태를 사용할 수 있습니다.
-- 예:
-  - `import type { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';`
-  - `import { loginAction, type LoginActionResult } from '@/app/server-actions/login/actions';`
+- 예: `import type { ArticleQueryPort } from "@/core/article/application/port/out/ArticleQueryPort.js";`
 
 ### Import 그룹화
 ```typescript
-// 0. side-effect import (있는 경우)
-import '@/app/globals.css';
+// 1. 절대 경로 - 도메인/인터페이스
+import { ArticleCommandPort } from "@/core/article/application/port/out/ArticleCommandPort.js";
+import { Article, ArticleCreation } from "@/core/article/domain/Article.js";
 
-// 1. 절대 경로(@/) - 도메인/인터페이스
-import type { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';
-import { Article, ArticleCreation } from '@/core/article/domain/Article';
-
-// 2. 절대 경로(@/) - 공통/인프라
-import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
-import { Autowired } from '@/core/config/Autowired';
-import { article } from '@/lib/db/schema';
+// 2. 절대 경로 - 공통
+import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError.js";
+import { Autowired } from "@/core/config/Autowired.js";
 
 // 3. 외부 라이브러리
-import { eq } from 'drizzle-orm';
+import { eq } from "drizzle-orm";
+
+// 4. 상대 경로 (최소화)
+import { article } from "@/lib/db/schema.js";
 ```
 
 ## 타입 정의
@@ -180,8 +171,8 @@ export const article = mysqlTable('article', {
 
 ### 구조
 ```typescript
-import { Controller } from '@/app/api/[...route]/config/Controller';
-import { createRoute } from '@hono/zod-openapi';
+import { createRoute } from "@hono/zod-openapi";
+import { Controller } from "@/app/config/Controller.js";
 
 const route = createRoute({
   method: 'post',
@@ -206,8 +197,8 @@ export default Controller().openapi(route, async (c) => {
 
 ### 디렉토리 구조
 - 컨트롤러는 API 경로에 맞게 디렉토리 구조를 가집니다
-- 예: `POST /api/users/signup` → `app/api/[...route]/users/signup/SignUpController.ts`
-- 예: `GET /api/users/me` → `app/api/[...route]/users/me/GetCurrentUserController.ts`
+- 예: `POST /api/users/signup` → `app/api/users/signup/SignUpController.ts`
+- 예: `GET /api/users/me` → `app/api/users/me/GetCurrentUserController.ts`
 - 테스트 파일도 동일한 디렉토리 구조를 따릅니다
 - 예: `test/api/users/signup/SignUpController.int.test.ts`
 
@@ -276,40 +267,12 @@ export class UserPersistenceAdapter implements UserCommandPort, UserQueryPort {
 }
 ```
 
-## 프론트엔드 API 클라이언트 (openapi-react-query)
+## Node.js 런타임
 
-### 클라이언트 생성 (`$api.ts`)
-- `createFetchClient`와 `createClient`를 사용하여 타입 안전한 API 클라이언트를 생성합니다.
-
-```typescript
-const fetchClient = createFetchClient<paths>({
-  baseUrl: "/",
-});
-export const $api = createClient(fetchClient);
-```
-
-### useQuery 사용법
-- `$api.useQuery(method, path, fetchOptions, queryOptions)` 형식을 따릅니다.
-- **중요**: `queryOptions` (enabled, retry, staleTime 등)는 **네 번째 매개변수**입니다.
-
-```typescript
-const { data, isLoading } = $api.useQuery(
-  "get",
-  "/api/users/me",
-  undefined, // fetchOptions (params, body 등)
-  {
-    enabled: !!accessToken, // queryOptions
-    retry: false,
-  }
-);
-```
-
-### useMutation 사용법
-- `$api.useMutation(method, path, queryOptions)` 형식을 따릅니다.
-
-```typescript
-const { mutateAsync } = $api.useMutation("post", "/api/users/login");
-```
+- 빌드: `pnpm build` (`tsc` → `tsc-alias` → `ts2mjs dist --remove-source`)
+- 실행: `pnpm start` (`node --env-file=.env dist/app/index.mjs`)
+- 웹 서버: `@hono/node-server`로 Hono 앱을 실행 (`app/index.ts`). 기본 포트는 8080이며, `--port`로 변경할 수 있습니다.
+- OpenAPI 문서: `app/serverApp.ts`에서 OpenAPI 문서를 제공하며, `PROFILE !== 'prod'`일 때만 활성화됩니다.
 
 ## 테스트
 
@@ -319,7 +282,7 @@ const { mutateAsync } = $api.useMutation("post", "/api/users/login");
 
 ### 구조
 ```typescript
-import { testEnv } from "@/test/testEnv";
+import { testEnv } from "@/test/testEnv.js";
 import { spec } from "pactum";
 import { describe, it } from "vitest";
 

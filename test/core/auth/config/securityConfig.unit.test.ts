@@ -1,4 +1,4 @@
-import { isApiAuthRequired } from '@/core/auth/config/securityConfig';
+import { isApiAuthRequired } from '@/core/auth/config/securityConfig.js';
 import { describe, expect, it } from 'vitest';
 
 describe('isApiAuthRequired', () => {

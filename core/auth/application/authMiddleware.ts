@@ -1,8 +1,8 @@
-import { isApiAuthRequired } from '@/core/auth/config/securityConfig';
-import { AuthContext } from '@/core/auth/domain/AuthContext';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
-import { env } from '@/core/config/env';
+import { isApiAuthRequired } from '@/core/auth/config/securityConfig.js';
+import { AuthContext } from '@/core/auth/domain/AuthContext.js';
+import { UserDetails } from '@/core/auth/domain/UserDetails.js';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError.js';
+import { env } from '@/core/config/env.js';
 import { createMiddleware } from 'hono/factory';
 import jwt from 'jsonwebtoken';
 

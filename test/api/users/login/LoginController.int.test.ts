@@ -1,5 +1,5 @@
-import { LoginControllerTestDataInitializer } from '@/test/api/users/login/LoginControllerTestDataInitializer';
-import { dbLocal } from '@/test/dbLocal';
+import { LoginControllerTestDataInitializer } from '@/test/api/users/login/LoginControllerTestDataInitializer.js';
+import { dbLocal } from '@/test/dbLocal.js';
 import { spec } from 'pactum';
 import { describe, it } from 'vitest';
 

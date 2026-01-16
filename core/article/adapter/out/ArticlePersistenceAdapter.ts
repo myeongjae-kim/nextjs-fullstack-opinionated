@@ -1,12 +1,12 @@
-import { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort';
-import { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';
-import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article';
-import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
-import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate';
-import { withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling';
-import { Autowired } from '@/core/config/Autowired';
-import { article } from '@/lib/db/schema';
+import { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort.js';
+import { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort.js';
+import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article.js';
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError.js';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.js';
+import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate.js';
+import { withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling.js';
+import { Autowired } from '@/core/config/Autowired.js';
+import { article } from '@/lib/db/schema.js';
 import { eq } from 'drizzle-orm';
 
 export class ArticlePersistenceAdapter implements ArticleCommandPort, ArticleQueryPort {

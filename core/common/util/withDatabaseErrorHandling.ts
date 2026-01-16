@@ -1,4 +1,4 @@
-import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError';
+import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError.js';
 import { DrizzleQueryError } from 'drizzle-orm';
 
 /**

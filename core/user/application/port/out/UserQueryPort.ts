@@ -1,5 +1,5 @@
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
-import { User } from '@/core/user/domain/User';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.js';
+import { User } from '@/core/user/domain/User.js';
 
 export interface UserWithPasswordHash extends User {
   passwordHash: string;

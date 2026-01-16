@@ -1,7 +1,7 @@
-import { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort';
-import { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';
-import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article';
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
+import { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort.js';
+import { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort.js';
+import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article.js';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.js';
 
 export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort {
   async findAll(_sqlOptions: SqlOptions): Promise<Article[]> {

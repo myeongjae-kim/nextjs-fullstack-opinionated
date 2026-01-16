@@ -1,4 +1,4 @@
-import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article';
+import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article.js';
 
 export interface ArticleCommandPort {
   createArticle(article: ArticleCreation): Promise<Pick<Article, 'id'>>;

@@ -1,6 +1,6 @@
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { applicationContext } from '@/core/config/applicationContext';
-import { env } from '@/core/config/env';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.js';
+import { applicationContext } from '@/core/config/applicationContext.js';
+import { env } from '@/core/config/env.js';
 import jwt from 'jsonwebtoken';
 
 export interface TokenPayload {

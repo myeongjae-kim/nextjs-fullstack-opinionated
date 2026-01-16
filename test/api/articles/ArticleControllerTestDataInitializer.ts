@@ -1,8 +1,8 @@
-import { TokenService } from '@/core/auth/application/TokenService';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { DatabaseClient } from '@/lib/db/drizzle';
-import { article, user } from '@/lib/db/schema';
+import { TokenService } from '@/core/auth/application/TokenService.js';
+import { UserDetails } from '@/core/auth/domain/UserDetails.js';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.js';
+import { DatabaseClient } from '@/lib/db/drizzle.js';
+import { article, user } from '@/lib/db/schema.js';
 import bcrypt from 'bcrypt';
 import { ulid } from 'ulid';
 

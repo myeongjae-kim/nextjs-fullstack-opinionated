@@ -1,20 +1,12 @@
-import tselintPlugin from '@typescript-eslint/eslint-plugin';
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import tselintPlugin from "@typescript-eslint/eslint-plugin";
+import importPlugin from 'eslint-plugin-import';
 import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from 'typescript-eslint';
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
     "**/*.mjs",
+    "dist/**",
   ]),
   ...tseslint.configs.recommendedTypeChecked,
   {
@@ -25,6 +17,7 @@ const eslintConfig = defineConfig([
     },
     plugins: {
       '@typescript-eslint/eslint-plugin': tselintPlugin,
+      'import': importPlugin,
     },
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -41,6 +34,14 @@ const eslintConfig = defineConfig([
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/func-call-spacing': 'off',
+      'import/extensions': [
+        'error',
+        'ignorePackages',
+        {
+          js: 'always',
+          ts: 'never'
+        }
+      ],
       'no-restricted-imports': [
         'error',
         {
@@ -61,6 +62,13 @@ const eslintConfig = defineConfig([
         }
       ]
     },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.ts', '.js']
+        }
+      }
+    }
   }
 ]);
 

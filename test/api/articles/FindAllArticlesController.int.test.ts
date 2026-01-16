@@ -1,5 +1,5 @@
-import { article } from '@/lib/db/schema';
-import { dbLocal } from '@/test/dbLocal';
+import { article } from '@/lib/db/schema.js';
+import { dbLocal } from '@/test/dbLocal.js';
 import { spec } from 'pactum';
 import { describe, it } from 'vitest';
 

@@ -1,14 +1,14 @@
-import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
-import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
-import { Autowired } from '@/core/config/Autowired';
-import { env } from '@/core/config/env';
-import { LoginUseCase } from '@/core/user/application/port/in/LoginUseCase';
-import { RefreshTokenUseCase } from '@/core/user/application/port/in/RefreshTokenUseCase';
-import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort';
-import { RefreshToken, UserLogin } from '@/core/user/domain/User';
+import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase.js';
+import { UserDetails } from '@/core/auth/domain/UserDetails.js';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.js';
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError.js';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError.js';
+import { Autowired } from '@/core/config/Autowired.js';
+import { env } from '@/core/config/env.js';
+import { LoginUseCase } from '@/core/user/application/port/in/LoginUseCase.js';
+import { RefreshTokenUseCase } from '@/core/user/application/port/in/RefreshTokenUseCase.js';
+import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort.js';
+import { RefreshToken, UserLogin } from '@/core/user/domain/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 

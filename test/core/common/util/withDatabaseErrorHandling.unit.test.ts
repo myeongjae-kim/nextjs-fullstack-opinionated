@@ -1,5 +1,5 @@
-import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError';
-import { isDatabaseError, withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling';
+import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError.js';
+import { isDatabaseError, withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling.js';
 import { DrizzleError, DrizzleQueryError } from 'drizzle-orm';
 import { describe, expect, it, vi } from 'vitest';
 

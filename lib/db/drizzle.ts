@@ -1,6 +1,6 @@
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
-import { env } from '@/core/config/env';
-import * as schema from '@/lib/db/schema';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.js';
+import { env } from '@/core/config/env.js';
+import * as schema from '@/lib/db/schema.js';
 import { drizzle } from 'drizzle-orm/mysql2';
 
 export const dbPrimary = drizzle(env.DB_PRIMARY_URL, { schema, mode: 'default' });

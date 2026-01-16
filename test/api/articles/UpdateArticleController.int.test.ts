@@ -1,5 +1,5 @@
-import { ArticleControllerTestDataInitializer } from '@/test/api/articles/ArticleControllerTestDataInitializer';
-import { dbLocal } from '@/test/dbLocal';
+import { ArticleControllerTestDataInitializer } from '@/test/api/articles/ArticleControllerTestDataInitializer.js';
+import { dbLocal } from '@/test/dbLocal.js';
 import { spec } from 'pactum';
 import { describe, it } from 'vitest';
 

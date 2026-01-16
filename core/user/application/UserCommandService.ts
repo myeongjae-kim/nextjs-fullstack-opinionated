@@ -1,13 +1,13 @@
-import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { DomainBadRequestError } from '@/core/common/domain/DomainBadRequestError';
-import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate';
-import { Autowired } from '@/core/config/Autowired';
-import { SignUpUseCase } from '@/core/user/application/port/in/SignUpUseCase';
-import type { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort';
-import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort';
-import { UserSignUp } from '@/core/user/domain/User';
+import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase.js';
+import { UserDetails } from '@/core/auth/domain/UserDetails.js';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.js';
+import { DomainBadRequestError } from '@/core/common/domain/DomainBadRequestError.js';
+import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate.js';
+import { Autowired } from '@/core/config/Autowired.js';
+import { SignUpUseCase } from '@/core/user/application/port/in/SignUpUseCase.js';
+import type { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort.js';
+import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort.js';
+import { UserSignUp } from '@/core/user/domain/User.js';
 import bcrypt from 'bcrypt';
 import { ulid } from 'ulid';
 

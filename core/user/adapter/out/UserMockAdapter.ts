@@ -1,7 +1,7 @@
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
-import { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort';
-import { UserQueryPort, UserWithPasswordHash } from '@/core/user/application/port/out/UserQueryPort';
-import { User, UserSignUp } from '@/core/user/domain/User';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.js';
+import { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort.js';
+import { UserQueryPort, UserWithPasswordHash } from '@/core/user/application/port/out/UserQueryPort.js';
+import { User, UserSignUp } from '@/core/user/domain/User.js';
 
 export class UserMockAdapter implements UserCommandPort, UserQueryPort {
   private users: UserWithPasswordHash[] = [
