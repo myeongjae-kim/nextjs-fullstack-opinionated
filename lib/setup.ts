@@ -22,8 +22,10 @@ async function main() {
 
   await writeEnvFile({
     NEXT_PUBLIC_PROFILE: 'local',
-    POSTGRES_URL: "your-remote-db-url",
-    POSTGRES_URL_LOCAL: "postgresql://postgres:postgres@localhost:5432/postgres",
+    DB_PRIMARY_URL: "mysql://root:root@localhost:3306/public",
+    DB_REPLICA_URL: "mysql://root:root@localhost:3306/public",
+    DB_PRIMARY_URL_LOCAL: "mysql://root:root@localhost:3306/public",
+    USE_MOCK_ADAPTER: 'false',
     AUTH_SECRET,
   });
 

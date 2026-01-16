@@ -4,6 +4,17 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 백엔드 개발자 입장에서 Next.js를 Spring Boot와 비교했을 때 부족한 부분을 제 의견대로(opinionated) 채워넣었습니다.
 
+## Run
+
+```bash
+git clone https://github.com/myeongjae-kim/nextjs-fullstack-opinionated.git
+pnpm install
+pnpm setup
+docker-compose up -d
+pnpm db:migrate:local
+pnpm dev
+```
+
 ## Tech Stack Comparison
 
 |                             | Spring Boot                           | Next.js Fullstack Opinionated |
