@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
-import { AuthProvider, useAuth } from "./AuthContext";
-import { ReactQueryProvider } from "./ReactQueryProvider";
+import { AuthProvider, useAuth } from '@/app/use-apis/AuthContext';
+import { ReactQueryProvider } from '@/app/use-apis/ReactQueryProvider';
+import { usePathname, useRouter } from 'next/navigation';
+import { ReactNode, useEffect } from 'react';
 
 function AuthGuard({ children }: { children: ReactNode }) {
   const { principal, isLoading } = useAuth();
@@ -12,13 +12,13 @@ function AuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isLoading) {
-      const isAuthPage = pathname === "/use-apis/login" || pathname === "/use-apis/signup";
+      const isAuthPage = pathname === '/use-apis/login' || pathname === '/use-apis/signup';
       const isAuthenticated = !!principal;
 
       if (!isAuthenticated && !isAuthPage) {
-        router.push("/use-apis/login");
+        router.push('/use-apis/login');
       } else if (isAuthenticated && isAuthPage) {
-        router.push("/use-apis");
+        router.push('/use-apis');
       }
     }
   }, [principal, isLoading, pathname, router]);

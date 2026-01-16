@@ -1,10 +1,10 @@
-import { ApiError } from "@/core/common/domain/ApiError";
-import { DomainBadRequestError } from "@/core/common/domain/DomainBadRequestError";
-import { DomainInternalServerError } from "@/core/common/domain/DomainInternalServerError";
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
-import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
-import { isDatabaseError } from "@/core/common/util/withDatabaseErrorHandling";
-import { ErrorHandler } from "hono";
+import { ApiError } from '@/core/common/domain/ApiError';
+import { DomainBadRequestError } from '@/core/common/domain/DomainBadRequestError';
+import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError';
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
+import { isDatabaseError } from '@/core/common/util/withDatabaseErrorHandling';
+import { ErrorHandler } from 'hono';
 
 // 서버 책임의 에러의 경우 console.error로 로깅하고 500 에러 반환
 // 클라이언트 책임의 에러의 경우 해당 에러 클래스에 맞는 에러 코드와 메시지를 반환
@@ -13,8 +13,8 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
   if (e instanceof DomainBadRequestError) {
     return Response.json(new ApiError({
       status: 400,
-      error: "DOMAIN_BAD_REQUEST_ERROR",
-      code: "",
+      error: 'DOMAIN_BAD_REQUEST_ERROR',
+      code: '',
       message: e.message,
     }), { status: 400 });
   }
@@ -22,8 +22,8 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
   if (e instanceof DomainUnauthorizedError) {
     return Response.json(new ApiError({
       status: 401,
-      error: "DOMAIN_UNAUTHORIZED_ERROR",
-      code: "",
+      error: 'DOMAIN_UNAUTHORIZED_ERROR',
+      code: '',
       message: e.message,
     }), { status: 401 });
   }
@@ -31,8 +31,8 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
   if (e instanceof DomainNotFoundError) {
     return Response.json(new ApiError({
       status: 404,
-      error: "DOMAIN_NOT_FOUND_ERROR",
-      code: "",
+      error: 'DOMAIN_NOT_FOUND_ERROR',
+      code: '',
       message: e.message,
     }), { status: 404 });
   }
@@ -41,8 +41,8 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
     console.error(e);
     return Response.json(new ApiError({
       status: 500,
-      error: "INTERNAL_SERVER_ERROR",
-      code: "",
+      error: 'INTERNAL_SERVER_ERROR',
+      code: '',
       message: e.message,
     }), { status: 500 });
   }
@@ -51,17 +51,17 @@ export const globalErrorHandler: ErrorHandler = ((e) => {
     console.error(e);
     return Response.json(new ApiError({
       status: 500,
-      error: "INTERNAL_SERVER_ERROR",
-      code: "",
-      message: e.cause?.message ?? "An unexpected database error occurred",
+      error: 'INTERNAL_SERVER_ERROR',
+      code: '',
+      message: e.cause?.message ?? 'An unexpected database error occurred',
     }), { status: 500 });
   }
 
   console.error(e);
   return Response.json(new ApiError({
     status: 500,
-    error: "INTERNAL_SERVER_ERROR",
-    code: "",
+    error: 'INTERNAL_SERVER_ERROR',
+    code: '',
     message: (e as Error).message,
   }), { status: 500 });
 })

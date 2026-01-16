@@ -1,10 +1,10 @@
-import { TokenService } from "@/core/auth/application/TokenService";
-import { UserDetails } from "@/core/auth/domain/UserDetails";
-import { AuthResponse } from "@/core/common/domain/AuthResponse";
-import { DatabaseClient } from "@/lib/db/drizzle";
-import { article, user } from "@/lib/db/schema";
-import bcrypt from "bcrypt";
-import { ulid } from "ulid";
+import { TokenService } from '@/core/auth/application/TokenService';
+import { UserDetails } from '@/core/auth/domain/UserDetails';
+import { AuthResponse } from '@/core/common/domain/AuthResponse';
+import { DatabaseClient } from '@/lib/db/drizzle';
+import { article, user } from '@/lib/db/schema';
+import bcrypt from 'bcrypt';
+import { ulid } from 'ulid';
 
 export class ArticleControllerTestDataInitializer {
   constructor(private readonly dbClient: DatabaseClient) { }
@@ -15,8 +15,8 @@ export class ArticleControllerTestDataInitializer {
     await this.dbClient.delete(article);
 
     // 테스트용 유저 생성
-    const testLoginId = "loginuser";
-    const testPassword = "password123";
+    const testLoginId = 'loginuser';
+    const testPassword = 'password123';
     const passwordHash = await bcrypt.hash(testPassword, 10);
     const testUlid = ulid();
 
@@ -24,8 +24,8 @@ export class ArticleControllerTestDataInitializer {
       ulid: testUlid,
       loginId: testLoginId,
       passwordHash: passwordHash,
-      name: "Test User",
-      role: "member",
+      name: 'Test User',
+      role: 'member',
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -33,12 +33,12 @@ export class ArticleControllerTestDataInitializer {
     // 테스트용 article id 1번 생성
     await this.dbClient.insert(article).values({
       id: 1,
-      title: "Article 1",
-      content: "Content of article 1",
+      title: 'Article 1',
+      content: 'Content of article 1',
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
-    return new TokenService().generateToken(new UserDetails(testUlid, "member"));
+    return new TokenService().generateToken(new UserDetails(testUlid, 'member'));
   }
 }

@@ -1,12 +1,12 @@
+import { globalErrorHandler } from '@/app/api/[...route]/config/globalErrorHandler';
+import { authMiddleware } from '@/core/auth/application/authMiddleware';
 import { env } from '@/core/config/env';
 import { OpenAPIHono } from '@hono/zod-openapi';
-import { authMiddleware } from '../../../core/auth/application/authMiddleware';
-import { globalErrorHandler } from './config/globalErrorHandler';
 
 export const serverApp = new OpenAPIHono().basePath('/api');
 
 // basic settings
-serverApp.use("/*", authMiddleware).onError(globalErrorHandler)
+serverApp.use('/*', authMiddleware).onError(globalErrorHandler)
 
 // docs
 serverApp.openAPIRegistry.registerComponent('securitySchemes', 'bearerAuth', {
@@ -14,7 +14,7 @@ serverApp.openAPIRegistry.registerComponent('securitySchemes', 'bearerAuth', {
   scheme: 'bearer',
 })
 
-if (env.NEXT_PUBLIC_PROFILE !== "prod") {
+if (env.NEXT_PUBLIC_PROFILE !== 'prod') {
   serverApp.doc('/swagger', (c) => ({
     openapi: '3.0.0',
     info: {
@@ -28,7 +28,7 @@ if (env.NEXT_PUBLIC_PROFILE !== "prod") {
       },
     ],
   }))
-  serverApp.get("/docs", (c) => {
+  serverApp.get('/docs', (c) => {
     return c.html(`<!doctype html>
 <html>
 

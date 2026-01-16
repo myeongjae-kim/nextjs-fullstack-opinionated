@@ -1,10 +1,8 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useAuth } from '@/app/use-apis/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -12,16 +10,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useAuth } from "../AuthContext";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const signUpSchema = z.object({
-  loginId: z.string().min(1, "로그인 ID를 입력해주세요."),
-  password: z.string().min(1, "비밀번호를 입력해주세요."),
+  loginId: z.string().min(1, '로그인 ID를 입력해주세요.'),
+  password: z.string().min(1, '비밀번호를 입력해주세요.'),
   name: z.string().optional(),
 });
 
@@ -36,22 +36,22 @@ export default function SignUpPage() {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      loginId: "",
-      password: "",
-      name: "",
+      loginId: '',
+      password: '',
+      name: '',
     },
   });
 
   const onSubmit = async (data: SignUpFormValues) => {
     setError(null);
     setIsPending(true);
-    
+
     const result = await signup(data.loginId, data.password, data.name);
-    
+
     if (result.success) {
-      router.push("/use-apis");
+      router.push('/use-apis');
     } else {
-      setError(result.error || "회원가입에 실패했습니다.");
+      setError(result.error || '회원가입에 실패했습니다.');
       setIsPending(false);
     }
   };
@@ -74,7 +74,7 @@ export default function SignUpPage() {
                   {error}
                 </div>
               )}
-              
+
               <FormField
                 control={form.control}
                 name="loginId"
@@ -118,7 +118,7 @@ export default function SignUpPage() {
               />
 
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "회원가입 중..." : "회원가입"}
+                {isPending ? '회원가입 중...' : '회원가입'}
               </Button>
             </form>
           </Form>

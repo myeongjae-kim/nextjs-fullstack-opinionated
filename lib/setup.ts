@@ -22,9 +22,9 @@ async function main() {
 
   await writeEnvFile({
     NEXT_PUBLIC_PROFILE: 'local',
-    DB_PRIMARY_URL: "mysql://root:root@localhost:3306/public",
-    DB_REPLICA_URL: "mysql://root:root@localhost:3306/public",
-    DB_PRIMARY_URL_LOCAL: "mysql://root:root@localhost:3306/public",
+    DB_PRIMARY_URL: 'mysql://root:root@localhost:3306/public',
+    DB_REPLICA_URL: 'mysql://root:root@localhost:3306/public',
+    DB_PRIMARY_URL_LOCAL: 'mysql://root:root@localhost:3306/public',
     USE_MOCK_ADAPTER: 'false',
     AUTH_SECRET,
   });

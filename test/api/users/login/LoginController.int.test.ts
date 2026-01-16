@@ -1,17 +1,17 @@
-import { dbLocal } from "@/test/dbLocal";
-import { spec } from "pactum";
-import { describe, it } from "vitest";
-import { LoginControllerTestDataInitializer } from "./LoginControllerTestDataInitializer";
+import { LoginControllerTestDataInitializer } from '@/test/api/users/login/LoginControllerTestDataInitializer';
+import { dbLocal } from '@/test/dbLocal';
+import { spec } from 'pactum';
+import { describe, it } from 'vitest';
 
-describe("POST /api/users/login", () => {
-  it("should return 200 with access_token and refresh_token", async () => {
+describe('POST /api/users/login', () => {
+  it('should return 200 with access_token and refresh_token', async () => {
     await new LoginControllerTestDataInitializer(dbLocal).initialize();
 
     await spec()
-      .post("/api/users/login")
+      .post('/api/users/login')
       .withBody({
-        loginId: "loginuser",
-        password: "password123",
+        loginId: 'loginuser',
+        password: 'password123',
       })
       .expectStatus(200)
       .expectJsonLike({
@@ -20,55 +20,55 @@ describe("POST /api/users/login", () => {
       });
   });
 
-  it("should return 401 when loginId is invalid", async () => {
+  it('should return 401 when loginId is invalid', async () => {
     await spec()
-      .post("/api/users/login")
+      .post('/api/users/login')
       .withBody({
-        loginId: "nonexistent",
-        password: "password123",
+        loginId: 'nonexistent',
+        password: 'password123',
       })
       .expectStatus(401)
       .expectJsonLike({
-        "code": "",
-        "error": "DOMAIN_UNAUTHORIZED_ERROR",
-        "status": 401,
-        "timestamp": /.*/,
+        'code': '',
+        'error': 'DOMAIN_UNAUTHORIZED_ERROR',
+        'status': 401,
+        'timestamp': /.*/,
       });
   });
 
-  it("should return 401 when password is invalid", async () => {
+  it('should return 401 when password is invalid', async () => {
     await new LoginControllerTestDataInitializer(dbLocal).initialize();
 
     // Then try to login with wrong password
     await spec()
-      .post("/api/users/login")
+      .post('/api/users/login')
       .withBody({
-        loginId: "loginuser",
-        password: "wrongpassword",
+        loginId: 'loginuser',
+        password: 'wrongpassword',
       })
       .expectStatus(401)
       .expectJsonLike({
-        "code": "",
-        "error": "DOMAIN_UNAUTHORIZED_ERROR",
-        "status": 401,
-        "timestamp": /.*/,
+        'code': '',
+        'error': 'DOMAIN_UNAUTHORIZED_ERROR',
+        'status': 401,
+        'timestamp': /.*/,
       });
   });
 
-  it("should return 400 when loginId is missing", async () => {
+  it('should return 400 when loginId is missing', async () => {
     await spec()
-      .post("/api/users/login")
+      .post('/api/users/login')
       .withBody({
-        password: "password123",
+        password: 'password123',
       })
       .expectStatus(400);
   });
 
-  it("should return 400 when password is missing", async () => {
+  it('should return 400 when password is missing', async () => {
     await spec()
-      .post("/api/users/login")
+      .post('/api/users/login')
       .withBody({
-        loginId: "testuser",
+        loginId: 'testuser',
       })
       .expectStatus(400);
   });

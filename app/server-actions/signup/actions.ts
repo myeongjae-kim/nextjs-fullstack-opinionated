@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
-import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
-import { applicationContext } from "@/core/config/applicationContext";
-import { userSignUpSchema } from "@/core/user/domain/User";
-import { setSessionCookie } from "@/lib/auth/cookies";
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
+import { applicationContext } from '@/core/config/applicationContext';
+import { userSignUpSchema } from '@/core/user/domain/User';
+import { setSessionCookie } from '@/lib/auth/cookies';
 
 export type SignUpActionResult =
   | { success: true }
@@ -18,9 +18,9 @@ export type SignUpActionResult =
 export async function signUpAction(formData: FormData): Promise<SignUpActionResult> {
   try {
     // FormData에서 데이터 추출
-    const loginIdValue = formData.get("loginId");
-    const passwordValue = formData.get("password");
-    const nameValue = formData.get("name");
+    const loginIdValue = formData.get('loginId');
+    const passwordValue = formData.get('password');
+    const nameValue = formData.get('name');
     const loginId = loginIdValue instanceof File ? null : loginIdValue?.toString();
     const password = passwordValue instanceof File ? null : passwordValue?.toString();
     const name = nameValue instanceof File ? null : nameValue?.toString();
@@ -35,12 +35,12 @@ export async function signUpAction(formData: FormData): Promise<SignUpActionResu
     if (!validationResult.success) {
       return {
         success: false,
-        error: validationResult.error.issues.map((e) => e.message).join(", "),
+        error: validationResult.error.issues.map((e) => e.message).join(', '),
       };
     }
 
     // SignUpUseCase 호출
-    const signUpUseCase = applicationContext().get("SignUpUseCase");
+    const signUpUseCase = applicationContext().get('SignUpUseCase');
     const authResponse = await signUpUseCase.signUp(validationResult.data);
 
     // 쿠키에 토큰 저장
@@ -54,14 +54,14 @@ export async function signUpAction(formData: FormData): Promise<SignUpActionResu
     if (error instanceof DomainUnauthorizedError) {
       return {
         success: false,
-        error: "인증에 실패했습니다. 로그인 정보를 확인해주세요.",
+        error: '인증에 실패했습니다. 로그인 정보를 확인해주세요.',
       };
     }
 
     if (error instanceof DomainNotFoundError) {
       return {
         success: false,
-        error: "요청한 리소스를 찾을 수 없습니다.",
+        error: '요청한 리소스를 찾을 수 없습니다.',
       };
     }
 
@@ -69,13 +69,13 @@ export async function signUpAction(formData: FormData): Promise<SignUpActionResu
     if (error instanceof Error) {
       return {
         success: false,
-        error: error.message || "회원가입 중 오류가 발생했습니다.",
+        error: error.message || '회원가입 중 오류가 발생했습니다.',
       };
     }
 
     return {
       success: false,
-      error: "알 수 없는 오류가 발생했습니다.",
+      error: '알 수 없는 오류가 발생했습니다.',
     };
   }
 }

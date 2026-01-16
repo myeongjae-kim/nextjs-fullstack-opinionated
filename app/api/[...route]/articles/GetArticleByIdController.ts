@@ -1,8 +1,8 @@
-import { articleSchema } from "@/core/article/domain/Article";
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
-import { applicationContext } from "@/core/config/applicationContext";
-import { createRoute, z } from "@hono/zod-openapi";
-import { Controller } from "../config/Controller";
+import { Controller } from '@/app/api/[...route]/config/Controller';
+import { articleSchema } from '@/core/article/domain/Article';
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
+import { applicationContext } from '@/core/config/applicationContext';
+import { createRoute, z } from '@hono/zod-openapi';
 
 const route = createRoute({
   method: 'get',
@@ -24,7 +24,7 @@ const route = createRoute({
   },
   responses: {
     200: {
-      description: "The article response schema",
+      description: 'The article response schema',
       content: {
         'application/json': {
           schema: articleSchema,
@@ -35,12 +35,12 @@ const route = createRoute({
 })
 
 export default Controller().openapi(route, async (c) => {
-  const id = Number(c.req.valid("param").id);
+  const id = Number(c.req.valid('param').id);
 
   if (isNaN(id)) {
-    throw new DomainNotFoundError(c.req.valid("param").id, "Article")
+    throw new DomainNotFoundError(c.req.valid('param').id, 'Article')
   }
-  const article = await applicationContext().get("GetArticleByIdUseCase").get(id);
+  const article = await applicationContext().get('GetArticleByIdUseCase').get(id);
 
   return c.json(articleSchema.parse(article));
 })

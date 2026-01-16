@@ -1,18 +1,18 @@
-import { user } from "@/lib/db/schema";
-import { dbLocal } from "@/test/dbLocal";
-import { spec } from "pactum";
-import { describe, it } from "vitest";
+import { user } from '@/lib/db/schema';
+import { dbLocal } from '@/test/dbLocal';
+import { spec } from 'pactum';
+import { describe, it } from 'vitest';
 
-describe("POST /api/users/signup", () => {
-  it("should return 200 with access_token and refresh_token", async () => {
+describe('POST /api/users/signup', () => {
+  it('should return 200 with access_token and refresh_token', async () => {
     await dbLocal.delete(user);
 
     await spec()
-      .post("/api/users/signup")
+      .post('/api/users/signup')
       .withBody({
-        loginId: "testuser",
-        password: "password123",
-        name: "Test User",
+        loginId: 'testuser',
+        password: 'password123',
+        name: 'Test User',
       })
       .expectStatus(200)
       .expectJsonLike({
@@ -21,14 +21,14 @@ describe("POST /api/users/signup", () => {
       });
   });
 
-  it("should return 200 without name", async () => {
+  it('should return 200 without name', async () => {
     await dbLocal.delete(user);
 
     await spec()
-      .post("/api/users/signup")
+      .post('/api/users/signup')
       .withBody({
-        loginId: "testuser2",
-        password: "password123",
+        loginId: 'testuser2',
+        password: 'password123',
       })
       .expectStatus(200)
       .expectJsonLike({
@@ -37,20 +37,20 @@ describe("POST /api/users/signup", () => {
       });
   });
 
-  it("should return 400 when loginId is missing", async () => {
+  it('should return 400 when loginId is missing', async () => {
     await spec()
-      .post("/api/users/signup")
+      .post('/api/users/signup')
       .withBody({
-        password: "password123",
+        password: 'password123',
       })
       .expectStatus(400);
   });
 
-  it("should return 400 when password is missing", async () => {
+  it('should return 400 when password is missing', async () => {
     await spec()
-      .post("/api/users/signup")
+      .post('/api/users/signup')
       .withBody({
-        loginId: "testuser",
+        loginId: 'testuser',
       })
       .expectStatus(400);
   });

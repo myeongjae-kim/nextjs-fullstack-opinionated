@@ -1,10 +1,8 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { loginAction, type LoginActionResult } from '@/app/server-actions/login/actions';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -12,17 +10,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { loginAction, type LoginActionResult } from "./actions";
-import { ArrowLeft } from "lucide-react";
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const loginSchema = z.object({
-  loginId: z.string().min(1, "로그인 ID를 입력해주세요."),
-  password: z.string().min(1, "비밀번호를 입력해주세요."),
+  loginId: z.string().min(1, '로그인 ID를 입력해주세요.'),
+  password: z.string().min(1, '비밀번호를 입력해주세요.'),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -35,23 +35,23 @@ export default function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      loginId: "",
-      password: "",
+      loginId: '',
+      password: '',
     },
   });
 
   const onSubmit = (data: LoginFormValues) => {
     setError(null);
-    
+
     startTransition(async () => {
       const formData = new FormData();
-      formData.append("loginId", data.loginId);
-      formData.append("password", data.password);
+      formData.append('loginId', data.loginId);
+      formData.append('password', data.password);
 
       const result: LoginActionResult = await loginAction(formData);
-      
+
       if (result.success) {
-        router.push("/server-actions");
+        router.push('/server-actions');
       } else {
         setError(result.error);
       }
@@ -84,7 +84,7 @@ export default function LoginPage() {
                   {error}
                 </div>
               )}
-              
+
               <FormField
                 control={form.control}
                 name="loginId"
@@ -114,7 +114,7 @@ export default function LoginPage() {
               />
 
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "로그인 중..." : "로그인"}
+                {isPending ? '로그인 중...' : '로그인'}
               </Button>
             </form>
           </Form>

@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { clientEnvSchema } from "./clientEnv";
+import { clientEnvSchema } from '@/core/config/clientEnv';
+import { z } from 'zod';
 
 const envSchema = clientEnvSchema.extend({
   DB_PRIMARY_URL: z.string(),

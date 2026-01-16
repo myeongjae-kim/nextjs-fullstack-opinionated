@@ -1,32 +1,32 @@
-import { DomainInternalServerError } from "@/core/common/domain/DomainInternalServerError";
-import { isDatabaseError, withDatabaseErrorHandling } from "@/core/common/util/withDatabaseErrorHandling";
-import { DrizzleError, DrizzleQueryError } from "drizzle-orm";
-import { describe, expect, it, vi } from "vitest";
+import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError';
+import { isDatabaseError, withDatabaseErrorHandling } from '@/core/common/util/withDatabaseErrorHandling';
+import { DrizzleError, DrizzleQueryError } from 'drizzle-orm';
+import { describe, expect, it, vi } from 'vitest';
 
-describe("withDatabaseErrorHandling", () => {
-  describe("isDatabaseError", () => {
-    it("should return true for DrizzleQueryError", () => {
+describe('withDatabaseErrorHandling', () => {
+  describe('isDatabaseError', () => {
+    it('should return true for DrizzleQueryError', () => {
       // DrizzleQueryError constructor: (query: string, params: any[], cause?: Error)
-      const error = new DrizzleQueryError("Failed query", []);
+      const error = new DrizzleQueryError('Failed query', []);
       expect(isDatabaseError(error)).toBe(true);
     });
 
-    it("should return false for other errors", () => {
-      const error = new Error("Normal error");
+    it('should return false for other errors', () => {
+      const error = new Error('Normal error');
       expect(isDatabaseError(error)).toBe(false);
     });
 
-    it("should return false for general DrizzleError (not QueryError)", () => {
-      const error = new DrizzleError({ message: "Some drizzle error" });
+    it('should return false for general DrizzleError (not QueryError)', () => {
+      const error = new DrizzleError({ message: 'Some drizzle error' });
       expect(isDatabaseError(error)).toBe(false);
     });
   });
 
-  describe("withDatabaseErrorHandling Proxy", () => {
-    it("should re-throw DomainInternalServerError when DrizzleQueryError occurs", async () => {
+  describe('withDatabaseErrorHandling Proxy', () => {
+    it('should re-throw DomainInternalServerError when DrizzleQueryError occurs', async () => {
       class MockAdapter {
         someQuery(): Promise<void> {
-          throw new DrizzleQueryError("Failed query", []);
+          throw new DrizzleQueryError('Failed query', []);
         }
       }
 
@@ -35,11 +35,11 @@ describe("withDatabaseErrorHandling", () => {
       await expect(adapter.someQuery()).rejects.toThrow(DomainInternalServerError);
     });
 
-    it("should include the cause message in DomainInternalServerError when cause is provided", async () => {
-      const causeMessage = "expected cause message";
+    it('should include the cause message in DomainInternalServerError when cause is provided', async () => {
+      const causeMessage = 'expected cause message';
       class MockAdapter {
         someQuery(): Promise<void> {
-          throw new DrizzleQueryError("Failed query", [], new Error(causeMessage));
+          throw new DrizzleQueryError('Failed query', [], new Error(causeMessage));
         }
       }
 
@@ -53,34 +53,34 @@ describe("withDatabaseErrorHandling", () => {
       }
     });
 
-    it("should throw original error when it is not a DrizzleQueryError", async () => {
+    it('should throw original error when it is not a DrizzleQueryError', async () => {
       class MockAdapter {
         someQuery(): Promise<void> {
-          throw new Error("Normal error");
+          throw new Error('Normal error');
         }
       }
 
       const adapter = withDatabaseErrorHandling(new MockAdapter());
 
-      await expect(adapter.someQuery()).rejects.toThrow("Normal error");
+      await expect(adapter.someQuery()).rejects.toThrow('Normal error');
     });
 
-    it("should return successful result when no error occurs", async () => {
+    it('should return successful result when no error occurs', async () => {
       class MockAdapter {
         someQuery(): Promise<string> {
-          return Promise.resolve("success");
+          return Promise.resolve('success');
         }
       }
 
       const adapter = withDatabaseErrorHandling(new MockAdapter());
       const result = await adapter.someQuery();
 
-      expect(result).toBe("success");
+      expect(result).toBe('success');
     });
 
-    it("should log the database error to console.error", async () => {
-      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => { });
-      const dbError = new DrizzleQueryError("Failed query", []);
+    it('should log the database error to console.error', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+      const dbError = new DrizzleQueryError('Failed query', []);
 
       class MockAdapter {
         someQuery(): Promise<void> {
@@ -96,18 +96,18 @@ describe("withDatabaseErrorHandling", () => {
         // ignore
       }
 
-      expect(consoleSpy).toHaveBeenCalledWith("Database error:", dbError);
+      expect(consoleSpy).toHaveBeenCalledWith('Database error:', dbError);
       consoleSpy.mockRestore();
     });
 
-    it("should correctly handle non-async functions by returning a promise (as per implementation)", async () => {
+    it('should correctly handle non-async functions by returning a promise (as per implementation)', async () => {
       class MockAdapter {
         someSyncMethod() {
-          return "sync result";
+          return 'sync result';
         }
 
         throwSyncDbError() {
-          throw new DrizzleQueryError("Sync failed query", []);
+          throw new DrizzleQueryError('Sync failed query', []);
         }
       }
 
@@ -117,7 +117,7 @@ describe("withDatabaseErrorHandling", () => {
       // We use type assertion to satisfy the linter about the returned Promise
       const resultPromise = adapter.someSyncMethod() as unknown as Promise<string>;
       const result = await resultPromise;
-      expect(result).toBe("sync result");
+      expect(result).toBe('sync result');
 
       await expect(adapter.throwSyncDbError() as unknown as Promise<void>).rejects.toThrow(DomainInternalServerError);
     });

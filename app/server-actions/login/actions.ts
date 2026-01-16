@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
-import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
-import { applicationContext } from "@/core/config/applicationContext";
-import { userLoginSchema } from "@/core/user/domain/User";
-import { deleteSessionCookie, setSessionCookie } from "@/lib/auth/cookies";
-import { redirect } from "next/navigation";
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
+import { applicationContext } from '@/core/config/applicationContext';
+import { userLoginSchema } from '@/core/user/domain/User';
+import { deleteSessionCookie, setSessionCookie } from '@/lib/auth/cookies';
+import { redirect } from 'next/navigation';
 
 export type LoginActionResult =
   | { success: true }
@@ -19,8 +19,8 @@ export type LoginActionResult =
 export async function loginAction(formData: FormData): Promise<LoginActionResult> {
   try {
     // FormData에서 데이터 추출
-    const loginIdValue = formData.get("loginId");
-    const passwordValue = formData.get("password");
+    const loginIdValue = formData.get('loginId');
+    const passwordValue = formData.get('password');
     const loginId = loginIdValue instanceof File ? null : loginIdValue?.toString();
     const password = passwordValue instanceof File ? null : passwordValue?.toString();
 
@@ -33,12 +33,12 @@ export async function loginAction(formData: FormData): Promise<LoginActionResult
     if (!validationResult.success) {
       return {
         success: false,
-        error: validationResult.error.issues.map((e) => e.message).join(", "),
+        error: validationResult.error.issues.map((e) => e.message).join(', '),
       };
     }
 
     // LoginUseCase 호출
-    const loginUseCase = applicationContext().get("LoginUseCase");
+    const loginUseCase = applicationContext().get('LoginUseCase');
     const authResponse = await loginUseCase.login(validationResult.data);
 
     // 쿠키에 토큰 저장
@@ -52,14 +52,14 @@ export async function loginAction(formData: FormData): Promise<LoginActionResult
     if (error instanceof DomainUnauthorizedError) {
       return {
         success: false,
-        error: "로그인 정보가 올바르지 않습니다.",
+        error: '로그인 정보가 올바르지 않습니다.',
       };
     }
 
     if (error instanceof DomainNotFoundError) {
       return {
         success: false,
-        error: "요청한 리소스를 찾을 수 없습니다.",
+        error: '요청한 리소스를 찾을 수 없습니다.',
       };
     }
 
@@ -67,13 +67,13 @@ export async function loginAction(formData: FormData): Promise<LoginActionResult
     if (error instanceof Error) {
       return {
         success: false,
-        error: error.message || "로그인 중 오류가 발생했습니다.",
+        error: error.message || '로그인 중 오류가 발생했습니다.',
       };
     }
 
     return {
       success: false,
-      error: "알 수 없는 오류가 발생했습니다.",
+      error: '알 수 없는 오류가 발생했습니다.',
     };
   }
 }
@@ -84,5 +84,5 @@ export async function loginAction(formData: FormData): Promise<LoginActionResult
  */
 export async function logoutAction(): Promise<void> {
   await deleteSessionCookie();
-  redirect("/server-actions/login");
+  redirect('/server-actions/login');
 }

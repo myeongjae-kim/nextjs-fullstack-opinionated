@@ -1,7 +1,7 @@
 import { SqlOptions } from '@/core/common/domain/SqlOptions';
 import { env } from '@/core/config/env';
+import * as schema from '@/lib/db/schema';
 import { drizzle } from 'drizzle-orm/mysql2';
-import * as schema from './schema';
 
 export const dbPrimary = drizzle(env.DB_PRIMARY_URL, { schema, mode: 'default' });
 export const dbReplica = drizzle(env.DB_REPLICA_URL, { schema, mode: 'default' });

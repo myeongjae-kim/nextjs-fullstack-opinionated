@@ -1,8 +1,8 @@
-import { AuthResponse } from "@/core/common/domain/AuthResponse";
-import { cookies } from "next/headers";
-import { parseAuthResponse } from "./token";
+import { AuthResponse } from '@/core/common/domain/AuthResponse';
+import { parseAuthResponse } from '@/lib/auth/token';
+import { cookies } from 'next/headers';
 
-const SESSION_COOKIE_NAME = "@nextjs-fullstack-opinionated/session";
+const SESSION_COOKIE_NAME = '@nextjs-fullstack-opinionated/session';
 // Refresh Token 만료 시간: 6개월 (180일)
 const MAX_AGE = 60 * 60 * 24 * 180; // 180 days in seconds
 
@@ -12,13 +12,13 @@ const MAX_AGE = 60 * 60 * 24 * 180; // 180 days in seconds
  */
 export async function setSessionCookie(authResponse: AuthResponse): Promise<void> {
   const cookieStore = await cookies();
-  
+
   cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(authResponse), {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
     maxAge: MAX_AGE,
-    path: "/",
+    path: '/',
   });
 }
 
@@ -27,7 +27,7 @@ export async function setSessionCookie(authResponse: AuthResponse): Promise<void
  */
 export async function deleteSessionCookie(): Promise<void> {
   const cookieStore = await cookies();
-  
+
   cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
@@ -38,6 +38,6 @@ export async function deleteSessionCookie(): Promise<void> {
 export async function getSessionCookie(): Promise<AuthResponse | null> {
   const cookieStore = await cookies();
   const cookieValue = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  
+
   return parseAuthResponse(cookieValue);
 }

@@ -1,7 +1,7 @@
-import { AuthResponse } from "@/core/common/domain/AuthResponse";
-import { applicationContext } from "@/core/config/applicationContext";
-import { env } from "@/core/config/env";
-import jwt from "jsonwebtoken";
+import { AuthResponse } from '@/core/common/domain/AuthResponse';
+import { applicationContext } from '@/core/config/applicationContext';
+import { env } from '@/core/config/env';
+import jwt from 'jsonwebtoken';
 
 export interface TokenPayload {
   ulid: string;
@@ -22,7 +22,7 @@ export function verifyToken(token: string | undefined): TokenPayload | null {
     if (token !== 'default-token-value-for-docs') {
       return null;
     }
-    return { ulid: "ulid", role: "member" };
+    return { ulid: 'ulid', role: 'member' };
   }
 
   try {
@@ -51,7 +51,7 @@ export async function refreshAccessToken(refreshToken: string): Promise<AuthResp
   try {
     // RefreshTokenUseCase를 사용하여 토큰 갱신
     // RefreshTokenUseCase 내부에서 토큰 검증을 수행합니다
-    const refreshTokenUseCase = applicationContext().get("RefreshTokenUseCase");
+    const refreshTokenUseCase = applicationContext().get('RefreshTokenUseCase');
     const authResponse = await refreshTokenUseCase.refreshToken({ refresh_token: refreshToken });
 
     return authResponse;

@@ -1,7 +1,7 @@
-import { SqlOptions } from "../../../common/domain/SqlOptions";
-import { ArticleCommandPort } from "../../application/port/out/ArticleCommandPort";
-import { ArticleQueryPort } from "../../application/port/out/ArticleQueryPort";
-import { Article, ArticleCreation, ArticleUpdate } from "../../domain/Article";
+import { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort';
+import { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';
+import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article';
+import { SqlOptions } from '@/core/common/domain/SqlOptions';
 
 export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort {
   async findAll(_sqlOptions: SqlOptions): Promise<Article[]> {
@@ -13,7 +13,7 @@ export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort 
       updatedAt: new Date(),
     })))
   }
-  async getById(id: Article["id"], _sqlOptions: SqlOptions): Promise<Article> {
+  async getById(id: Article['id'], _sqlOptions: SqlOptions): Promise<Article> {
     return Promise.resolve({
       id,
       title: `Article ${id}`,
@@ -22,15 +22,15 @@ export class ArticleMockAdapter implements ArticleCommandPort, ArticleQueryPort 
       updatedAt: new Date(),
     });
   }
-  async createArticle(_article: ArticleCreation): Promise<Pick<Article, "id">> {
+  async createArticle(_article: ArticleCreation): Promise<Pick<Article, 'id'>> {
     return Promise.resolve({
       id: 1,
     });
   }
-  async updateArticle(_id: Article["id"], _article: ArticleUpdate): Promise<void> {
+  async updateArticle(_id: Article['id'], _article: ArticleUpdate): Promise<void> {
     return Promise.resolve();
   }
-  async deleteArticle(_id: Article["id"]): Promise<void> {
+  async deleteArticle(_id: Article['id']): Promise<void> {
     return Promise.resolve();
   }
 

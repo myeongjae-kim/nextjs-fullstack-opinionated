@@ -1,5 +1,5 @@
-import { DomainInternalServerError } from "@/core/common/domain/DomainInternalServerError";
-import { DrizzleQueryError } from "drizzle-orm";
+import { DomainInternalServerError } from '@/core/common/domain/DomainInternalServerError';
+import { DrizzleQueryError } from 'drizzle-orm';
 
 /**
  * 데이터베이스 에러인지 확인하는 헬퍼 함수
@@ -25,13 +25,13 @@ export function withDatabaseErrorHandling<T extends object>(target: T): T {
       const value = Reflect.get(target, prop, receiver);
 
       // 함수인 경우에만 래핑
-      if (typeof value === "function") {
+      if (typeof value === 'function') {
         return async (...args: unknown[]) => {
           try {
             return await (value as (...args: unknown[]) => Promise<unknown>).apply(target, args);
           } catch (error) {
             if (isDatabaseError(error)) {
-              console.error("Database error:", error);
+              console.error('Database error:', error);
               throw new DomainInternalServerError(error.cause?.message);
             }
             throw error;

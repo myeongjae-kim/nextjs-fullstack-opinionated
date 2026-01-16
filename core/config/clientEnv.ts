@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const clientEnvSchema = z.object({
   NEXT_PUBLIC_PROFILE: z.enum(['local', 'staging', 'prod']),

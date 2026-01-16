@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/api/articles": {
+    '/api/articles': {
         parameters: {
             query?: never;
             header?: never;
@@ -26,7 +26,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
+                        'application/json': {
                             content: {
                                 /** @description The article id */
                                 id: number;
@@ -61,7 +61,7 @@ export interface paths {
             /** @description The article creation schema */
             requestBody: {
                 content: {
-                    "application/json": {
+                    'application/json': {
                         /** @description The article title */
                         title: string;
                         /** @description The article content */
@@ -85,7 +85,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/articles/{id}": {
+    '/api/articles/{id}': {
         parameters: {
             query?: never;
             header?: never;
@@ -110,7 +110,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
+                        'application/json': {
                             /** @description The article id */
                             id: number;
                             /** @description The article title */
@@ -145,7 +145,7 @@ export interface paths {
             /** @description The article update schema */
             requestBody: {
                 content: {
-                    "application/json": {
+                    'application/json': {
                         /** @description The article title */
                         title?: string;
                         /** @description The article content */
@@ -190,7 +190,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/signup": {
+    '/api/users/signup': {
         parameters: {
             query?: never;
             header?: never;
@@ -209,7 +209,7 @@ export interface paths {
             /** @description The user sign up schema */
             requestBody: {
                 content: {
-                    "application/json": {
+                    'application/json': {
                         /** @description The user login id */
                         loginId: string;
                         /** @description The user password */
@@ -226,7 +226,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
+                        'application/json': {
                             /** @description The access token (JWT) */
                             access_token: string;
                             /** @description The refresh token (JWT) */
@@ -242,7 +242,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/login": {
+    '/api/users/login': {
         parameters: {
             query?: never;
             header?: never;
@@ -261,7 +261,7 @@ export interface paths {
             /** @description The user login schema */
             requestBody: {
                 content: {
-                    "application/json": {
+                    'application/json': {
                         /** @description The user login id */
                         loginId: string;
                         /** @description The user password */
@@ -276,7 +276,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
+                        'application/json': {
                             /** @description The access token (JWT) */
                             access_token: string;
                             /** @description The refresh token (JWT) */
@@ -292,7 +292,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/refresh": {
+    '/api/users/refresh': {
         parameters: {
             query?: never;
             header?: never;
@@ -311,7 +311,7 @@ export interface paths {
             /** @description The refresh token schema */
             requestBody: {
                 content: {
-                    "application/json": {
+                    'application/json': {
                         /** @description The refresh token */
                         refresh_token: string;
                     };
@@ -324,7 +324,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
+                        'application/json': {
                             /** @description The access token (JWT) */
                             access_token: string;
                             /** @description The refresh token (JWT) */
@@ -340,7 +340,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/me": {
+    '/api/users/me': {
         parameters: {
             query?: never;
             header?: never;
@@ -362,7 +362,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": {
+                        'application/json': {
                             /** @description The user ulid */
                             ulid: string;
                             /** @description The user role */

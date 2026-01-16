@@ -1,4 +1,4 @@
-import z, { core } from "zod";
+import z, { core } from 'zod';
 
 export const apiErrorSchema = z.object({
   status: z.number(),
@@ -16,8 +16,8 @@ export class ApiError extends Error implements ApiErrorType {
     return new ApiError({
       status: 400,
       error: errorType,
-      code: "",
-      message: issues?.[0]?.message ?? "",
+      code: '',
+      message: issues?.[0]?.message ?? '',
       timestamp: new Date().toISOString(),
     });
   }
@@ -28,7 +28,7 @@ export class ApiError extends Error implements ApiErrorType {
   public message: string;
   public timestamp: string;
 
-  constructor(args: Omit<ApiErrorType, "timestamp"> & Partial<Pick<ApiErrorType, "timestamp">>) {
+  constructor(args: Omit<ApiErrorType, 'timestamp'> & Partial<Pick<ApiErrorType, 'timestamp'>>) {
     super(args.message);
 
     this.status = args.status;

@@ -1,7 +1,7 @@
-import { userDetailsSchema } from "@/core/auth/domain/UserDetails";
-import { DomainUnauthorizedError } from "@/core/common/domain/DomainUnauthorizedError";
-import { createRoute } from "@hono/zod-openapi";
-import { Controller } from "../../config/Controller";
+import { Controller } from '@/app/api/[...route]/config/Controller';
+import { userDetailsSchema } from '@/core/auth/domain/UserDetails';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
+import { createRoute } from '@hono/zod-openapi';
 
 const route = createRoute({
   method: 'get',
@@ -12,7 +12,7 @@ const route = createRoute({
   tags: ['users'],
   responses: {
     200: {
-      description: "The current user details",
+      description: 'The current user details',
       content: {
         'application/json': {
           schema: userDetailsSchema,
@@ -23,7 +23,7 @@ const route = createRoute({
 })
 
 export default Controller().openapi(route, (c) => {
-  const principal = c.get("principal");
+  const principal = c.get('principal');
 
   if (!principal) {
     throw new DomainUnauthorizedError();

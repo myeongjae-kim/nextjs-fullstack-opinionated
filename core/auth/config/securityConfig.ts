@@ -1,4 +1,4 @@
-import { minimatch } from "minimatch";
+import { minimatch } from 'minimatch';
 
 type AuthType = 'AUTHORIZE' | 'PERMIT_ALL';
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'

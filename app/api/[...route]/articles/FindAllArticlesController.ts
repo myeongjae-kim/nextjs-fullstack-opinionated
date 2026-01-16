@@ -1,7 +1,7 @@
-import { articleListSchema } from "@/core/article/domain/Article";
-import { applicationContext } from "@/core/config/applicationContext";
-import { createRoute } from "@hono/zod-openapi";
-import { Controller } from "../config/Controller";
+import { Controller } from '@/app/api/[...route]/config/Controller';
+import { articleListSchema } from '@/core/article/domain/Article';
+import { applicationContext } from '@/core/config/applicationContext';
+import { createRoute } from '@hono/zod-openapi';
 
 const route = createRoute({
   method: 'get',
@@ -12,7 +12,7 @@ const route = createRoute({
   tags: ['articles'],
   responses: {
     200: {
-      description: "The article list response schema",
+      description: 'The article list response schema',
       content: {
         'application/json': {
           schema: articleListSchema,
@@ -23,7 +23,7 @@ const route = createRoute({
 })
 
 export default Controller().openapi(route, async (c) => {
-  const articles = await applicationContext().get("FindAllArticlesUseCase").findAll();
+  const articles = await applicationContext().get('FindAllArticlesUseCase').findAll();
 
   return c.json(articleListSchema.parse({
     content: articles
