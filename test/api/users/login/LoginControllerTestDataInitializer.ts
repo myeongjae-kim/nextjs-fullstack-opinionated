@@ -1,7 +1,7 @@
-import { DatabaseClient } from '@/lib/db/drizzle';
-import { user } from '@/lib/db/schema';
-import bcrypt from 'bcrypt';
-import { ulid } from 'ulid';
+import { DatabaseClient } from '@/lib/db/drizzle.ts';
+import { user } from '@/lib/db/schema.ts';
+import * as bcrypt from '@felix/bcrypt';
+import { ulid } from '@std/ulid';
 
 export class LoginControllerTestDataInitializer {
   constructor(private readonly dbClient: DatabaseClient) { }
@@ -13,7 +13,7 @@ export class LoginControllerTestDataInitializer {
     // 테스트용 유저 생성
     const testLoginId = 'loginuser';
     const testPassword = 'password123';
-    const passwordHash = await bcrypt.hash(testPassword, 10);
+    const passwordHash = await bcrypt.hash(testPassword);
     const testUlid = ulid();
 
     await this.dbClient.insert(user).values({

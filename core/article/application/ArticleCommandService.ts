@@ -1,9 +1,9 @@
-import { CreateArticleUseCase } from '@/core/article/application/port/in/CreateArticleUseCase';
-import { DeleteArticleUseCase } from '@/core/article/application/port/in/DeleteArticleUseCase';
-import { UpdateArticleUseCase } from '@/core/article/application/port/in/UpdateArticleUseCase';
-import type { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort';
-import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article';
-import { Autowired } from '@/core/config/Autowired';
+import { CreateArticleUseCase } from '@/core/article/application/port/in/CreateArticleUseCase.ts';
+import { DeleteArticleUseCase } from '@/core/article/application/port/in/DeleteArticleUseCase.ts';
+import { UpdateArticleUseCase } from '@/core/article/application/port/in/UpdateArticleUseCase.ts';
+import type { ArticleCommandPort } from '@/core/article/application/port/out/ArticleCommandPort.ts';
+import { Article, ArticleCreation, ArticleUpdate } from '@/core/article/domain/Article.ts';
+import { Autowired } from '@/core/config/Autowired.ts';
 
 export class ArticleCommandService implements CreateArticleUseCase, UpdateArticleUseCase, DeleteArticleUseCase {
   constructor(

@@ -1,15 +1,15 @@
-import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { DomainBadRequestError } from '@/core/common/domain/DomainBadRequestError';
-import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate';
-import { Autowired } from '@/core/config/Autowired';
-import { SignUpUseCase } from '@/core/user/application/port/in/SignUpUseCase';
-import type { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort';
-import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort';
-import { UserSignUp } from '@/core/user/domain/User';
-import bcrypt from 'bcrypt';
-import { ulid } from 'ulid';
+import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase.ts';
+import { UserDetails } from '@/core/auth/domain/UserDetails.ts';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.ts';
+import { DomainBadRequestError } from '@/core/common/domain/DomainBadRequestError.ts';
+import { TransactionTemplate } from '@/core/common/domain/TransactionTemplate.ts';
+import { Autowired } from '@/core/config/Autowired.ts';
+import { SignUpUseCase } from '@/core/user/application/port/in/SignUpUseCase.ts';
+import type { UserCommandPort } from '@/core/user/application/port/out/UserCommandPort.ts';
+import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort.ts';
+import { UserSignUp } from '@/core/user/domain/User.ts';
+import * as bcrypt from '@felix/bcrypt';
+import { ulid } from '@std/ulid';
 
 export class UserCommandService implements SignUpUseCase {
   constructor(
@@ -24,8 +24,8 @@ export class UserCommandService implements SignUpUseCase {
   ) { }
 
   async signUp(userData: UserSignUp): Promise<AuthResponse> {
-    return this.transactionTemplate.execute({ useReplica: false }, async () => {
-      const passwordHash = await bcrypt.hash(userData.password, 10);
+    return await this.transactionTemplate.execute({ useReplica: false }, async () => {
+      const passwordHash = await bcrypt.hash(userData.password);
       const userUlid = ulid();
 
       const existingUser = await this.userQueryPort.findByLoginId(userData.loginId, { useReplica: false });

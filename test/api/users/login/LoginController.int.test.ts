@@ -1,9 +1,17 @@
-import { LoginControllerTestDataInitializer } from '@/test/api/users/login/LoginControllerTestDataInitializer';
-import { dbLocal } from '@/test/dbLocal';
-import { spec } from 'pactum';
-import { describe, it } from 'vitest';
+import { LoginControllerTestDataInitializer } from '@/test/api/users/login/LoginControllerTestDataInitializer.ts';
+import { dbLocal } from '@/test/dbLocal.ts';
+import { intTestDefaultOptions } from '@/test/intTestDefaultOptions.ts';
+import { setupIntTest } from '@/test/setupIntTest.ts';
+import { beforeAll, describe, it } from '@std/testing/bdd';
+import pactum from 'pactum';
 
-describe('POST /api/users/login', () => {
+const spec = pactum.spec;
+
+describe('POST /api/users/login', intTestDefaultOptions, () => {
+  beforeAll(() => {
+    setupIntTest();
+  });
+
   it('should return 200 with access_token and refresh_token', async () => {
     await new LoginControllerTestDataInitializer(dbLocal).initialize();
 

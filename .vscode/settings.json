@@ -1,6 +1,8 @@
 {
+  "deno.enablePaths": [
+    "./"
+  ],
+  "editor.inlayHints.enabled": "off",
   "typescript.preferences.importModuleSpecifier": "non-relative",
-  "typescript.preferences.importModuleSpecifierEnding": "js",
-  "javascript.preferences.importModuleSpecifier": "non-relative",
-  "javascript.preferences.importModuleSpecifierEnding": "js"
+  "deno.enable": true
 }

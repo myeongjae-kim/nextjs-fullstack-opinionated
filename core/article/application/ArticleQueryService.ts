@@ -1,9 +1,9 @@
-import { FindAllArticlesUseCase } from '@/core/article/application/port/in/FindAllArticlesUseCase';
-import { GetArticleByIdUseCase } from '@/core/article/application/port/in/GetArticleByIdUseCase';
-import type { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';
-import { Article } from '@/core/article/domain/Article';
-import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
-import { Autowired } from '@/core/config/Autowired';
+import { FindAllArticlesUseCase } from '@/core/article/application/port/in/FindAllArticlesUseCase.ts';
+import { GetArticleByIdUseCase } from '@/core/article/application/port/in/GetArticleByIdUseCase.ts';
+import type { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort.ts';
+import { Article } from '@/core/article/domain/Article.ts';
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError.ts';
+import { Autowired } from '@/core/config/Autowired.ts';
 
 export class ArticleQueryService implements GetArticleByIdUseCase, FindAllArticlesUseCase {
   constructor(

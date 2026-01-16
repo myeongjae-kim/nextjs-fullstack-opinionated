@@ -1,9 +1,17 @@
-import { user } from '@/lib/db/schema';
-import { dbLocal } from '@/test/dbLocal';
-import { spec } from 'pactum';
-import { describe, it } from 'vitest';
+import { user } from '@/lib/db/schema.ts';
+import { dbLocal } from '@/test/dbLocal.ts';
+import { intTestDefaultOptions } from '@/test/intTestDefaultOptions.ts';
+import { setupIntTest } from '@/test/setupIntTest.ts';
+import { beforeAll, describe, it } from '@std/testing/bdd';
+import pactum from 'pactum';
 
-describe('POST /api/users/signup', () => {
+const spec = pactum.spec;
+
+describe('POST /api/users/signup', intTestDefaultOptions, () => {
+  beforeAll(() => {
+    setupIntTest();
+  });
+
   it('should return 200 with access_token and refresh_token', async () => {
     await dbLocal.delete(user);
 

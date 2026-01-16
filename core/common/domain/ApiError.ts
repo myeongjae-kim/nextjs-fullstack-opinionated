@@ -25,7 +25,7 @@ export class ApiError extends Error implements ApiErrorType {
   public status: number;
   public error: string;
   public code: string;
-  public message: string;
+  public override message: string;
   public timestamp: string;
 
   constructor(args: Omit<ApiErrorType, 'timestamp'> & Partial<Pick<ApiErrorType, 'timestamp'>>) {

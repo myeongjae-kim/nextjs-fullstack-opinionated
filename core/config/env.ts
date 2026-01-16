@@ -1,7 +1,7 @@
-import { clientEnvSchema } from '@/core/config/clientEnv';
 import { z } from 'zod';
 
-const envSchema = clientEnvSchema.extend({
+const envSchema = z.object({
+  PROFILE: z.enum(['local', 'staging', 'prod']),
   DB_PRIMARY_URL: z.string(),
   DB_REPLICA_URL: z.string(),
   DB_PRIMARY_URL_LOCAL: z.string().optional(),
@@ -9,4 +9,4 @@ const envSchema = clientEnvSchema.extend({
   AUTH_SECRET: z.string(),
 })
 
-export const env = envSchema.parse(process.env);
+export const env = envSchema.parse(Deno.env.toObject());

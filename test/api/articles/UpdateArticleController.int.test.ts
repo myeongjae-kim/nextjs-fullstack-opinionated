@@ -1,9 +1,17 @@
-import { ArticleControllerTestDataInitializer } from '@/test/api/articles/ArticleControllerTestDataInitializer';
-import { dbLocal } from '@/test/dbLocal';
-import { spec } from 'pactum';
-import { describe, it } from 'vitest';
+import { ArticleControllerTestDataInitializer } from '@/test/api/articles/ArticleControllerTestDataInitializer.ts';
+import { dbLocal } from '@/test/dbLocal.ts';
+import { intTestDefaultOptions } from '@/test/intTestDefaultOptions.ts';
+import { setupIntTest } from '@/test/setupIntTest.ts';
+import { beforeAll, describe, it } from '@std/testing/bdd';
+import pactum from 'pactum';
 
-describe('PUT /api/articles/[id]', () => {
+const spec = pactum.spec;
+
+describe('PUT /api/articles/[id]', intTestDefaultOptions, () => {
+  beforeAll(() => {
+    setupIntTest();
+  });
+
   it('should return 204', async () => {
     const authResponse = await new ArticleControllerTestDataInitializer(dbLocal).initialize();
 

@@ -24,9 +24,9 @@ async function seed() {
 seed()
   .catch((error) => {
     console.error('Seed process failed:', error);
-    process.exit(1);
+    Deno.exit(1);
   })
   .finally(() => {
     console.info('Seed process finished. Exiting...');
-    process.exit(0);
+    Deno.exit(0);
   });

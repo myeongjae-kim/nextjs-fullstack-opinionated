@@ -1,3 +1,4 @@
+# 로컬 개발환경 셋팅용 docker-compose.yml
 services:
   mysql:
     image: mysql:8.0

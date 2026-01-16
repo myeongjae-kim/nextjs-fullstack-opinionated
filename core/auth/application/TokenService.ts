@@ -1,7 +1,7 @@
-import { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { env } from '@/core/config/env';
+import { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase.ts';
+import { UserDetails } from '@/core/auth/domain/UserDetails.ts';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.ts';
+import { env } from '@/core/config/env.ts';
 import jwt from 'jsonwebtoken';
 
 export class TokenService implements GenerateTokenUseCase {

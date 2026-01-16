@@ -1,7 +1,7 @@
-import { SqlOptions } from '@/core/common/domain/SqlOptions';
-import { Autowired } from '@/core/config/Autowired';
-import type { DatabaseClient, DbClientSelector } from '@/lib/db/drizzle';
-import { MySqlTransactionConfig } from 'drizzle-orm/mysql-core';
+import { SqlOptions } from '@/core/common/domain/SqlOptions.ts';
+import { Autowired } from '@/core/config/Autowired.ts';
+import type { DatabaseClient, DbClientSelector } from '@/lib/db/drizzle.ts';
+import { MySqlTransactionConfig } from "drizzle-orm/mysql-core";
 
 type TransactionClient = Parameters<DatabaseClient['transaction']>[0] extends (tx: infer Tx) => unknown ? Tx : never
 

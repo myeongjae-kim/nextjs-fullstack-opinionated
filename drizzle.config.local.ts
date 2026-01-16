@@ -5,6 +5,6 @@ export default {
   out: './lib/db/migrations',
   dialect: 'mysql',
   dbCredentials: {
-    url: process.env.DB_PRIMARY_URL_LOCAL!,
+    url: Deno.env.get('DB_PRIMARY_URL_LOCAL')!,
   },
 } satisfies Config;

@@ -1,15 +1,15 @@
-import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
-import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
-import { Autowired } from '@/core/config/Autowired';
-import { env } from '@/core/config/env';
-import { LoginUseCase } from '@/core/user/application/port/in/LoginUseCase';
-import { RefreshTokenUseCase } from '@/core/user/application/port/in/RefreshTokenUseCase';
-import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort';
-import { RefreshToken, UserLogin } from '@/core/user/domain/User';
-import bcrypt from 'bcrypt';
+import type { GenerateTokenUseCase } from '@/core/auth/application/port/in/GenerateTokenUseCase.ts';
+import { UserDetails } from '@/core/auth/domain/UserDetails.ts';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.ts';
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError.ts';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError.ts';
+import { Autowired } from '@/core/config/Autowired.ts';
+import { env } from '@/core/config/env.ts';
+import { LoginUseCase } from '@/core/user/application/port/in/LoginUseCase.ts';
+import { RefreshTokenUseCase } from '@/core/user/application/port/in/RefreshTokenUseCase.ts';
+import type { UserQueryPort } from '@/core/user/application/port/out/UserQueryPort.ts';
+import { RefreshToken, UserLogin } from '@/core/user/domain/User.ts';
+import * as bcrypt from '@felix/bcrypt';
 import jwt from 'jsonwebtoken';
 
 export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
@@ -27,7 +27,7 @@ export class UserQueryService implements LoginUseCase, RefreshTokenUseCase {
       throw new DomainUnauthorizedError('Invalid login credentials');
     }
 
-    const isPasswordValid = await bcrypt.compare(userData.password, user.passwordHash);
+    const isPasswordValid = await bcrypt.verify(userData.password, user.passwordHash);
     if (!isPasswordValid) {
       throw new DomainUnauthorizedError('Invalid login credentials');
     }

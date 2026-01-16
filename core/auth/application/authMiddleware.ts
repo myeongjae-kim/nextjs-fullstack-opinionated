@@ -1,8 +1,8 @@
-import { isApiAuthRequired } from '@/core/auth/config/securityConfig';
-import { AuthContext } from '@/core/auth/domain/AuthContext';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError';
-import { env } from '@/core/config/env';
+import { isApiAuthRequired } from '@/core/auth/config/securityConfig.ts';
+import { AuthContext } from '@/core/auth/domain/AuthContext.ts';
+import { UserDetails } from '@/core/auth/domain/UserDetails.ts';
+import { DomainUnauthorizedError } from '@/core/common/domain/DomainUnauthorizedError.ts';
+import { env } from '@/core/config/env.ts';
 import { createMiddleware } from 'hono/factory';
 import jwt from 'jsonwebtoken';
 

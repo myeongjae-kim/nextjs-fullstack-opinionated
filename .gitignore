@@ -40,5 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
+
 .idea/
 dist/

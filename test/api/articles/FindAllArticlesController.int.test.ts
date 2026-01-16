@@ -1,9 +1,17 @@
-import { article } from '@/lib/db/schema';
-import { dbLocal } from '@/test/dbLocal';
-import { spec } from 'pactum';
-import { describe, it } from 'vitest';
+import { article } from '@/lib/db/schema.ts';
+import { dbLocal } from '@/test/dbLocal.ts';
+import { intTestDefaultOptions } from '@/test/intTestDefaultOptions.ts';
+import { setupIntTest } from '@/test/setupIntTest.ts';
+import { beforeAll, describe, it } from '@std/testing/bdd';
+import pactum from 'pactum';
 
-describe('GET /api/articles', () => {
+const spec = pactum.spec;
+
+describe('GET /api/articles', intTestDefaultOptions, () => {
+  beforeAll(() => {
+    setupIntTest();
+  });
+
   it('should return 200', async () => {
     await dbLocal.delete(article);
     await dbLocal.insert(article).values({

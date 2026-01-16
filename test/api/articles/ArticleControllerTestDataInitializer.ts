@@ -1,10 +1,10 @@
-import { TokenService } from '@/core/auth/application/TokenService';
-import { UserDetails } from '@/core/auth/domain/UserDetails';
-import { AuthResponse } from '@/core/common/domain/AuthResponse';
-import { DatabaseClient } from '@/lib/db/drizzle';
-import { article, user } from '@/lib/db/schema';
-import bcrypt from 'bcrypt';
-import { ulid } from 'ulid';
+import { TokenService } from '@/core/auth/application/TokenService.ts';
+import { UserDetails } from '@/core/auth/domain/UserDetails.ts';
+import { AuthResponse } from '@/core/common/domain/AuthResponse.ts';
+import { DatabaseClient } from '@/lib/db/drizzle.ts';
+import { article, user } from '@/lib/db/schema.ts';
+import * as bcrypt from '@felix/bcrypt';
+import { ulid } from '@std/ulid';
 
 export class ArticleControllerTestDataInitializer {
   constructor(private readonly dbClient: DatabaseClient) { }
@@ -17,7 +17,7 @@ export class ArticleControllerTestDataInitializer {
     // 테스트용 유저 생성
     const testLoginId = 'loginuser';
     const testPassword = 'password123';
-    const passwordHash = await bcrypt.hash(testPassword, 10);
+    const passwordHash = await bcrypt.hash(testPassword);
     const testUlid = ulid();
 
     await this.dbClient.insert(user).values({

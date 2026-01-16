@@ -1,27 +1,25 @@
-import crypto from 'node:crypto';
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
-
 function generateAuthSecret(): string {
   console.info('Step 1: Generating AUTH_SECRET...');
-  return crypto.randomBytes(32).toString('hex');
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function writeEnvFile(envVars: Record<string, string>) {
+async function writeEnvFile(envVars: Record<string, string>): Promise<void> {
   console.info('Step 2: Writing environment variables to .env');
   const envContent = Object.entries(envVars)
     .map(([key, value]) => `${key}=${value}`)
     .join('\n');
 
-  await fs.writeFile(path.join(process.cwd(), '.env'), envContent);
+  await Deno.writeTextFile('.env', envContent);
   console.info('.env file created with the necessary variables.');
 }
 
-async function main() {
+async function main(): Promise<void> {
   const AUTH_SECRET = generateAuthSecret();
 
   await writeEnvFile({
-    NEXT_PUBLIC_PROFILE: 'local',
+    PROFILE: 'local',
     DB_PRIMARY_URL: 'mysql://root:root@localhost:3306/public',
     DB_REPLICA_URL: 'mysql://root:root@localhost:3306/public',
     DB_PRIMARY_URL_LOCAL: 'mysql://root:root@localhost:3306/public',
@@ -32,4 +30,6 @@ async function main() {
   console.info('🎉 Setup completed successfully!');
 }
 
-main().catch(console.error);
+if (import.meta.main) {
+  main().catch(console.error);
+}

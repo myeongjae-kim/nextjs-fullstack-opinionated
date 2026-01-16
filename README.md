@@ -10,30 +10,109 @@ Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 
 
 ```bash
 git clone https://github.com/myeongjae-kim/nextjs-fullstack-opinionated.git
-pnpm install
-pnpm setup
-docker-compose up -d
-pnpm db:migrate:local
-pnpm dev
+npm i -g start-server-and-test # 통합테스트용
+deno install
+deno run setup
+docker-compose up -d # 로컬 개발환경(MySQL) 실행
+deno run db:migrate:local
+deno run dev
 ```
 
-## Commands
+※ [ni](https://github.com/antfu-collective/ni)를 사용하면 npm, yarn, deno등
+패키지 매니저 상관없이 커맨드 입력 가능
 
-일반적인 커맨드는 [package.json](./package.json) 참고
+## Infra
 
-### 특정 단위테스트만 실행하는 경우
+### Docker에서 실행해보기 위한 커맨드
 
 ```bash
-pnpm test UnitTestFileName
+deno run build
+deno run run-image
 ```
 
-### 특정 통합테스트만 실행하는 경우
+### Docker 이미지 생성시 주의사항
+
+- Lambda 컨테이너 런타임은 일반적으로 **파일 시스템이 read-only**이며,
+  **`/tmp`만 writable**입니다.
+  - 따라서 Deno 캐시 경로(`DENO_DIR`)는 `/tmp`를 사용해야 합니다.
+- Cold Start 시간을 줄이기 위해, Docker build 단계에서 **의존성을 미리
+  캐싱(prewarm)** 합니다.
+  - `Dockerfile`에서 `DENO_DIR=/var/deno_dir_seed deno cache app/index.ts`로
+    의존성을 받아서 이미지에 굽고,
+  - 런타임에는 `infra/lambda-entrypoint.sh`가 `/var/deno_dir_seed`를
+    `/tmp/deno_dir`로 복사하여 재사용합니다.
+- **실행 시점에 추가 다운로드가 발생하는 라이브러리**가 있으면
+  `deno cache`만으로는 충분하지 않을 수 있습니다.
+  - 예: `@felix/bcrypt`는 실행 시점에 플랫폼별 네이티브 바이너리(`.so`)를
+    다운로드합니다.
+  - 이런 의존성이 추가되면, `Dockerfile`에 해당 라이브러리를 **한 번 실제
+    실행하는 prewarm step**(예: `deno eval ...`)을 추가해야 런타임
+    다운로드/지연을 피할 수 있습니다.
+- 런타임 다운로드가 발생하는지 빠르게 확인하려면 아래 task를 실행합니다.
+  - `deno task detect-runtime-downloads`
+  - 이 task는 `deno cache app/index.ts`를 먼저 수행한 뒤에도, 실제 실행 중에
+    추가로 다운로드되는 URL만 출력합니다.
+
+### AWS Lambda의 ColdStart 시간 최적화
+
+- Lambda 컨테이너 이미지는 새 버전을 처음 실행할 때 ECR에서 이미지를 pull하면서
+  Cold Start 시간이 증가할 수 있습니다.
+- Provisioned Concurrency를 사용하면 이미지를 미리 pull하고 런타임 초기화를
+  완료한 상태로 실행 환경을 준비하므로, 실제 사용자 요청에서는 Cold Start가
+  거의 노출되지 않습니다.
+- 운영 트래픽은 alias(예: `prod`)로만 전달하고, 새 버전에 Provisioned
+  Concurrency가 준비된 뒤 alias를 전환하면 배포 직후의 단 한번 Cold Start도
+  사용자에게 노출되지 않습니다.
+
+#### Alias 전환 + Provisioned Concurrency 설정 예시
 
 ```bash
-docker-compose up -d
-pnpm build
-pnpm _start
-pnpm vitest YourIntTestFileName
+# 1) 이미지 업데이트
+aws lambda update-function-code --function-name MyFunc --image-uri <new-image>
+
+# 2) 새 버전 발행
+aws lambda publish-version --function-name MyFunc
+
+# 3) 새 버전에 Provisioned Concurrency 설정
+aws lambda put-provisioned-concurrency-config \
+  --function-name MyFunc \
+  --qualifier <newVersion> \
+  --provisioned-concurrent-executions N
+
+# 4) 준비 완료 확인
+aws lambda get-provisioned-concurrency-config \
+  --function-name MyFunc \
+  --qualifier <newVersion>
+
+# 5) alias 전환
+aws lambda update-alias --function-name MyFunc --name prod --function-version <newVersion>
+
+# 6) alias용 Function URL 생성/갱신
+aws lambda create-function-url-config --function-name MyFunc --qualifier prod --auth-type NONE
+# 이미 존재하면 갱신
+aws lambda update-function-url-config --function-name MyFunc --qualifier prod --auth-type NONE
+```
+
+#### CodeDeploy 기반 무중단 전환 플로우
+
+- CodeDeploy로 Lambda 배포 시 **pre-traffic hook**에서 새 버전의 준비 완료를
+  확인한 뒤 트래픽을 전환합니다.
+- alias는 CodeDeploy가 관리하며, 성공 시 자동으로 새 버전을 가리킵니다.
+
+```text
+배포 아티팩트 생성 → CodeDeploy 배포 시작
+→ pre-traffic hook에서 Provisioned Concurrency 준비 상태 확인
+→ 성공 시 alias 트래픽 전환
+→ 실패 시 자동 롤백
+```
+
+### AWS 인프라
+
+`infra/terraform` 디렉토리 이하에서 terraform으로 관리합니다.
+
+```bash
+npm i -g aws-cdk
+cd infra/cdk
 ```
 
 ## Tech Stack Comparison

@@ -1,0 +1,12 @@
+.env
+.env.*
+
+.git
+.gitignore
+.vscode
+
+node_modules
+
+infra/terraform
+test
+docs
