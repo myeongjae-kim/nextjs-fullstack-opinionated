@@ -84,30 +84,42 @@ test/api/
 
 ## Import 규칙
 
-### Import 순서
-1. 절대 경로 (`@/`) 먼저
-2. 외부 라이브러리
-3. 상대 경로 (최소화)
+### Import 경로 (필수)
+- TypeScript/TSX에서는 **상대경로(`./`, `../`) import를 사용하지 않습니다.**
+  - ESLint `no-restricted-imports` 규칙으로 제한됩니다.
+  - 프로젝트 내부 모듈은 `@/` alias를 사용합니다.
+- 외부 라이브러리(npm 패키지)는 기존 import 경로를 그대로 사용합니다.
+
+### Import 순서 (권장)
+- `'use client';`가 필요한 파일은 최상단에 둡니다.
+- side-effect import(예: `import '@/app/globals.css';`)는 import 블록의 최상단에 둡니다.
+- 나머지는 다음과 같이 **그룹을 나누고, 그룹 사이에 빈 줄**을 둡니다.
+  1. 프로젝트 내부 절대 경로 (`@/`)
+  2. 외부 라이브러리
 
 ### 타입 Import
 - 타입만 import할 때는 `import type` 사용
-- 예: `import type { ArticleQueryPort } from "./port/out/ArticleQueryPort";`
+- 값과 타입을 함께 import할 때는 `import { value, type TypeName }` 형태를 사용할 수 있습니다.
+- 예:
+  - `import type { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';`
+  - `import { loginAction, type LoginActionResult } from '@/app/server-actions/login/actions';`
 
 ### Import 그룹화
 ```typescript
-// 1. 절대 경로 - 도메인/인터페이스
-import { ArticleCommandPort } from "@/core/article/application/port/out/ArticleCommandPort";
-import { Article, ArticleCreation } from "@/core/article/domain/Article";
+// 0. side-effect import (있는 경우)
+import '@/app/globals.css';
 
-// 2. 절대 경로 - 공통
-import { DomainNotFoundError } from "@/core/common/domain/DomainNotFoundError";
-import { Autowired } from "@/core/config/Autowired";
+// 1. 절대 경로(@/) - 도메인/인터페이스
+import type { ArticleQueryPort } from '@/core/article/application/port/out/ArticleQueryPort';
+import { Article, ArticleCreation } from '@/core/article/domain/Article';
+
+// 2. 절대 경로(@/) - 공통/인프라
+import { DomainNotFoundError } from '@/core/common/domain/DomainNotFoundError';
+import { Autowired } from '@/core/config/Autowired';
+import { article } from '@/lib/db/schema';
 
 // 3. 외부 라이브러리
-import { eq } from "drizzle-orm";
-
-// 4. 상대 경로 (최소화)
-import { article } from "@/lib/db/schema";
+import { eq } from 'drizzle-orm';
 ```
 
 ## 타입 정의
@@ -168,8 +180,8 @@ export const article = mysqlTable('article', {
 
 ### 구조
 ```typescript
-import { createRoute } from "@hono/zod-openapi";
-import { Controller } from "../config/Controller";
+import { Controller } from '@/app/api/[...route]/config/Controller';
+import { createRoute } from '@hono/zod-openapi';
 
 const route = createRoute({
   method: 'post',
