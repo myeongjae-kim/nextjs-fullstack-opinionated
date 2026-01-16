@@ -29,21 +29,21 @@ export default function Home() {
         <CardContent className="grid gap-4 pt-6">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Link href="/api/docs" className="w-full">
-              <Button variant="outline" className="h-32 w-full flex-col gap-2">
+              <Button variant="outline" className="h-32 w-full flex-col gap-2 cursor-pointer">
                 <BookOpen className="h-8 w-8 text-blue-500" />
                 <span className="font-semibold">API 문서 보기</span>
               </Button>
             </Link>
 
             <Link href="/server-actions" className="w-full">
-              <Button variant="outline" className="h-32 w-full flex-col gap-2">
+              <Button variant="outline" className="h-32 w-full flex-col gap-2 cursor-pointer">
                 <ShieldCheck className="h-8 w-8 text-green-500" />
                 <span className="font-semibold text-center">Server Actions<br />기반 인증</span>
               </Button>
             </Link>
 
             <Link href="/use-apis" className="w-full">
-              <Button variant="outline" className="h-32 w-full flex-col gap-2">
+              <Button variant="outline" className="h-32 w-full flex-col gap-2 cursor-pointer">
                 <Cpu className="h-8 w-8 text-purple-500" />
                 <span className="font-semibold text-center">API 기반 인증<br />(localStorage)</span>
               </Button>
