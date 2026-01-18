@@ -1,8 +1,10 @@
 # Next.js Fullstack Opinionated
 
-Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 있는 예시 프로젝트입니다.
+Next.js만으로 웹페이지와 Rest API를 함께 제공할 때 사용할 수 있는 예시
+프로젝트입니다.
 
-백엔드 개발자 입장에서 Next.js를 Spring Boot와 비교했을 때 부족한 부분을 제 의견대로(opinionated) 채워넣었습니다.
+백엔드 개발자 입장에서 Next.js를 Spring Boot와 비교했을 때 부족한 부분을 제
+의견대로(opinionated) 채워넣었습니다.
 
 ## Run
 
@@ -18,7 +20,7 @@ pnpm dev
 ## Tech Stack Comparison
 
 |                             | Spring Boot                           | Next.js Fullstack Opinionated |
-|-----------------------------|---------------------------------------|-------------------------------|
+| --------------------------- | ------------------------------------- | ----------------------------- |
 | 웹 계층                     | spring-webmvc                         | Next.js, Hono                 |
 | 코드 기반 OpenAPI Spec 생성 | springdoc-openapi-starter-webmvc-ui   | @hono/zod-openapi             |
 | Request Validtaion          | spring-webmvc, spring-boot-validation | Hono, zod                     |
@@ -34,32 +36,63 @@ pnpm dev
 
 ## Motivation
 
-1. AI는 Java나 Kotlin보다 TypeScript와 더 친숙하다(https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32). AI가 더 잘 할 수 있게 백엔드 기술 스택을 TypeScript로 변경하는 것도 좋은 선택이지 않을까?
-    1. TypeScript의 강력한 타입 시스템도 AI가 코드를 더 잘 작성할 수 있게 해준다. TypeScript 컴파일러와 eslint는 AI에게 훌륭한 피드백을 제공함. TypeScript의 강력한 타입 연산 및 추론 기능과 Literal String 등 고급 타입 기능과, 빡빡하게 설정한 eslint는 컴파일타임에 에러를 더 많이 잡아내 AI에게 빠른 피드백 루프를 제공한다.
-2. 중소형 프로젝트나 어드민 성격의 제품은 Next.js 하나로 백엔드에서 DB접근이나 API까지 구현해도 무리가 없음. Vercel과 PlanetScale 클릭 몇 번으로 인프라를 구축할 수 있어서 빠르게 초기 셋팅을 끝낼 수 있다. Node.js 환경의 Hot Reloading 덕분에 개발 속도도 빠르다.
+1. AI는 Java나 Kotlin보다 TypeScript와 더
+   친숙하다(https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32).
+   AI가 더 잘 할 수 있게 백엔드 기술 스택을 TypeScript로 변경하는 것도 좋은
+   선택이지 않을까?
+   1. TypeScript의 강력한 타입 시스템도 AI가 코드를 더 잘 작성할 수 있게 해준다.
+      TypeScript 컴파일러와 eslint는 AI에게 훌륭한 피드백을 제공함. TypeScript의
+      강력한 타입 연산 및 추론 기능과 Literal String 등 고급 타입 기능과,
+      빡빡하게 설정한 eslint는 컴파일타임에 에러를 더 많이 잡아내 AI에게 빠른
+      피드백 루프를 제공한다.
+2. 중소형 프로젝트나 어드민 성격의 제품은 Next.js 하나로 백엔드에서 DB접근이나
+   API까지 구현해도 무리가 없음. Vercel과 PlanetScale 클릭 몇 번으로 인프라를
+   구축할 수 있어서 빠르게 초기 셋팅을 끝낼 수 있다. Node.js 환경의 Hot
+   Reloading 덕분에 개발 속도도 빠르다.
 3. 대형 프로젝트도 Next.js로 제공할 수 있을까?
-    1. [API Layer로서 Next.js는 성능이 좋지 않다](https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 어느정도 트래픽이 되면 API만 제공하는 웹서버를 분리해야 함.
-    2. Next.js에서 백엔드 API만 똑 떼어낼 수 있을까? -> Hono ([Motivation](https://hono.dev/docs/concepts/motivation), [Hono on Next.js](https://hono.dev/docs/getting-started/nextjs))
-    3. 백엔드 로직을 객체지향적으로 관리해 익숙한 방식으로 복잡도를 통제하고 싶다 -> [inversify](https://github.com/inversify), [inversify-typesafe](https://github.com/myeongjae-kim/inversify-typesafe), [inversify-typesafe-spring-like](https://github.com/myeongjae-kim/inversify-typesafe/tree/main/packages/inversify-typesafe-spring-like)
-4. 응답속도와 처리량이 중요한 프로젝트에도 사용할 수 있을까? -> [Hono on Node.js](https://hono.dev/docs/concepts/benchmarks#on-node-js), [Hono on Deno](https://hono.dev/docs/concepts/benchmarks#deno)
-    1. 이 정도면 웹서버 성능이 병목이 될 일은 없어보인다.
+   1. [API Layer로서 Next.js는 성능이 좋지 않다](https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p).
+      어느정도 트래픽이 되면 API만 제공하는 웹서버를 분리해야 함.
+   2. Next.js에서 백엔드 API만 똑 떼어낼 수 있을까? -> Hono
+      ([Motivation](https://hono.dev/docs/concepts/motivation),
+      [Hono on Next.js](https://hono.dev/docs/getting-started/nextjs))
+   3. 백엔드 로직을 객체지향적으로 관리해 익숙한 방식으로 복잡도를 통제하고 싶다
+      -> [inversify](https://github.com/inversify),
+      [inversify-typesafe](https://github.com/myeongjae-kim/inversify-typesafe),
+      [inversify-typesafe-spring-like](https://github.com/myeongjae-kim/inversify-typesafe/tree/main/packages/inversify-typesafe-spring-like)
+4. 응답속도와 처리량이 중요한 프로젝트에도 사용할 수 있을까? ->
+   [Hono on Node.js](https://hono.dev/docs/concepts/benchmarks#on-node-js),
+   [Hono on Deno](https://hono.dev/docs/concepts/benchmarks#deno)
+   1. 이 정도면 웹서버 성능이 병목이 될 일은 없어보인다.
 
 ## Infrastructure Recommendation
 
-- 제품 초기(월 $1,500 미만): Vercel(with Observability Plus for logging) + PlanetScale
-  - Vercel: 다른 Serverless Edge Hosting 서비들과 비교했을 때 비용이 많이 비싼편은 아님. AWS Amplify와는 거의 비슷한 비용이 나온다.
-  - PlanetScale: 초기 비용이 저렴한(=AWS, GCP 제외) MySQL, Postgres 호환 Serverless RDBMS Platform 중에서 유일하게 Seoul 리전이 있음
-  - 초기부터 API 트래픽이 많을 것으로 예상한다면 백엔드만 따로 떼서 Hono만으로 서빙하는 것을 추천 ([Hono on AWS Lambda](https://hono.dev/docs/getting-started/aws-lambda))
-- 제품 성숙기(월 $1,500 이상): AWS ECS Fargate, CloudWatch(혹은 Grafana 및 OpenTelemetry 스펙 구현된 제품을 Self Hosting), Amazon Aurora
-  - AWS ECS Fargate: EC2나 ECS on EC2보다 설정 및 관리비용이 적게 듦. 
-  - Amazon Aurora: 든든. 애플리케이션과의 통신을 VPC내에서 해결하면 데이터 전송 비용 절감 가능. Workload에 따라 Aurora Serverless 고려.
-  - 웹페이지 호출보다 API호출이 많은 프로젝트라면 마찬가지로 백엔드만 따로 떼서 Hono만으로 서빙하는 것을 추천
+- 제품 초기(월 $1,500 미만): Vercel(with Observability Plus for logging) +
+  PlanetScale
+  - Vercel: 다른 Serverless Edge Hosting 서비들과 비교했을 때 비용이 많이
+    비싼편은 아님. AWS Amplify와는 거의 비슷한 비용이 나온다.
+  - PlanetScale: 초기 비용이 저렴한(=AWS, GCP 제외) MySQL, Postgres 호환
+    Serverless RDBMS Platform 중에서 유일하게 Seoul 리전이 있음
+  - 초기부터 API 트래픽이 많을 것으로 예상한다면 백엔드만 따로 떼서 Hono만으로
+    서빙하는 것을 추천
+    ([Hono on AWS Lambda](https://hono.dev/docs/getting-started/aws-lambda))
+- 제품 성숙기(월 $1,500 이상): AWS ECS Fargate, CloudWatch(혹은 Grafana 및
+  OpenTelemetry 스펙 구현된 제품을 Self Hosting), Amazon Aurora
+  - AWS ECS Fargate: EC2나 ECS on EC2보다 설정 및 관리비용이 적게 듦.
+  - Amazon Aurora: 든든. 애플리케이션과의 통신을 VPC내에서 해결하면 데이터 전송
+    비용 절감 가능. Workload에 따라 Aurora Serverless 고려.
+  - 웹페이지 호출보다 API호출이 많은 프로젝트라면 마찬가지로 백엔드만 따로 떼서
+    Hono만으로 서빙하는 것을 추천
 
-※ 제품 초기, Vercel보다 Cloudflare Pages가 비용은 훨씬 저렴하지만 한국의 망 사용료 문제때문에 Enterprise Plan이 아니면 Los Angeles에서 실행된다. DB가 서울에 있을 때 웹 페이지 로딩 1초씩 걸림
+※ 제품 초기, Vercel보다 Cloudflare Pages가 비용은 훨씬 저렴하지만 한국의 망
+사용료 문제때문에 Enterprise Plan이 아니면 Los Angeles에서 실행된다. DB가 서울에
+있을 때 웹 페이지 로딩 1초씩 걸림
 
-※ 제품 성숙기, AWS ECS보다 AWS App Runner가 사용하기 훨씬 더 간단하지만 Seoul 리전에서는 제공 안 함. Tokyo 리전이 가장 가까움. Seoul 리전에서 서비스 제공하기 시작하면 AWS App Runner를 고려해볼만 하다.
+※ 제품 성숙기, AWS ECS보다 AWS App Runner가 사용하기 훨씬 더 간단하지만 Seoul
+리전에서는 제공 안 함. Tokyo 리전이 가장 가까움. Seoul 리전에서 서비스 제공하기
+시작하면 AWS App Runner를 고려해볼만 하다.
 
-※ 제품 성숙기, PlanetScale에서 Amazon Aurora로 데이터 이전시 AWS Database Migration Service 활용 가능
+※ 제품 성숙기, PlanetScale에서 Amazon Aurora로 데이터 이전시 AWS Database
+Migration Service 활용 가능
 
 <table>
   <thead>
@@ -92,21 +125,46 @@ pnpm dev
 
 ### (단위 시간당 가치) = (가치) / (시간), 시간을 줄여보자
 
-단위 시간당 가치(Value) 창출량을 10배, 100배 높이기 위해서는 가치가 큰 일(=분자)을 수행하는 것 뿐만 아니라 소요되는 시간(=분모)을 줄이는 것도 중요합니다. 이미 우리 회사는 사람보다 AI가 사람보다 훨씬 많은 코드를 작성하고 있기 때문에, 이제는 사람이 좋은 코드를 작성하기 위한 노력보다 AI가 좋은 코드를 작성할 수 있는 환경을 만들어야 단위 시간당 가치를 높이는 일에 더 많이 기여할 수 있어 보입니다.
+단위 시간당 가치(Value) 창출량을 10배, 100배 높이기 위해서는 가치가 큰
+일(=분자)을 수행하는 것 뿐만 아니라 소요되는 시간(=분모)을 줄이는 것도
+중요합니다. 이미 우리 회사는 사람보다 AI가 사람보다 훨씬 많은 코드를 작성하고
+있기 때문에, 이제는 사람이 좋은 코드를 작성하기 위한 노력보다 AI가 좋은 코드를
+작성할 수 있는 환경을 만들어야 단위 시간당 가치를 높이는 일에 더 많이 기여할 수
+있어 보입니다.
 
-이 저장소는 중소형 프로젝트를 위해 Next.js로 DB 뿐만 아니라 백엔드 API까지 제공하는 예시 코드를 작성하려는 좋겠다는 생각으로 만들었지만, 자료를 수집하고 생각을 정리할수록 프로젝트의 크기에 상관없이 TypeScript를 사용해 기술 스택을 통일하는 것이 좋겠다는 결론에 이르렀습니다.
+이 저장소는 중소형 프로젝트를 위해 Next.js로 DB 뿐만 아니라 백엔드 API까지
+제공하는 예시 코드를 작성하려는 좋겠다는 생각으로 만들었지만, 자료를 수집하고
+생각을 정리할수록 프로젝트의 크기에 상관없이 TypeScript를 사용해 기술 스택을
+통일하는 것이 좋겠다는 결론에 이르렀습니다.
 
 ### AI는 TypeScript를 좋아해
 
-여러 AI모델은 Java, Kotlin, TypeScript 중에 공통적으로 TypeScript에 가장 자신이 있다고 답변했습니다 (GPT-5.2, Gemini 3 Flash, Grok Code, Sonnet 4.5). TypeScript는 프론트엔드, 백엔드는 물론 여러 분야에 가리지 않고 퍼져있고 인기도 높기 때문에 AI가 학습에 활용할 수 있는 코드의 양이 다른 두 언어보다 '압도적으로(AI가 이렇게 말했음)' 많습니다. 그리고 TypeScript의 강력한 타입 시스템은 AI가 코드를 더 잘 작성할 수 있게 해줍니다. TypeScript의 강력한 타입 연산 및 추론 기능과 Literal String 등 고급 타입 기능과 빡빡하게 설정한 eslint는 컴파일타임에 에러를 더 많이 잡아내 AI에게 빠른 피드백 루프를 제공합니다.
+여러 AI모델은 Java, Kotlin, TypeScript 중에 공통적으로 TypeScript에 가장 자신이
+있다고 답변했습니다 (GPT-5.2, Gemini 3 Flash, Grok Code, Sonnet 4.5).
+TypeScript는 프론트엔드, 백엔드는 물론 여러 분야에 가리지 않고 퍼져있고 인기도
+높기 때문에 AI가 학습에 활용할 수 있는 코드의 양이 다른 두 언어보다
+'압도적으로(AI가 이렇게 말했음)' 많습니다. 그리고 TypeScript의 강력한 타입
+시스템은 AI가 코드를 더 잘 작성할 수 있게 해줍니다. TypeScript의 강력한 타입
+연산 및 추론 기능과 Literal String 등 고급 타입 기능과 빡빡하게 설정한 eslint는
+컴파일타임에 에러를 더 많이 잡아내 AI에게 빠른 피드백 루프를 제공합니다.
 
 ### 인간에게도 빠른 피드백 루프
 
-AI가 작성한 코드의 결과물을 검토해야 할 때마다 직접 로컬 웹 애플리케이션을 종료하고 빌드한 뒤에 다시 실행하는 과정을 거치는 것은 매우 번거롭습니다. Node.js 생태계는 오래 전 부터 Hot Reloading이 일상화가 되어있기 때문에 AI가 소스코드를 변경하는 즉시 결과물을 확인할 수 있습니다. 현재는 인간이 병목이 되는 개발환경이기 때문에 인간 때문에 발생하는 지연시간을 줄이는 것이 중요합니다.
+AI가 작성한 코드의 결과물을 검토해야 할 때마다 직접 로컬 웹 애플리케이션을
+종료하고 빌드한 뒤에 다시 실행하는 과정을 거치는 것은 매우 번거롭습니다. Node.js
+생태계는 오래 전 부터 Hot Reloading이 일상화가 되어있기 때문에 AI가 소스코드를
+변경하는 즉시 결과물을 확인할 수 있습니다. 현재는 인간이 병목이 되는
+개발환경이기 때문에 인간 때문에 발생하는 지연시간을 줄이는 것이 중요합니다.
 
 ### TypeScript로 Spring 따라하기
 
-우리 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을 받지 않는 성격의 서비스들을 구현할 때도 많습니다. TypeScript, Next.js, Vercel, PlanetScale 만으로 고객사의 문제를 대부분 해결할 수 있어 보이는데, 다만 아쉬운 점은 Spring Boot가 제공했던 여러 가지 기능을 대체할 라이브러리를 찾거나 직접 구현해야 한다는 것입니다. 이 저장소는 TypeScript로 프론트엔드와 백엔드 코드를 작성하면서 기존에 Spring Boot가 제공했던 Developer Experience를 최대한 유사하게 만들어보기 위한 노력의 결과입니다.
+우리 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을 받지 않는
+성격의 서비스들을 구현할 때도 많습니다. TypeScript, Next.js, Vercel, PlanetScale
+만으로 고객사의 문제를 대부분 해결할 수 있어 보이는데, 다만 아쉬운 점은 Spring
+Boot가 제공했던 여러 가지 기능을 대체할 라이브러리를 찾거나 직접 구현해야 한다는
+것입니다. 이 저장소는 TypeScript로 프론트엔드와 백엔드 코드를 작성하면서 기존에
+Spring Boot가 제공했던 Developer Experience를 최대한 유사하게 만들어보기 위한
+노력의 결과입니다.
 
 inversify, inversify-typesafe, inversify-typesafe-spring-like 관련 내용
 
@@ -116,9 +174,15 @@ Vercel, PlanetScale. ColdStart 시간 줄이기. AWS Lambda와 ColdStart
 
 ### Next.js로 모든걸 할 수는 없지만, Hono와 함께라면?
 
-Next.js의 아쉬운 성능, API Layer로서 Next.js를 쓰려고 하니 쏟아진 수많은 악플들. 대안을 찾다가 Hono를 발견. Cloudflare Workers에서 동작하는 웹서버를 만드는 것이 이 프로젝트의 시작. 여러 Serverless runtime에서 실행이 가능하고 심지어 Next.js 위에서도 실행이 가능. 초기엔 Next.js + Hono로 시작한 뒤, 제품이 성장하면 Hono 부분만 떼어내서 백엔드 API 서버를 만들면 된다.
+Next.js의 아쉬운 성능, API Layer로서 Next.js를 쓰려고 하니 쏟아진 수많은 악플들.
+대안을 찾다가 Hono를 발견. Cloudflare Workers에서 동작하는 웹서버를 만드는 것이
+이 프로젝트의 시작. 여러 Serverless runtime에서 실행이 가능하고 심지어 Next.js
+위에서도 실행이 가능. 초기엔 Next.js + Hono로 시작한 뒤, 제품이 성장하면 Hono
+부분만 떼어내서 백엔드 API 서버를 만들면 된다.
 
-이 프로젝트도 main은 Next.js + Hono로 구성한 FullStack이지만, hono 브랜치는 Next.js를 제거하고 Node.js 위에서 바로 Hono를 사용하는 코드, hono-deno 브랜치는 Deno위에서 바로 Hono를 사용하는 코드를 작성했다.
+이 프로젝트도 main은 Next.js + Hono로 구성한 FullStack이지만, hono 브랜치는
+Next.js를 제거하고 Node.js 위에서 바로 Hono를 사용하는 코드, hono-deno 브랜치는
+Deno위에서 바로 Hono를 사용하는 코드를 작성했다.
 
 ### 타입-안전 (Type-Safety)
 
@@ -130,11 +194,14 @@ hono, drizzle, inversify-typesafe 예시 설명
 
 ### Web Layer는 함수형 패러다임, Business Layer는 객체지향 패러다임
 
-아키텍처 설명. Web Layer에 전혀 영향을 받지 않는 Business Layer -> core 디렉토리.
+아키텍처 설명. Web Layer에 전혀 영향을 받지 않는 Business Layer -> core
+디렉토리.
 
 ### 그리운 Spring Boot
 
-예시 코드를 작성해보니 Spring Boot에 비해서 직접 채워넣어야 하는 부분이 많았다. 제가 생각하기에 가장 효과적인 형태로 코드를 작성했고, 더 좋은 아이디어가 있다면 기여해주기 바랍니다.
+예시 코드를 작성해보니 Spring Boot에 비해서 직접 채워넣어야 하는 부분이 많았다.
+제가 생각하기에 가장 효과적인 형태로 코드를 작성했고, 더 좋은 아이디어가 있다면
+기여해주기 바랍니다.
 
 - 코드 훑어보면서 신경써서 작성한 코드 listing.
 
@@ -142,27 +209,57 @@ hono, drizzle, inversify-typesafe 예시 설명
 
 (초고)
 
-- AI시대, AI가 Java, Kotlin 코드보다 타입스크립트 코드를 잘 짬: https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32
-- 타입스크립트 타입 추론 기능을 활용해서 컴파일타임에 오류를 많이 잡아낼수록 AI가 좋은 코드를 생성함. eslint와 타입스크립트 컴파일러를 AI가 실행해서 스스로 문제 해결 가능.
+- AI시대, AI가 Java, Kotlin 코드보다 타입스크립트 코드를 잘 짬:
+  https://chatgpt.com/share/695fccfd-e1a8-8004-9c40-bde551d16c32
+- 타입스크립트 타입 추론 기능을 활용해서 컴파일타임에 오류를 많이 잡아낼수록
+  AI가 좋은 코드를 생성함. eslint와 타입스크립트 컴파일러를 AI가 실행해서 스스로
+  문제 해결 가능.
   - inversify-typesafe, inversify-typesafe-spring-like 프로젝트 소개
   - [Hono is typesafe.](https://hono.dev/docs/concepts/developer-experience)
-- JVM 언어보다 컴파일 및 초기 실행 시간이 짧기 때문에 AI에게 보다 빠른 피드백 루프를 제공할 수 있음.
-- Next.js의 Fullstack Framework로서의 성숙. 프로젝트 초기에 Next.js로 monolithic하게 Vercel 위에서 서비스를 제공해도 꽤 큰 트래픽까지 버틸 수 있어보인다.
-  - 트래픽이 커지면 웹페이지용, Rest API 제공용, 어드민용 등으로 쪼개서 서비스를 제공하면 됨.
-  - Serverless가 필연적으로 갖는 Cold Start 문제를 해결하기 위해 Next.js와 Vercel에서 다양한 노력을 함: https://vercel.com/kb/guide/how-can-i-improve-serverless-function-lambda-cold-start-performance-on-vercel
-    - 특히 Fluid Compute: https://vercel.com/docs/fluid-compute#how-to-enable-fluid-compute
-- 인프라 유지관리 비용을 최소화 할 수 있음. AWS EC2를 쓰는 대신 Vercel과 PlanetScale로 프로젝트를 시작하면 순식간에 인프라 설정 완료.
-  - 현재 재직중인 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을 받지 않는 성격의 서비스들을 구현할 때도 많음. Next.js, Vercel, PlanetScale 수준에서 고객사의 문제를 해결할 수 있는 경우가 많다. Next.js를 쓰면서도 Spring Boot의 Developer Experience를 최대한 유지하는 것이 이 예시 프로젝트의 역할
-    - Inversify를 사용해서 IoC Container로 백엔드 로직을 관리하므로 기존 Spring Boot의 아키텍처와 유사하게 관리 가능.
-    - Next.js의 Routing까지는 Functional Paradigm, Route Handler에서 비즈니스 로직을 호출할 때부터는 Object-Oriented Paradigm이다.
-- Next.js만으로 Rest API를 제공할 수 있지만, Next.js가 벤치마크상 성능이 좋지 않다(https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p). 언제든제 백엔드 부분만 따로 떼어낼 수 있도록 Next.js 안에서 Hono가 API Routing을 담당하는 형태로 구현함.
-  - fyi) Next.js를 백엔드 API 제공용으로 사용하는건 어떻냐고 하니 쏟아진 수많은 악플들: https://www.reddit.com/r/nextjs/comments/1ooxe77/anyone_using_nextjs_on_vercel_purely_as_an_api/
-  - 언제든지 Next.js를 떼어내고 백엔드 API만 서빙하는 애플리케이션을 만들 수 있도록 Next.js 내부에서 Hono를 사용하는 구조를 만들었다.
-  - Hono는 처음부터 Serverless Runtime 위에서 실행되는 것을 목표로 제작한 프레임워크. 
-  - 웹페이지와 백엔드 API를 한꺼번에 서빙하는 monolithic 구조가 유리한 프로젝트는 이대로 사용하고, 백엔드 API만 제공하는 프로젝트는 Next.js 없이 Hono만으로 구현.
-  - 백엔드 API만 제공하는 프로젝트는 Vercel이 아니라 프로젝트 시작부터 AWS Lambda에 배포하는 것도 나쁘지않다: https://hono.dev/docs/getting-started/aws-lambda
-    - AWS Lambda가 Vercel보다 호출횟수당 비용이 1/10 수준 (Vercel: $2 per 1M, AWS Lambda: $0.2 per 1M)
-  - ColdStart를 극단적으로 줄이려면 Deno사용 가능: https://deno.com/blog/aws-lambda-coldstart-benchmarks
+- JVM 언어보다 컴파일 및 초기 실행 시간이 짧기 때문에 AI에게 보다 빠른 피드백
+  루프를 제공할 수 있음.
+- Next.js의 Fullstack Framework로서의 성숙. 프로젝트 초기에 Next.js로
+  monolithic하게 Vercel 위에서 서비스를 제공해도 꽤 큰 트래픽까지 버틸 수
+  있어보인다.
+  - 트래픽이 커지면 웹페이지용, Rest API 제공용, 어드민용 등으로 쪼개서 서비스를
+    제공하면 됨.
+  - Serverless가 필연적으로 갖는 Cold Start 문제를 해결하기 위해 Next.js와
+    Vercel에서 다양한 노력을 함:
+    https://vercel.com/kb/guide/how-can-i-improve-serverless-function-lambda-cold-start-performance-on-vercel
+    - 특히 Fluid Compute:
+      https://vercel.com/docs/fluid-compute#how-to-enable-fluid-compute
+- 인프라 유지관리 비용을 최소화 할 수 있음. AWS EC2를 쓰는 대신 Vercel과
+  PlanetScale로 프로젝트를 시작하면 순식간에 인프라 설정 완료.
+  - 현재 재직중인 회사의 성격(IT 컨설팅)상 신규 프로젝트가 많고, 대규모 트래픽을
+    받지 않는 성격의 서비스들을 구현할 때도 많음. Next.js, Vercel, PlanetScale
+    수준에서 고객사의 문제를 해결할 수 있는 경우가 많다. Next.js를 쓰면서도
+    Spring Boot의 Developer Experience를 최대한 유지하는 것이 이 예시 프로젝트의
+    역할
+    - Inversify를 사용해서 IoC Container로 백엔드 로직을 관리하므로 기존 Spring
+      Boot의 아키텍처와 유사하게 관리 가능.
+    - Next.js의 Routing까지는 Functional Paradigm, Route Handler에서 비즈니스
+      로직을 호출할 때부터는 Object-Oriented Paradigm이다.
+- Next.js만으로 Rest API를 제공할 수 있지만, Next.js가 벤치마크상 성능이 좋지
+  않다(https://dev.to/encore/nextjs-vs-encorets-when-should-you-not-use-nextjs-for-backend-126p).
+  언제든제 백엔드 부분만 따로 떼어낼 수 있도록 Next.js 안에서 Hono가 API
+  Routing을 담당하는 형태로 구현함.
+  - fyi) Next.js를 백엔드 API 제공용으로 사용하는건 어떻냐고 하니 쏟아진 수많은
+    악플들:
+    https://www.reddit.com/r/nextjs/comments/1ooxe77/anyone_using_nextjs_on_vercel_purely_as_an_api/
+  - 언제든지 Next.js를 떼어내고 백엔드 API만 서빙하는 애플리케이션을 만들 수
+    있도록 Next.js 내부에서 Hono를 사용하는 구조를 만들었다.
+  - Hono는 처음부터 Serverless Runtime 위에서 실행되는 것을 목표로 제작한
+    프레임워크.
+  - 웹페이지와 백엔드 API를 한꺼번에 서빙하는 monolithic 구조가 유리한
+    프로젝트는 이대로 사용하고, 백엔드 API만 제공하는 프로젝트는 Next.js 없이
+    Hono만으로 구현.
+  - 백엔드 API만 제공하는 프로젝트는 Vercel이 아니라 프로젝트 시작부터 AWS
+    Lambda에 배포하는 것도 나쁘지않다:
+    https://hono.dev/docs/getting-started/aws-lambda
+    - AWS Lambda가 Vercel보다 호출횟수당 비용이 1/10 수준 (Vercel: $2 per 1M,
+      AWS Lambda: $0.2 per 1M)
+  - ColdStart를 극단적으로 줄이려면 Deno사용 가능:
+    https://deno.com/blog/aws-lambda-coldstart-benchmarks
     - https://deno.com/blog/build-database-app-drizzle
 
 ## Code Examples
@@ -170,15 +267,21 @@ hono, drizzle, inversify-typesafe 예시 설명
 ## TODO
 
 - [x] 로컬에서 MySQL 띄우고 실제로 동작하는 API 구현
-  - [x] InMemory Adapater와 Persistence Adapter로 분리해서 Profile에 따라 사용하기. remote에서는 InMemory로.
+  - [x] InMemory Adapater와 Persistence Adapter로 분리해서 Profile에 따라
+        사용하기. remote에서는 InMemory로.
   - [x] OpenAPI Spec 받아서 Postman으로 테스트
-  - [x] Read Write Split은 명시적으로 처리해야 함: https://chatgpt.com/share/696299a9-6558-8004-89d4-da4e8448a31a
-    - replica가 가능한 비즈니스 로직은 parameter로 `boolean useReplica` 같은 옵션 받기
-  - [x] Transaction 예시 작성. TransactionTemplate, ReadOnlyTransactionTemplate bean 만들기. 트랜잭션도 도메인에 포함된다.
+  - [x] Read Write Split은 명시적으로 처리해야 함:
+        https://chatgpt.com/share/696299a9-6558-8004-89d4-da4e8448a31a
+    - replica가 가능한 비즈니스 로직은 parameter로 `boolean useReplica` 같은
+      옵션 받기
+  - [x] Transaction 예시 작성. TransactionTemplate, ReadOnlyTransactionTemplate
+        bean 만들기. 트랜잭션도 도메인에 포함된다.
   - [x] 통합테스트 진행할 때 docker-compose로 띄운 MySQL 대상으로 진행해보기
-- [ ] backend-only 브랜치 만들어서 Next.js 제거하고 Hono만 사용하는 애플리케이션 구성
+- [ ] backend-only 브랜치 만들어서 Next.js 제거하고 Hono만 사용하는 애플리케이션
+      구성
   - main 브랜치 커밋 생길 때마다 rebase하기
-- [x] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드 인증 구현
+- [x] [saas-starter](https://github.com/nextjs/saas-starter) 참고해서 프론트엔드
+      인증 구현
 - [x] Server Action으로 회원가입, 로그인, 로그아웃 기능 구현
 - [x] API 호출로 회원가입, 로그인, 로그아웃 기능 구현
 - [ ] 회원가입 할 때 id 중복 체크를 transaction으로 감싸기
@@ -188,7 +291,7 @@ hono, drizzle, inversify-typesafe 예시 설명
 
 1. 애플리케이션 로직 관련 업데이트는 main 브랜치에서 한다.
 2. 파생 브랜치로의 변경사항은 rebase를 한다.
-  1. main -> hono -> hono-deno 순서로 rebase하고 force push
+3. main -> hono -> hono-deno 순서로 rebase하고 force push
 
 ## Commands
 
