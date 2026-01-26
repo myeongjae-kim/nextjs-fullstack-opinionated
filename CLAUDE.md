@@ -384,6 +384,59 @@ describe("POST /api/articles", () => {
 
 ## 코드 품질 관리
 
-### Lint 실행
-- 작업이 끝나면 반드시 `pnpm lint`를 실행하여 코드 품질을 확인합니다
-- Lint 에러가 발생하면 수정한 후 다시 실행합니다
+### 작업 완료 후 검증 프로세스
+
+작업이 완료되면 다음 순서로 검증하고 커밋합니다:
+
+```bash
+# 1. Lint 실행 → 에러 있으면 수정
+pnpm lint
+
+# 2. 빌드 확인 → 빌드 성공 확인
+pnpm build
+
+# 3. 테스트 실행 (테스트가 있는 경우)
+pnpm test
+
+# 4. 위 검증을 모두 통과하면 커밋
+git add .
+git commit -m "feat(domain): 기능 설명"
+```
+
+**각 단계의 목적:**
+
+| 단계 | 명령어 | 목적 |
+|------|--------|------|
+| 1 | `pnpm lint` | 코드 스타일 및 정적 분석 오류 확인 |
+| 2 | `pnpm build` | TypeScript 컴파일 및 빌드 오류 확인 |
+| 3 | `pnpm test` | 기능 동작 검증 (회귀 테스트) |
+| 4 | `git commit` | 검증 통과한 코드만 커밋 |
+
+**주의사항:**
+- 모든 검증을 통과한 후에만 커밋합니다
+- 커밋 메시지는 Conventional Commits 형식을 따릅니다
+- UI 확인이 필요한 경우에만 `pnpm dev`로 개발 서버를 실행합니다
+
+### 커밋 메시지 컨벤션
+
+Conventional Commits 형식을 따릅니다:
+
+```
+type(scope): description
+```
+
+**타입:**
+- `feat`: 새로운 기능 추가
+- `fix`: 버그 수정
+- `docs`: 문서 변경
+- `style`: 코드 포맷팅 (기능 변경 없음)
+- `refactor`: 코드 리팩토링
+- `test`: 테스트 추가/수정
+- `chore`: 빌드, 설정 파일 변경
+
+**예시:**
+```bash
+git commit -m "feat(auth): 로그인 API 추가"
+git commit -m "fix(article): 목록 조회 시 정렬 오류 수정"
+git commit -m "docs(readme): 설치 방법 업데이트"
+```
