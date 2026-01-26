@@ -368,6 +368,81 @@ describe("POST /api/articles", () => {
 ### 타입 안전성
 - `zod`로 스키마 정의
 - `env.ts`에서 파싱 및 검증
+- 애플리케이션 시작 시점에 모든 환경 변수를 검증하여 빠르게 실패(fail-fast)
+
+### 환경변수 검증 패턴
+
+환경 변수는 반드시 Zod 스키마로 정의하고, 애플리케이션 로딩 시점에 검증해야 합니다.
+이를 통해 잘못된 설정으로 인한 런타임 에러를 방지하고, 배포 초기에 문제를 발견할 수 있습니다.
+
+```typescript
+// core/config/env.ts
+import { z } from 'zod';
+
+const envSchema = z.object({
+  // 필수 환경 변수
+  DATABASE_URL: z.string(),
+  AUTH_SECRET: z.string(),
+
+  // 기본값이 있는 환경 변수
+  ADMIN_ID: z.string().default('admin'),
+  LOG_LEVEL: z.string().default('info'),
+
+  // 불린 타입 변환
+  USE_MOCK_ADAPTER: z.string().default('false').transform(value => value === 'true'),
+
+  // 숫자 타입 변환
+  PORT: z.string().default('3000').transform(Number),
+
+  // 선택적 환경 변수
+  SENTRY_DSN: z.string().optional(),
+});
+
+export const env = envSchema.parse(process.env);
+```
+
+**주요 패턴:**
+
+| 패턴 | 용도 | 예시 |
+|------|------|------|
+| `.default('value')` | 기본값 설정 | `z.string().default('admin')` |
+| `.transform(fn)` | 타입 변환 | `z.string().transform(value => value === 'true')` |
+| `.optional()` | 선택적 값 | `z.string().optional()` |
+| `.refine(fn)` | 커스텀 검증 | `z.string().refine(s => s.startsWith('https'))` |
+
+**클라이언트/서버 환경 변수 분리:**
+
+클라이언트에서 사용하는 환경 변수는 별도 파일로 분리합니다.
+
+```typescript
+// core/config/clientEnv.ts (브라우저에서 접근 가능)
+export const clientEnvSchema = z.object({
+  NEXT_PUBLIC_API_URL: z.string().optional(),
+});
+
+// core/config/env.ts (서버에서만 접근 가능)
+const envSchema = clientEnvSchema.extend({
+  DATABASE_URL: z.string(),
+  AUTH_SECRET: z.string(),
+});
+```
+
+**사용 예시:**
+
+```typescript
+import { env } from '@/core/config/env';
+
+// 타입 안전하게 환경 변수 사용
+const dbUrl = env.DATABASE_URL;  // string
+const useMock = env.USE_MOCK_ADAPTER;  // boolean
+const port = env.PORT;  // number
+```
+
+**이점:**
+- 애플리케이션 시작 시 잘못된 환경 변수를 즉시 감지
+- IDE에서 자동 완성 지원
+- 타입 변환으로 런타임 타입 에러 방지
+- 기본값 설정으로 개발 환경 설정 간소화
 
 ## 문서화
 
