@@ -8,6 +8,11 @@ export const serverApp = new OpenAPIHono().basePath('/api');
 // basic settings
 serverApp.use('/*', authMiddleware).onError(globalErrorHandler)
 
+// Health check endpoint (no authentication required)
+serverApp.get('/health', (c) => {
+  return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // docs
 serverApp.openAPIRegistry.registerComponent('securitySchemes', 'bearerAuth', {
   type: 'http',
