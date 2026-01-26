@@ -176,6 +176,64 @@ export const article = mysqlTable('article', {
 - `ulid` 패키지 사용 (`ulid()` 함수)
 - 26자 varchar, unique constraint
 
+### Drizzle 마이그레이션 관리
+
+스키마 변경 시 Drizzle Kit을 사용하여 마이그레이션을 생성하고 적용합니다.
+
+**마이그레이션 생성:**
+
+```bash
+# 스키마 변경 후 마이그레이션 파일 생성
+pnpm drizzle-kit generate
+
+# 생성된 파일 확인
+ls lib/db/migrations/
+# 0000_slow_microbe.sql
+# 0001_lame_shen.sql
+# ...
+```
+
+**마이그레이션 적용:**
+
+```bash
+# 데이터베이스에 마이그레이션 적용
+pnpm drizzle-kit push
+```
+
+**마이그레이션 파일 구조:**
+
+```
+lib/db/
+├── schema.ts           # 스키마 정의 (단일 소스)
+├── drizzle.ts          # DB 연결 설정
+└── migrations/         # 자동 생성된 마이그레이션 파일들
+    ├── 0000_slow_microbe.sql
+    ├── 0001_lame_shen.sql
+    └── meta/
+        └── _journal.json
+```
+
+**주의사항:**
+- `schema.ts`가 단일 진실의 원천(Single Source of Truth)입니다
+- 마이그레이션 파일은 직접 수정하지 않습니다
+- 수동 SQL이 필요한 경우 별도 파일로 관리합니다 (예: `core_table_ddl.sql`)
+- 프로덕션 배포 전 마이그레이션을 로컬에서 먼저 테스트합니다
+
+**drizzle.config.ts 설정:**
+
+```typescript
+import { defineConfig } from 'drizzle-kit';
+
+export default defineConfig({
+  dialect: 'mysql',
+  schema: './lib/db/schema.ts',
+  out: './lib/db/migrations',
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
+});
+```
+
 ## API 컨트롤러
 
 ### 구조
