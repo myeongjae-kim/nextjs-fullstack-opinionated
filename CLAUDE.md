@@ -160,16 +160,61 @@ export const article = mysqlTable('article', {
 });
 ```
 
-### Unique Index
-- 배열 형태로 정의
-- `ux_{table}_{column}` 형식
+### 인덱스 네이밍 컨벤션
+
+인덱스명은 일관된 형식을 따라야 쿼리 분석과 유지보수가 용이합니다.
+
+| 인덱스 유형 | 네이밍 형식 | 예시 |
+|------------|-----------|------|
+| Unique Index | `ux_{table}_{column}` | `ux_user_ulid`, `ux_user_login_id` |
+| 일반 Index | `ix_{table}_{column}` | `ix_article_created_at` |
+| 복합 Index | `ix_{table}_{col1}_{col2}` | `ix_order_user_id_status` |
+| Unique 복합 | `ux_{table}_{col1}_{col2}` | `ux_reservation_room_date` |
+
+**Drizzle ORM에서의 정의:**
 
 ```typescript
+export const user = mysqlTable('user', {
+  id: int('id').primaryKey().autoincrement(),
+  ulid: varchar('ulid', { length: 26 }).notNull(),
+  loginId: varchar('login_id', { length: 255 }).notNull(),
+  name: varchar('name', { length: 100 }),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => [
+  // Unique Index
   uniqueIndex('ux_user_ulid').on(table.ulid),
   uniqueIndex('ux_user_login_id').on(table.loginId),
+  // 일반 Index
+  index('ix_user_created_at').on(table.createdAt),
 ]);
 ```
+
+**복합 인덱스 예시:**
+
+```typescript
+export const priceSnapshot = mysqlTable('price_snapshot', {
+  id: bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
+  roomId: bigint('room_id', { mode: 'number', unsigned: true }).notNull(),
+  collectedAt: date('collected_at').notNull(),
+  targetDate: date('target_date').notNull(),
+  price: int('price', { unsigned: true }).notNull(),
+}, (table) => [
+  // 복합 Unique Index
+  uniqueIndex('ux_price_snapshot_room_collected_target').on(
+    table.roomId,
+    table.collectedAt,
+    table.targetDate
+  ),
+  // 개별 컬럼 Index
+  index('ix_price_snapshot_target_date').on(table.targetDate),
+  index('ix_price_snapshot_collected_at').on(table.collectedAt),
+]);
+```
+
+**주의사항:**
+- 인덱스명은 데이터베이스 전체에서 고유해야 하므로 테이블명을 포함합니다
+- 복합 인덱스의 컬럼 순서는 쿼리 패턴에 따라 결정합니다 (카디널리티 고려)
+- 자주 사용되는 조회 조건에 대해 인덱스를 생성합니다
 
 ### ULID
 - 외부 노출용 식별자로 ULID 사용
